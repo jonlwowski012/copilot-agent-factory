@@ -34,7 +34,7 @@ export async function generateAgents(
 
             // Step 2: Select agents
             progress.report({ message: 'Selecting agents...', increment: 20 });
-            const templatesDir = path.join(context.extensionPath, 'src', 'templates');
+            const templatesDir = path.join(context.extensionPath, '..', 'agents', 'templates');
             const templateEngine = new TemplateEngine(templatesDir);
             const agentSelector = new AgentSelector(templateEngine);
             

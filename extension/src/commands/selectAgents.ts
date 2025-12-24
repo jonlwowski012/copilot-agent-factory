@@ -13,7 +13,7 @@ export async function selectAgents(
     context: vscode.ExtensionContext,
     treeProvider: AgentTreeProvider
 ): Promise<void> {
-    const templatesDir = path.join(context.extensionPath, 'src', 'templates');
+    const templatesDir = path.join(context.extensionPath, '..', 'agents', 'templates');
     const templateEngine = new TemplateEngine(templatesDir);
     const availableAgents = await templateEngine.loadAllTemplates();
 

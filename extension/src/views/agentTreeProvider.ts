@@ -44,7 +44,7 @@ export class AgentTreeProvider implements vscode.TreeDataProvider<AgentTreeItem>
     }
 
     private async loadAvailableAgents(): Promise<void> {
-        const templatesDir = path.join(this.context.extensionPath, 'src', 'templates');
+        const templatesDir = path.join(this.context.extensionPath, '..', 'agents', 'templates');
         const { TemplateEngine } = await import('../generator/templateEngine');
         const templateEngine = new TemplateEngine(templatesDir);
         
