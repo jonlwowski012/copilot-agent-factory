@@ -63,28 +63,80 @@ Once generated, invoke agents directly:
 ├── agent-generator.md    # Meta-agent that creates other agents
 ├── orchestrator.md       # Coordinates all agents
 └── templates/            # Agent templates with {{placeholders}}
-    ├── docs-agent.md     # Documentation and technical writing
-    ├── test-agent.md     # Testing and coverage
-    ├── lint-agent.md     # Code formatting and style
-    ├── review-agent.md   # Code review and best practices
-    ├── api-agent.md      # API development
-    ├── ml-trainer.md     # ML model training
-    ├── data-prep.md      # Data preprocessing
-    ├── eval-agent.md     # Model evaluation
-    └── inference-agent.md # Model inference and serving
+    ├── Core Development Agents
+    │   ├── docs-agent.md          # Documentation and technical writing
+    │   ├── test-agent.md          # Testing and coverage
+    │   ├── lint-agent.md          # Code formatting and style
+    │   ├── review-agent.md        # Code review and best practices
+    │   ├── debug-agent.md         # Error investigation and troubleshooting
+    │   ├── refactor-agent.md      # Code restructuring and tech debt
+    │   ├── performance-agent.md   # Profiling and optimization
+    │   ├── security-agent.md      # Security audits and vulnerability detection
+    │   └── devops-agent.md        # CI/CD, Docker, deployments
+    ├── API & Backend Agents
+    │   └── api-agent.md           # API development and endpoints
+    ├── Mobile Development Agents
+    │   ├── mobile-ios-agent.md         # iOS development (Swift, SwiftUI, UIKit)
+    │   ├── mobile-react-native-agent.md # React Native cross-platform
+    │   └── mobile-flutter-agent.md     # Flutter/Dart development
+    ├── Frontend Framework Agents
+    │   ├── frontend-react-agent.md   # React development with hooks and TypeScript
+    │   ├── frontend-vue-agent.md     # Vue.js with Composition API
+    │   └── frontend-angular-agent.md # Angular with RxJS and standalone components
+    ├── Database Agents
+    │   └── database-agent.md      # Schema design, migrations, query optimization
+    └── ML/AI Agents
+        ├── ml-trainer.md          # ML model training
+        ├── data-prep.md           # Data preprocessing
+        ├── eval-agent.md          # Model evaluation
+        └── inference-agent.md     # Model inference and serving
 ```
 
 ## Agent Detection Rules
 
 The generator creates agents based on detected patterns:
 
+### Core Development Agents
 | Agent | Created When |
 |-------|-------------|
+| **orchestrator** | Always created (central coordinator) |
 | **docs-agent** | `docs/` exists, README present, or docstrings found |
 | **test-agent** | `tests/` exists, test framework in deps, or `*_test.*` files |
 | **lint-agent** | Linter configs exist (ruff, eslint, prettier, etc.) |
 | **review-agent** | Always created (universal need) |
-| **api-agent** | API framework detected or `api/` directory present |
+| **debug-agent** | Always created (universal need) |
+| **refactor-agent** | Always created (universal need) |
+| **performance-agent** | Large codebase or performance-critical patterns |
+| **security-agent** | Auth code, API endpoints, database queries, or env vars |
+| **devops-agent** | `.github/workflows/`, `Dockerfile`, or CI/CD configs |
+
+### API & Backend Agents
+| Agent | Created When |
+|-------|-------------|
+| **api-agent** | API framework detected (FastAPI, Flask, Express, etc.) or `api/` directory |
+
+### Mobile Development Agents
+| Agent | Created When |
+|-------|-------------|
+| **mobile-ios-agent** | `.xcodeproj`, `.xcworkspace`, `Package.swift`, or Swift files |
+| **mobile-react-native-agent** | `package.json` with `react-native`, `metro.config.js`, or RN structure |
+| **mobile-flutter-agent** | `pubspec.yaml`, `lib/*.dart`, or Flutter dependencies |
+
+### Frontend Framework Agents
+| Agent | Created When |
+|-------|-------------|
+| **frontend-react-agent** | `package.json` with `react` dependency or `.jsx/.tsx` files |
+| **frontend-vue-agent** | `package.json` with `vue` dependency or `.vue` files |
+| **frontend-angular-agent** | `package.json` with `@angular/core` or `angular.json` |
+
+### Database Agents
+| Agent | Created When |
+|-------|-------------|
+| **database-agent** | `migrations/`, database configs, SQL files, or ORM dependencies |
+
+### ML/AI Agents
+| Agent | Created When |
+|-------|-------------|
 | **ml-trainer** | `train.py`, `training/`, or ML framework in deps |
 | **data-prep** | `data/` directory or data processing libraries |
 | **eval-agent** | `eval.py`, `metrics/`, or ML framework detected |
@@ -94,6 +146,7 @@ The generator creates agents based on detected patterns:
 
 Templates use `{{placeholder}}` markers that get replaced with detected values:
 
+### Universal Placeholders
 | Placeholder | Description | Example Values |
 |-------------|-------------|----------------|
 | `{{tech_stack}}` | Languages, frameworks, versions | "Python 3.10, PyTorch 2.0, FastAPI" |
@@ -101,6 +154,39 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 | `{{test_dirs}}` | Test file locations | "`tests/`, `__tests__/`" |
 | `{{test_command}}` | Test execution command | "pytest -v", "npm test" |
 | `{{lint_command}}` | Linting command | "ruff check --fix .", "eslint --fix" |
+| `{{build_command}}` | Build command | "npm run build", "cargo build" |
+| `{{dev_command}}` | Development server command | "npm run dev", "python manage.py runserver" |
+
+### Mobile Development Placeholders
+| Placeholder | Description | Example Values |
+|-------------|-------------|----------------|
+| `{{ios_target_version}}` | iOS deployment target | "iOS 15.0", "iOS 16.0" |
+| `{{ios_ui_framework}}` | UI framework | "SwiftUI", "UIKit" |
+| `{{rn_version}}` | React Native version | "0.72.0" |
+| `{{flutter_version}}` | Flutter SDK version | "3.10.0" |
+| `{{navigation_library}}` | Navigation solution | "React Navigation", "Go Router" |
+| `{{state_management}}` | State management library | "Redux", "Provider", "BLoC" |
+
+### Frontend Framework Placeholders
+| Placeholder | Description | Example Values |
+|-------------|-------------|----------------|
+| `{{react_version}}` | React version | "18.2.0" |
+| `{{vue_version}}` | Vue version | "3.3.0" |
+| `{{angular_version}}` | Angular version | "16.0.0" |
+| `{{ui_library}}` | UI component library | "Material-UI", "Ant Design", "Vuetify" |
+| `{{build_tool}}` | Build tool | "Vite", "Webpack", "Angular CLI" |
+
+### Database Placeholders
+| Placeholder | Description | Example Values |
+|-------------|-------------|----------------|
+| `{{database_system}}` | Database type | "PostgreSQL", "MySQL", "MongoDB" |
+| `{{orm_system}}` | ORM/Query builder | "Prisma", "TypeORM", "Sequelize", "Django ORM" |
+| `{{migration_tool}}` | Migration tool | "Alembic", "Knex", "Django migrations" |
+| `{{db_migrations_dirs}}` | Migration directory | "`migrations/`, `db/migrate/`" |
+
+### ML/AI Placeholders
+| Placeholder | Description | Example Values |
+|-------------|-------------|----------------|
 | `{{ml_framework}}` | ML framework in use | "PyTorch", "TensorFlow" |
 | `{{docstring_style}}` | Docstring convention | "Google", "NumPy", "Sphinx" |
 
@@ -183,18 +269,38 @@ Based on analysis of [2,500+ repositories](https://github.blog/ai-and-ml/github-
 - Manages handoffs between agents
 - Provides high-level guidance
 
-### Core Agents
+### Core Development Agents
 - **docs-agent**: READMEs, API docs, docstrings, comments
-- **test-agent**: Unit tests, integration tests, coverage
-- **lint-agent**: Formatting, style fixes, import sorting
-- **review-agent**: Code review, best practices, security
-- **api-agent**: Endpoints, validation, error handling
+- **test-agent**: Unit tests, integration tests, coverage, TDD
+- **lint-agent**: Code formatting, style fixes, import sorting
+- **review-agent**: Code review, best practices, PR feedback
+- **debug-agent**: Error investigation, log analysis, troubleshooting
+- **refactor-agent**: Code restructuring, design patterns, tech debt reduction
+- **performance-agent**: Profiling, optimization, bottleneck identification
+- **security-agent**: Vulnerability detection, secure coding, security audits
+- **devops-agent**: CI/CD pipelines, Docker, deployments, infrastructure
 
-### ML Agents
-- **ml-trainer**: Training loops, hyperparameters, checkpoints
-- **data-prep**: Data loading, augmentation, preprocessing
-- **eval-agent**: Metrics, benchmarking, model comparison
-- **inference-agent**: Prediction pipelines, serving, optimization
+### API & Backend Agents
+- **api-agent**: REST/GraphQL endpoints, validation, error handling, API design
+
+### Mobile Development Agents
+- **mobile-ios-agent**: iOS apps with Swift, SwiftUI, UIKit, App Store optimization
+- **mobile-react-native-agent**: Cross-platform apps, platform-specific code, native modules
+- **mobile-flutter-agent**: Flutter/Dart apps, widget composition, multi-platform deployment
+
+### Frontend Framework Agents
+- **frontend-react-agent**: React components, hooks, state management, performance optimization
+- **frontend-vue-agent**: Vue 3 apps, Composition API, Pinia, composables
+- **frontend-angular-agent**: Angular apps, RxJS, standalone components, dependency injection
+
+### Database Agents
+- **database-agent**: Schema design, migrations, query optimization, ORM patterns
+
+### ML/AI Agents
+- **ml-trainer**: Training loops, hyperparameters, checkpoints, distributed training
+- **data-prep**: Data loading, augmentation, preprocessing, pipelines
+- **eval-agent**: Metrics, benchmarking, model comparison, validation
+- **inference-agent**: Prediction pipelines, model serving, optimization, deployment
 
 ## Example Generated Output
 
