@@ -1,0 +1,135 @@
+{
+  "name": "copilot-agent-factory",
+  "displayName": "Copilot Agent Factory",
+  "description": "Generate customized GitHub Copilot agents for your project automatically",
+  "version": "0.1.0",
+  "publisher": "copilot-agent-factory",
+  "icon": "resources/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "github",
+    "copilot",
+    "agents",
+    "ai",
+    "code-generation"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilot-agent-factory.generateAgents",
+        "title": "Generate Copilot Agents",
+        "category": "Copilot Agent Factory"
+      },
+      {
+        "command": "copilot-agent-factory.scanRepository",
+        "title": "Scan Repository",
+        "category": "Copilot Agent Factory"
+      },
+      {
+        "command": "copilot-agent-factory.selectAgents",
+        "title": "Select Agents to Generate",
+        "category": "Copilot Agent Factory"
+      },
+      {
+        "command": "copilot-agent-factory.configureSettings",
+        "title": "Configure Agent Settings",
+        "category": "Copilot Agent Factory"
+      },
+      {
+        "command": "copilot-agent-factory.refreshAgents",
+        "title": "Refresh Agent List",
+        "category": "Copilot Agent Factory",
+        "icon": "$(refresh)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "copilot-agent-factory",
+          "title": "Copilot Agent Factory",
+          "icon": "resources/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "copilot-agent-factory": [
+        {
+          "id": "copilot-agent-factory.agentTree",
+          "name": "Agents",
+          "contextualTitle": "Copilot Agent Factory"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "copilot-agent-factory.refreshAgents",
+          "when": "view == copilot-agent-factory.agentTree",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Copilot Agent Factory",
+      "properties": {
+        "copilot-agent-factory.outputDirectory": {
+          "type": "string",
+          "default": ".github/agents",
+          "description": "Directory where generated agents will be saved"
+        },
+        "copilot-agent-factory.autoDetectTechStack": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect project tech stack on workspace open"
+        },
+        "copilot-agent-factory.defaultModel": {
+          "type": "string",
+          "default": "claude-4-5-sonnet",
+          "enum": [
+            "claude-4-5-sonnet",
+            "claude-4-5-opus"
+          ],
+          "description": "Default model for generated agents"
+        },
+        "copilot-agent-factory.templateSource": {
+          "type": "string",
+          "default": "bundled",
+          "enum": [
+            "bundled",
+            "github"
+          ],
+          "description": "Source for agent templates (bundled with extension or fetch from GitHub)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.19.27",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "fast-glob": "^3.3.2",
+    "js-yaml": "^4.1.0"
+  }
+}

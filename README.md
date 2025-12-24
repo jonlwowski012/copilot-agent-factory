@@ -17,24 +17,53 @@ Instead of manually writing agent.md files for each project, Copilot Agent Facto
 
 ---
 
-## Quick Start
+## Two Ways to Use
 
-### 1. Copy to Your Repository
+### Option 1: VSCode Extension (Recommended) 🚀
 
-**Important:** GitHub Copilot agents must be placed in the `.github/agents/` directory of your repository to function properly.
+Install the VSCode extension for a GUI-driven experience with visual feedback and configuration.
 
+**Features:**
+- One-click agent generation from Command Palette
+- Interactive agent selection with checkboxes
+- Visual tech stack detection preview
+- Per-agent model customization (Sonnet vs Opus)
+- TreeView sidebar showing available/generated agents
+- Configuration editor for `agent-config.yml`
+
+**Installation:**
 ```bash
-# From this project, copy the agents to your target repo
-cp -r .github/agents /path/to/your/repo/.github/
+cd extension
+npm install
+# Press F5 in VSCode to test, or:
+vsce package && code --install-extension copilot-agent-factory-0.1.0.vsix
 ```
 
-### 2. Generate Customized Agents
+**Usage:**
+1. Open your project in VSCode
+2. `Cmd+Shift+P` → `Copilot Agent Factory: Generate Agents`
+3. Select/customize agents
+4. Agents generated in `.github/agents/`
 
-Invoke the agent-generator in your repository:
+[See extension README](extension/README.md) for full details.
 
-```
-@agent-generator Analyze this repository and generate all appropriate agent.md files.
-```
+---
+
+### Option 2: Agent-Based Generator (CLI-style)
+
+Use the meta-agent approach for automation, CI/CD, or if you prefer working directly with agents.
+
+**Quick Start:**
+
+1. **Copy to Your Repository:**
+   ```bash
+   cp -r .github/agents /path/to/your/repo/.github/
+   ```
+
+2. **Generate Customized Agents:**
+   ```
+   @agent-generator Analyze this repository and generate all appropriate agent.md files.
+   ```
 
 The generator will:
 1. Scan your repository structure
