@@ -21,6 +21,8 @@ Instead of manually writing agent.md files for each project, Copilot Agent Facto
 
 ### 1. Copy to Your Repository
 
+**Important:** GitHub Copilot agents must be placed in the `.github/agents/` directory of your repository to function properly.
+
 ```bash
 # From this project, copy the agents to your target repo
 cp -r .github/agents /path/to/your/repo/.github/
