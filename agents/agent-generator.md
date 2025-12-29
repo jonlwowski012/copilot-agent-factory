@@ -30,6 +30,12 @@ Use **claude-4-5-opus** (deep reasoning) for agents requiring complex analysis:
 | Agent | Reason |
 |-------|--------|
 | `orchestrator` | Complex workflow coordination and task routing |
+| `prd-agent` | Product strategy and requirements analysis |
+| `epic-agent` | Breaking down requirements into actionable epics |
+| `story-agent` | User story writing with acceptance criteria |
+| `architecture-agent` | System design and architectural decisions |
+| `design-agent` | Technical specifications and API contracts |
+| `test-design-agent` | Test strategy and TDD planning |
 | `review-agent` | Deep code quality analysis and best practices |
 | `security-agent` | Vulnerability detection and security analysis |
 | `debug-agent` | Root cause analysis and error investigation |
@@ -52,6 +58,16 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 **Do NOT omit the `model:` field from any generated agent.**
 
 ## Available Agent Templates
+
+### Planning & Design Agents (Workflow)
+| Template | Purpose |
+|----------|---------|
+| `prd-agent.md` | Product Requirements Documents from feature requests |
+| `epic-agent.md` | Break PRDs into epics with acceptance criteria |
+| `story-agent.md` | User stories with Gherkin scenarios |
+| `architecture-agent.md` | System architecture, ADRs, component design |
+| `design-agent.md` | Technical specifications, API contracts, data models |
+| `test-design-agent.md` | Test strategy and test case specifications (TDD) |
 
 ### Core Agents (Universal)
 | Template | Purpose |
@@ -185,6 +201,17 @@ Map common directories:
 
 Generate agents based on detection:
 
+#### Planning & Design Agents (Always Generated)
+| Agent | Generate If |
+|-------|-------------|
+| **prd-agent** | Always generate (supports feature workflows) |
+| **epic-agent** | Always generate (supports feature workflows) |
+| **story-agent** | Always generate (supports feature workflows) |
+| **architecture-agent** | Always generate (supports feature workflows) |
+| **design-agent** | Always generate (supports feature workflows) |
+| **test-design-agent** | Always generate (supports TDD workflows) |
+
+#### Core Agents
 | Agent | Generate If |
 |-------|-------------|
 | **orchestrator** | Always generate (central coordinator) |
@@ -197,13 +224,31 @@ Generate agents based on detection:
 | **debug-agent** | Always generate (universal need) |
 | **refactor-agent** | Always generate (universal need) |
 | **performance-agent** | Large codebase OR performance-critical patterns OR profiling code |
+
+#### Domain-Specific Agents
+| Agent | Generate If |
+|-------|-------------|
 | **api-agent** | API framework detected (FastAPI, Flask, Express, etc.) OR `api/` directory |
 | **ml-trainer** | `train.py` OR `training/` OR ML framework in deps |
 | **data-prep** | `data/` directory OR data processing imports (pandas, numpy, etc.) |
 | **eval-agent** | `eval.py` OR `evaluate.py` OR `metrics/` OR ML framework detected |
 | **inference-agent** | `inference.py` OR `predict.py` OR model serving patterns |
 
-### Step 6: Generate Customized Agents
+### Step 6: Create Planning Directory Structure
+
+When generating agents, also create the planning directory structure:
+
+```
+docs/planning/
+├── prd/           # Product Requirements Documents
+├── epics/         # Epic breakdowns
+├── stories/       # User stories with Gherkin
+├── architecture/  # System architecture & ADRs
+├── design/        # Technical design specifications
+└── test-design/   # Test strategy documents
+```
+
+### Step 7: Generate Customized Agents
 
 For each selected agent:
 
@@ -333,10 +378,12 @@ You are an expert [role] for this project.
 
 Generate agents in this order to handle dependencies:
 
-1. **orchestrator.md** – First, as it references all other agents
-2. **Core agents** – docs, test, lint, review, security, devops, debug, refactor, performance
-3. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
-4. **Update orchestrator** – Fill in `{{active_agents_table}}` with generated agents
+1. **Planning agents** – prd-agent, epic-agent, story-agent, architecture-agent, design-agent, test-design-agent
+2. **orchestrator.md** – Central coordinator that references all other agents
+3. **Core agents** – docs, test, lint, review, security, devops, debug, refactor, performance
+4. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
+5. **Update orchestrator** – Fill in `{{active_agents_table}}` with generated agents
+6. **Create docs/planning/** – Create the planning directory structure
 
 ## Usage
 
@@ -363,6 +410,12 @@ For the orchestrator's `{{active_agents_table}}` placeholder:
 | Agent | Status | Best For |
 |-------|--------|----------|
 | @orchestrator | ✅ Active | Task routing, workflow coordination |
+| @prd-agent | ✅ Active | Product Requirements Documents |
+| @epic-agent | ✅ Active | Epic breakdown from PRDs |
+| @story-agent | ✅ Active | User stories with Gherkin |
+| @architecture-agent | ✅ Active | System architecture, ADRs |
+| @design-agent | ✅ Active | Technical specifications |
+| @test-design-agent | ✅ Active | Test strategy (TDD) |
 | @docs-agent | ✅ Active | Documentation, READMEs, docstrings |
 | @test-agent | ✅ Active | Unit tests, integration tests, coverage |
 | @lint-agent | ✅ Active | Code formatting with ruff |

@@ -12,8 +12,81 @@ Instead of manually writing agent.md files for each project, Copilot Agent Facto
 - 🎯 **Selects relevant agents** based on detected patterns (API, ML, testing, etc.)
 - 🛠️ **Customizes templates** with your repo-specific commands and structure
 - ⚡ **Outputs ready-to-use agents** that know your codebase inside and out
+- 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
 
 **Result:** Your Copilot agents become domain experts for your specific project, not generic assistants.
+
+---
+
+## Feature Development Workflow
+
+The agent factory includes a comprehensive **Feature Development Workflow** with approval gates at each phase. This ensures quality and user oversight throughout the development lifecycle.
+
+### Workflow Phases
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  PHASE 1: PRODUCT    →   PHASE 2: ARCHITECTURE   →   PHASE 3: TDD     │
+│  ─────────────────       ───────────────────────       ───────────    │
+│  @prd-agent              @architecture-agent           @test-design   │
+│  @epic-agent             @design-agent                   -agent       │
+│  @story-agent                                                         │
+│         ↓                        ↓                          ↓         │
+│    [/approve]               [/approve]                 [/approve]     │
+│    [/skip]                  [/skip]                    [/skip]        │
+├─────────────────────────────────────────────────────────────────────────┤
+│                        PHASE 4: DEVELOPMENT                            │
+│  ──────────────────────────────────────────────────────────────────   │
+│  @api-agent, @database-agent, @frontend-*-agent, etc.                 │
+│                              ↓                                         │
+│                         [/approve]                                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│                         PHASE 5: REVIEW                                │
+│  ──────────────────────────────────────────────────────────────────   │
+│  @test-agent → @review-agent → @security-agent → @docs-agent          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Workflow Commands
+
+| Command | Description |
+|---------|-------------|
+| `/approve` | Approve current phase artifact and proceed to next phase |
+| `/skip` | Skip current phase and proceed to next phase |
+| `/status` | Show current workflow state and phase |
+| `/restart` | Restart workflow from beginning |
+
+### Planning Artifacts
+
+All planning artifacts are stored in `docs/planning/` with consistent naming:
+
+```
+docs/planning/
+├── prd/
+│   └── {feature-name}-{YYYYMMDD}.md          # Product Requirements Document
+├── epics/
+│   └── {feature-name}-epics-{YYYYMMDD}.md    # Epic breakdown
+├── stories/
+│   └── {feature-name}-stories-{YYYYMMDD}.md  # User stories with Gherkin
+├── architecture/
+│   └── {feature-name}-architecture-{YYYYMMDD}.md  # System architecture & ADRs
+├── design/
+│   └── {feature-name}-design-{YYYYMMDD}.md   # Technical design specs
+└── test-design/
+    └── {feature-name}-test-design-{YYYYMMDD}.md  # Test strategy (TDD)
+```
+
+### Starting a Feature Development Workflow
+
+```
+@orchestrator Start a new feature: user authentication system
+```
+
+The orchestrator will:
+1. Begin with `@prd-agent` to generate a PRD
+2. Wait for your `/approve` or `/skip`
+3. Proceed through each phase with approval gates
+4. Coordinate development and review phases
 
 ---
 
@@ -49,7 +122,15 @@ The generator will:
 Once generated, invoke agents directly:
 
 ```
-@orchestrator Help me plan a new feature implementation
+# Start a full feature workflow with approval gates
+@orchestrator Start a new feature: user authentication system
+
+# Or invoke individual agents directly
+@prd-agent Create a PRD for the payment processing feature
+@architecture-agent Design the system architecture for this feature
+@test-design-agent Create test strategy before implementation
+
+# Development agents
 @test-agent Write tests for the UserService class
 @lint-agent Fix all style issues in src/
 @docs-agent Update the README with new API endpoints
@@ -61,8 +142,15 @@ Once generated, invoke agents directly:
 ```
 .github/agents/
 ├── agent-generator.md    # Meta-agent that creates other agents
-├── orchestrator.md       # Coordinates all agents
+├── orchestrator.md       # Coordinates all agents + workflow management
 └── templates/            # Agent templates with {{placeholders}}
+    ├── Planning & Design Agents
+    │   ├── prd-agent.md           # Product Requirements Documents
+    │   ├── epic-agent.md          # Epic breakdown from PRDs
+    │   ├── story-agent.md         # User stories with Gherkin
+    │   ├── architecture-agent.md  # System architecture & ADRs
+    │   ├── design-agent.md        # Technical design specifications
+    │   └── test-design-agent.md   # Test strategy (TDD)
     ├── Core Development Agents
     │   ├── docs-agent.md          # Documentation and technical writing
     │   ├── test-agent.md          # Testing and coverage
@@ -95,6 +183,16 @@ Once generated, invoke agents directly:
 ## Agent Detection Rules
 
 The generator creates agents based on detected patterns:
+
+### Planning & Design Agents
+| Agent | Created When |
+|-------|-------------|
+| **prd-agent** | Always created (supports feature workflows) |
+| **epic-agent** | Always created (supports feature workflows) |
+| **story-agent** | Always created (supports feature workflows) |
+| **architecture-agent** | Always created (supports feature workflows) |
+| **design-agent** | Always created (supports feature workflows) |
+| **test-design-agent** | Always created (supports TDD workflows) |
 
 ### Core Development Agents
 | Agent | Created When |
@@ -265,9 +363,19 @@ Based on analysis of [2,500+ repositories](https://github.blog/ai-and-ml/github-
 
 ### Orchestrator
 - Routes tasks to appropriate specialized agents
+- **Manages Feature Development Workflow** with approval gates
+- Handles `/approve`, `/skip`, `/status`, `/restart` commands
 - Coordinates multi-step workflows
 - Manages handoffs between agents
 - Provides high-level guidance
+
+### Planning & Design Agents
+- **prd-agent**: Generate PRDs from feature requests, define goals and requirements
+- **epic-agent**: Break PRDs into epics with acceptance criteria and dependencies
+- **story-agent**: Create user stories with Gherkin scenarios and story points
+- **architecture-agent**: Design system architecture, create ADRs, component diagrams
+- **design-agent**: Technical specs, API contracts, data models, implementation details
+- **test-design-agent**: Test strategy, test case specifications (TDD pre-implementation)
 
 ### Core Development Agents
 - **docs-agent**: READMEs, API docs, docstrings, comments
