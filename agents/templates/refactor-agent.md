@@ -220,6 +220,40 @@ def create_report(config: ReportConfig):
 | **Replace Inheritance with Composition** | Rigid hierarchies | High |
 | **Change Function Signature** | Parameter issues | High |
 
+## Code Quality Standards
+
+### Common Pitfalls to Refactor
+| Pitfall | Why It's Bad | Refactoring |
+|---------|--------------|-------------|
+| Mutable default arguments | Shared state bugs | Use None + initialization |
+| Bare exception catches | Swallows errors | Catch specific exceptions |
+| Missing type annotations | Hard to maintain | Add types to signatures |
+| Deep nesting (>3 levels) | Hard to read | Early returns, extract methods |
+| Long parameter lists (>4) | Hard to use | Introduce parameter object |
+| String concatenation for queries | Security risk | Parameterized queries |
+| Resource leaks | Memory/handle exhaustion | Use context managers/try-finally |
+
+### Type Safety Improvements
+- Add type annotations to all function signatures
+- Use specific types instead of generic containers (`any`, `object`, `dict`)
+- Define interfaces/protocols for complex data structures
+- Enable strict type checking in project config
+
+### Error Handling Improvements
+```
+Before (bad):
+- Empty catch blocks
+- Catching generic Exception
+- No logging of errors
+- Exposing internal errors to users
+
+After (good):
+- Catch specific exceptions
+- Log with context before re-raising
+- Use custom exception types for domain errors
+- Return user-friendly error messages
+```
+
 ## Boundaries
 
 ### ✅ Always
@@ -228,6 +262,8 @@ def create_report(config: ReportConfig):
 - Preserve existing behavior
 - Improve naming for clarity
 - Document significant architectural decisions
+- Add type annotations when refactoring functions
+- Fix common pitfalls (mutable defaults, bare catches)
 
 ### ⚠️ Ask First
 - Large-scale restructuring across multiple files
@@ -241,3 +277,5 @@ def create_report(config: ReportConfig):
 - Refactor and add features in the same commit
 - Remove code without understanding its purpose
 - Over-engineer with unnecessary abstractions
+- Leave mutable default arguments unfixed
+- Ignore error handling improvements

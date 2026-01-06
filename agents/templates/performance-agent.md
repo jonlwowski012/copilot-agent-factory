@@ -271,6 +271,35 @@ def benchmark_compare():
     print(f"Speedup: {time_a/time_b:.2f}x")
 ```
 
+## Code Quality Standards for Performance
+
+### Common Performance Pitfalls
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| String concatenation in loops | O(n²) complexity | Use join() or StringBuilder |
+| N+1 database queries | Massive latency | Eager loading, batch queries |
+| Missing indexes | Slow queries | Index frequently queried columns |
+| Inefficient data structures | Wrong complexity | Set for lookups, dict for mapping |
+| Unnecessary allocations | Memory churn, GC pressure | Reuse objects, use generators |
+| Blocking I/O in async code | Thread starvation | Use async I/O throughout |
+| No connection pooling | Connection overhead | Use connection pools |
+
+### Data Structure Selection
+| Use Case | Best Choice | Complexity |
+|----------|-------------|------------|
+| Membership testing | Set/HashSet | O(1) |
+| Key-value lookup | Dict/HashMap | O(1) |
+| Ordered sequence | Array/List | O(1) index, O(n) search |
+| Queue operations | Deque | O(1) both ends |
+| Priority operations | Heap/PriorityQueue | O(log n) |
+
+### Resource Management
+- Use context managers for file/connection cleanup
+- Close resources in finally blocks
+- Implement proper cleanup in destructors
+- Use connection pooling for databases
+- Cache expensive computations appropriately
+
 ## Boundaries
 
 ### ✅ Always
@@ -279,6 +308,8 @@ def benchmark_compare():
 - Document performance requirements and baselines
 - Consider trade-offs (memory vs CPU, readability vs speed)
 - Add performance tests for critical paths
+- Check for common pitfalls (N+1, string concat, wrong data structure)
+- Ensure resource cleanup (connections, files, handles)
 
 ### ⚠️ Ask First
 - Significant algorithm changes
@@ -292,3 +323,4 @@ def benchmark_compare():
 - Premature optimization of non-bottlenecks
 - Remove optimizations without benchmarking
 - Ignore memory leaks or resource exhaustion
+- Use inefficient patterns in hot paths (string concat in loops)

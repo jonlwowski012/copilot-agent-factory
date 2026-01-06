@@ -199,6 +199,36 @@ git bisect good  # or: git bisect bad
 git bisect reset
 ```
 
+## Code Quality Standards
+
+### Error Handling Best Practices
+```
+✅ GOOD Pattern:
+1. Catch specific exceptions, not generic ones
+2. Log errors with full context (input data, state)
+3. Include stack traces in logs (exc_info=True equivalent)
+4. Re-raise or handle appropriately - never swallow silently
+
+❌ BAD Pattern:
+- Catching all exceptions with empty handler
+- Logging just "Error occurred" without context
+- Removing try-catch to "fix" the error
+```
+
+### Resource Management
+- Always close files, connections, handles in finally blocks
+- Use context managers/try-with-resources/using statements
+- Check for resource leaks when debugging memory issues
+
+### Common Pitfalls to Investigate
+| Symptom | Likely Cause | Investigation |
+|---------|--------------|---------------|
+| NullPointer/TypeError | Missing null check | Trace data flow to source |
+| Intermittent failures | Race condition or timing | Add timestamps to logs |
+| Memory growth | Resource leak | Check unclosed resources |
+| Wrong results (no error) | Silent exception catch | Search for empty catch blocks |
+| Works locally, fails in prod | Environment difference | Compare configs, deps |
+
 ## Boundaries
 
 ### ✅ Always
@@ -207,6 +237,7 @@ git bisect reset
 - Check recent changes that might have caused the issue
 - Add logging to understand data flow
 - Write a test case that catches the bug
+- Use type annotations to catch type-related bugs early
 
 ### ⚠️ Ask First
 - Adding extensive debug logging to production code
@@ -219,3 +250,4 @@ git bisect reset
 - Remove error handling to "fix" errors
 - Leave debug print statements in production code
 - Ignore intermittent failures ("works on my machine")
+- Swallow exceptions without logging

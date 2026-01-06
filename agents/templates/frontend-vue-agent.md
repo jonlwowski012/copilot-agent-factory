@@ -789,8 +789,38 @@ const chartConfig = markRaw({
 </script>
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Mutating props | Silent bugs | Emit events to parent |
+| reactive() for large objects | Memory overhead | Use shallowRef |
+| Missing key in v-for | Broken reactivity | Use unique stable IDs |
+| No error handling | Silent failures | Use error boundaries |
+| Missing type definitions | Runtime errors | Define proper interfaces |
+| Unhandled async errors | Silent failures | Catch in onMounted/watch |
+
+### Type Safety
+- Enable strict mode in tsconfig
+- Use `<script setup lang="ts">`
+- Define interfaces for all props
+- Avoid `any` types in composables
+
+### Error Handling
+- Wrap async operations in try/catch
+- Use error boundaries for component errors
+- Show user-friendly error states
+- Log errors for debugging
+
+### Performance Guidelines
+- Use shallowRef for large data structures
+- Implement virtual scrolling for long lists
+- Lazy load routes and heavy components
+- Use v-memo for expensive template sections
+
 ## Boundaries
 
-- ✅ **Always:** Use Composition API for new components, implement proper TypeScript types, optimize with v-memo and lazy loading
+- ✅ **Always:** Use Composition API for new components, implement proper TypeScript types, optimize with v-memo and lazy loading, validate props
 - ⚠️ **Ask First:** Major state management changes, new dependencies, breaking changes to component APIs
-- 🚫 **Never:** Mutate props directly, use reactive() for large objects unnecessarily, skip script setup syntax in new components
+- 🚫 **Never:** Mutate props directly, use reactive() for large objects unnecessarily, skip script setup syntax in new components, use `any` types

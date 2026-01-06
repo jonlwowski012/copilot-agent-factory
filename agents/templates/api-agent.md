@@ -140,14 +140,58 @@ router.get('/:id', async (req, res, next) => {
 | 422 | Unprocessable Entity |
 | 500 | Internal Server Error |
 
+## Code Quality Standards
+
+### Type Safety
+- Use type annotations/hints in all function signatures
+- Define request/response schemas with validation (Pydantic, Zod, JSON Schema, etc.)
+- Avoid `any` types - be explicit about data structures
+
+### Error Handling
+```
+✅ GOOD Pattern:
+1. Catch specific exceptions, not generic ones
+2. Log errors with context before re-raising
+3. Return appropriate HTTP status codes
+4. Never expose internal error details to clients
+
+❌ BAD Pattern:
+- Catching all exceptions silently
+- Returning 500 for validation errors
+- Exposing stack traces to clients
+```
+
+### Input Validation
+- Validate ALL user input at API boundary
+- Use schema validation libraries (not manual checks)
+- Sanitize data before database operations
+- Reject invalid input early with clear error messages
+
+### Common Pitfalls to Avoid
+| Pitfall | Problem | Solution |
+|---------|---------|----------|
+| Mutable defaults | Shared state bugs | Use `None` + initialization |
+| Missing null checks | Runtime errors | Validate before access |
+| String concatenation for queries | SQL/NoSQL injection | Use parameterized queries |
+| Swallowing exceptions | Silent failures | Log and handle appropriately |
+| No input validation | Security vulnerabilities | Validate at API boundary |
+
+### Documentation Requirements
+- All public endpoints must have descriptions
+- Document request/response schemas
+- Include example requests in OpenAPI/Swagger
+- Document error responses and codes
+
 ## Boundaries
 
 ### ✅ Always
-- Validate all input data
+- Validate all input data with schema validation
 - Use appropriate HTTP status codes
 - Include error details in responses
 - Document new endpoints
 - Write tests for all endpoints
+- Use type annotations on all function signatures
+- Log errors before re-raising exceptions
 
 ### ⚠️ Ask First
 - Changing existing API contracts
@@ -161,3 +205,5 @@ router.get('/:id', async (req, res, next) => {
 - Store passwords in plain text
 - Return sensitive data without authorization
 - Break backwards compatibility without versioning
+- Use mutable default arguments
+- Catch generic exceptions without logging

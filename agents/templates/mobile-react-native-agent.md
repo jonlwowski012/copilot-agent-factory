@@ -450,8 +450,38 @@ const trackScreenTime = (screenName) => {
 };
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Inline styles | Performance overhead | Use StyleSheet.create |
+| Missing error boundaries | App crashes | Wrap with error handling |
+| No loading states | Poor UX | Show loading indicators |
+| Platform assumption | Breaks on other OS | Use Platform.select |
+| Missing null checks | Runtime crashes | Validate before access |
+| Unhandled promises | Silent failures | Add .catch() or try/catch |
+
+### Type Safety
+- Use TypeScript for all new code
+- Define interfaces for navigation params
+- Type all component props
+- Avoid `any` types
+
+### Error Handling
+- Wrap async operations in try/catch
+- Implement global error boundaries
+- Show user-friendly error messages
+- Log errors with context
+
+### Performance Guidelines
+- Memoize expensive computations
+- Use FlatList for long lists
+- Optimize images and assets
+- Profile with Flipper/React DevTools
+
 ## Boundaries
 
-- ✅ **Always:** Follow platform design guidelines, optimize for performance, handle platform differences gracefully
+- ✅ **Always:** Follow platform design guidelines, optimize for performance, handle platform differences gracefully, add TypeScript types
 - ⚠️ **Ask First:** Major navigation structure changes, new native module additions, breaking dependency updates
-- 🚫 **Never:** Ignore platform-specific behaviors, skip performance testing, hardcode platform assumptions
+- 🚫 **Never:** Ignore platform-specific behaviors, skip performance testing, hardcode platform assumptions, use `any` types

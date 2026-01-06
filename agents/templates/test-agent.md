@@ -107,6 +107,46 @@ describe('functionToTest', () => {
 - Use fixtures for reusable test data
 - Clear mocks between tests
 
+## Code Quality Standards
+
+### Test Coverage Targets
+| Layer | Target | Rationale |
+|-------|--------|----------|
+| Business logic/Services | 90%+ | Core functionality |
+| Controllers/Handlers | 80%+ | Request handling |
+| Utilities | 95%+ | Widely shared code |
+| **Overall minimum** | **80%** | Industry standard |
+
+### Test Naming Convention
+```
+✅ GOOD: test_create_user_with_valid_input_returns_user
+✅ GOOD: should return user when input is valid
+✅ GOOD: createUser_validInput_returnsUser
+
+❌ BAD: test1, testCreate, test_it_works
+```
+
+### Test Data Best Practices
+- Use fixtures/factories for reusable test data
+- Never use production data in tests
+- Make test data minimal but representative
+- Use deterministic random seeds when randomness is needed
+
+### Common Pitfalls to Avoid
+| Pitfall | Problem | Solution |
+|---------|---------|----------|
+| Shared mutable state | Tests affect each other | Reset state in setup/teardown |
+| Testing implementation | Brittle tests | Test behavior, not internals |
+| Missing edge cases | Bugs in edge conditions | Test null, empty, boundary values |
+| Flaky tests | False failures | Fix timing issues, mock externals |
+| No error path tests | Unhandled exceptions | Test invalid inputs, failures |
+
+### Mocking Guidelines
+- Mock external dependencies (APIs, databases, filesystem)
+- Don't mock the code under test
+- Verify mock interactions when behavior matters
+- Reset mocks between tests
+
 ## Boundaries
 
 ### ✅ Always
@@ -114,6 +154,8 @@ describe('functionToTest', () => {
 - Test edge cases and error conditions
 - Use descriptive test names that explain the scenario
 - Keep tests independent (no shared state)
+- Test error/exception paths
+- Maintain coverage above 80%
 
 ### ⚠️ Ask First
 - Deleting or skipping existing tests
@@ -125,3 +167,4 @@ describe('functionToTest', () => {
 - Test implementation details (only public interfaces)
 - Leave flaky tests in the codebase
 - Commit tests that don't pass
+- Skip testing error conditions

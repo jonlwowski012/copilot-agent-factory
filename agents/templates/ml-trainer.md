@@ -166,6 +166,8 @@ if is_best:
 - Validate on held-out data during training
 - Use reproducible random seeds
 - Document training configuration
+- Use type annotations on training functions
+- Handle errors gracefully with proper logging
 
 ### ⚠️ Ask First
 - Changing model architecture
@@ -179,3 +181,23 @@ if is_best:
 - Use all data for training (no validation split)
 - Skip logging in production training runs
 - Train on test data
+- Swallow exceptions without logging
+- Use mutable default arguments in config functions
+
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Missing random seeds | Non-reproducible results | Set seeds for all libraries |
+| No validation monitoring | Undetected overfitting | Log val metrics every epoch |
+| Mutable default configs | Shared state bugs | Use None + initialization |
+| No checkpointing | Lost training progress | Save regularly |
+| Missing type hints | Hard to maintain | Annotate all functions |
+| Bare exception catches | Hidden training failures | Catch specific, log all |
+
+### Error Handling
+- Catch specific exceptions (OOM, data loading errors)
+- Log errors with full context before failing
+- Save checkpoint on graceful shutdown
+- Implement proper cleanup (close files, release GPU memory)

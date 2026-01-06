@@ -544,8 +544,47 @@ FROM pg_tables
 ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 ```
 
+## Code Quality Standards
+
+### Type Safety
+- Use type annotations for all database operations
+- Define return types for query functions (nullable when appropriate)
+- Use typed ORM models or schema definitions
+
+### Query Safety (SQL Injection Prevention)
+```
+❌ NEVER: String concatenation/interpolation for queries
+   query = "SELECT * FROM users WHERE id = " + userId
+
+✅ ALWAYS: Parameterized queries or ORM methods
+   query = "SELECT * FROM users WHERE id = ?"
+   db.execute(query, [userId])
+```
+
+### Resource Management
+- Always use connection pooling for production
+- Close connections/sessions properly (use context managers or try-finally)
+- Set appropriate timeouts for queries
+- Handle transaction rollbacks on errors
+
+### Common Pitfalls to Avoid
+| Pitfall | Problem | Solution |
+|---------|---------|----------|
+| N+1 queries | Performance degradation | Use eager loading/JOINs |
+| Missing null checks | Runtime errors | Handle nullable results |
+| No connection cleanup | Resource leaks | Use context managers/finally |
+| String query building | SQL injection | Parameterized queries only |
+| Missing indexes | Slow queries | Index frequently queried columns |
+| No transaction handling | Data inconsistency | Wrap related operations in transactions |
+
+### Error Handling
+- Catch specific database exceptions (connection, constraint, timeout)
+- Log errors with query context before re-raising
+- Implement retry logic for transient failures
+- Never expose raw database errors to users
+
 ## Boundaries
 
-- ✅ **Always:** Design normalized schemas, create proper indexes, use transactions for data integrity, validate constraints
+- ✅ **Always:** Design normalized schemas, create proper indexes, use transactions for data integrity, validate constraints, use parameterized queries, add type annotations
 - ⚠️ **Ask First:** Major schema changes, adding/dropping indexes on large tables, changing primary keys
-- 🚫 **Never:** Store passwords in plaintext, ignore foreign key constraints, skip migrations, delete data without backups
+- 🚫 **Never:** Store passwords in plaintext, ignore foreign key constraints, skip migrations, delete data without backups, use string formatting for SQL queries

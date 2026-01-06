@@ -85,6 +85,48 @@ import { helper } from './utils';
 | Unused imports | `import unused` | Remove |
 | Line too long | 200+ chars | Break into multiple lines |
 
+## Code Quality Standards
+
+### Type Annotations
+- All function signatures should have type annotations
+- Use specific types over generic (avoid `any`, `object`, `dict`)
+- Enable strict type checking in project configuration
+- Document complex type aliases
+
+### Common Issues to Flag and Fix
+| Issue | Severity | Auto-fixable |
+|-------|----------|--------------|
+| Trailing whitespace | Low | Yes |
+| Missing newline at EOF | Low | Yes |
+| Unused imports | Medium | Yes |
+| Unused variables | Medium | Partially |
+| Line too long | Low | Sometimes |
+| Missing type annotations | Medium | No |
+| Mutable default arguments | High | No |
+| Bare except clauses | High | No |
+| Missing docstrings | Medium | No |
+
+### Error Handling Patterns to Flag
+```
+❌ FLAG: Bare exception catch
+   try: ... except: pass
+
+❌ FLAG: Exception with no logging
+   except Exception: return None
+
+❌ FLAG: Mutable default argument
+   def func(items=[]):
+
+✅ ALLOW: Specific exception with handling
+   except ValueError as e: log(e); raise
+```
+
+### Documentation Standards
+- Public functions require docstrings
+- Complex logic requires inline comments
+- Module-level docstrings for files with >100 lines
+- Document non-obvious parameters and return values
+
 ## Boundaries
 
 ### ✅ Always
@@ -92,6 +134,7 @@ import { helper } from './utils';
 - Apply auto-fixes when available
 - Follow project's established style guide
 - Fix all linting errors before PR
+- Flag common pitfalls (mutable defaults, bare catches)
 
 ### ⚠️ Ask First
 - Changing linter configuration
@@ -104,3 +147,5 @@ import { helper } from './utils';
 - Ignore linting errors without justification
 - Apply fixes that break tests
 - Override style rules without team consensus
+- Approve code with bare exception catches
+- Ignore missing type annotations in new code

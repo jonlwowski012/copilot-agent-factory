@@ -680,8 +680,39 @@ export const InteractiveEdit: Story = {
 };
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Index as key in lists | Broken reconciliation | Use unique stable IDs |
+| Missing error boundaries | Crashes entire app | Wrap with ErrorBoundary |
+| Inline function in render | Unnecessary re-renders | Use useCallback |
+| Missing dependency array | Stale closures or infinite loops | Include all dependencies |
+| Direct state mutation | Silent bugs | Always create new references |
+| Missing loading states | Poor UX | Handle loading explicitly |
+| No input validation | Runtime errors | Validate props and user input |
+
+### Type Safety
+- Use TypeScript strict mode
+- Define interfaces for all props
+- Avoid `any` types - use proper generics
+- Type all API responses
+
+### Error Handling
+- Wrap component trees with Error Boundaries
+- Handle async errors in effects
+- Show user-friendly error messages
+- Log errors for debugging
+
+### Accessibility Requirements
+- All interactive elements need labels
+- Use semantic HTML elements
+- Support keyboard navigation
+- Test with screen readers
+
 ## Boundaries
 
-- ✅ **Always:** Use TypeScript, implement proper error boundaries, optimize re-renders, test components thoroughly
+- ✅ **Always:** Use TypeScript, implement proper error boundaries, optimize re-renders, test components thoroughly, validate props
 - ⚠️ **Ask First:** Major state management changes, new dependencies, performance optimizations that affect API
-- 🚫 **Never:** Mutate props directly, use index as key for dynamic lists, skip accessibility attributes
+- 🚫 **Never:** Mutate props directly, use index as key for dynamic lists, skip accessibility attributes, use `any` types

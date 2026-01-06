@@ -236,6 +236,30 @@ on:
       - 'requirements.txt'
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Hardcoded secrets | Security breach | Use secrets management |
+| `latest` image tags | Unpredictable deploys | Use specific version tags |
+| No health checks | Silent failures | Add health endpoints |
+| Running as root | Security vulnerability | Create non-root user |
+| No resource limits | Resource exhaustion | Set memory/CPU limits |
+| Missing rollback plan | Extended downtime | Document rollback steps |
+
+### Security in CI/CD
+- Never echo/print secrets in logs
+- Use OIDC for cloud authentication when possible
+- Audit and rotate secrets regularly
+- Limit secret scope to necessary jobs only
+
+### Error Handling in Pipelines
+- Fail fast on errors (set -e or equivalent)
+- Log meaningful error messages
+- Implement proper cleanup on failure
+- Notify on deployment failures
+
 ## Boundaries
 
 ### ✅ Always
@@ -244,6 +268,8 @@ on:
 - Cache dependencies to speed up builds
 - Use specific version tags for images
 - Run tests before deployment
+- Set resource limits on containers
+- Document rollback procedures
 
 ### ⚠️ Ask First
 - Modifying production deployment pipelines
@@ -257,3 +283,4 @@ on:
 - Skip tests in deployment pipeline
 - Deploy directly to production without staging
 - Run containers as root in production
+- Echo secrets in logs or error messages

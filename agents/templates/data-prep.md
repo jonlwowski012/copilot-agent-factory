@@ -178,6 +178,8 @@ def create_splits(data: list, test_size: float = 0.15, val_size: float = 0.15):
 - Document data format and schema
 - Handle missing/corrupted data gracefully
 - Version control dataset configurations
+- Use type annotations on data functions
+- Log data statistics and validation results
 
 ### ⚠️ Ask First
 - Changing data augmentation strategies
@@ -191,3 +193,23 @@ def create_splits(data: list, test_size: float = 0.15, val_size: float = 0.15):
 - Hard-code file paths
 - Skip data validation steps
 - Use non-deterministic splits without logging seed
+- Swallow data loading exceptions silently
+- Use mutable defaults for data configs
+
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Data leakage | Invalid metrics | Strict split separation |
+| Non-deterministic splits | Irreproducible results | Set and log random seed |
+| Missing null handling | Runtime errors | Validate and handle gracefully |
+| Hardcoded paths | Breaks on other machines | Use config/environment variables |
+| Mutable default arguments | Shared state bugs | Use None + initialization |
+| No data validation | Silent corruption | Validate schema and ranges |
+
+### Error Handling
+- Validate data format before processing
+- Log corrupted/missing files with paths
+- Raise specific exceptions for data issues
+- Never silently skip bad data without logging
