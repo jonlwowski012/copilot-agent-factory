@@ -889,8 +889,38 @@ describe('UserService', () => {
 });
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Missing takeUntil | Memory leaks | Unsubscribe in ngOnDestroy |
+| Direct state mutation | Change detection issues | Use immutable patterns |
+| Missing type safety | Runtime errors | Enable strict mode |
+| No error handling in HTTP | Silent failures | Add catchError operators |
+| Missing loading states | Poor UX | Track loading in services |
+| Circular dependencies | Build failures | Refactor to proper hierarchy |
+
+### Type Safety
+- Enable strict mode in tsconfig
+- Define interfaces for all models
+- Avoid `any` types
+- Type all observables properly
+
+### RxJS Best Practices
+- Always unsubscribe (takeUntil, async pipe, or takeUntilDestroyed)
+- Use appropriate operators (switchMap vs mergeMap)
+- Handle errors in streams
+- Share subscriptions when appropriate
+
+### Error Handling
+- Implement global error handler
+- Handle HTTP errors in services
+- Show user-friendly error messages
+- Log errors for debugging
+
 ## Boundaries
 
-- ✅ **Always:** Use standalone components for new features, implement proper RxJS patterns with takeUntil, use Angular CLI for generation
+- ✅ **Always:** Use standalone components for new features, implement proper RxJS patterns with takeUntil, use Angular CLI for generation, add type annotations
 - ⚠️ **Ask First:** Major architecture changes, new state management patterns, breaking changes to public APIs
-- 🚫 **Never:** Subscribe without unsubscribing, mutate state directly, skip OnPush change detection strategy for performance-critical components
+- 🚫 **Never:** Subscribe without unsubscribing, mutate state directly, skip OnPush change detection strategy for performance-critical components, use `any` types

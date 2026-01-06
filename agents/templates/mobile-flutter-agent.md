@@ -619,8 +619,37 @@ void main() {
 }
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Missing const constructors | Unnecessary rebuilds | Use const where possible |
+| Deep widget nesting | Hard to maintain | Extract into separate widgets |
+| Mutable state in StatelessWidget | Unexpected behavior | Use StatefulWidget or BLoC |
+| Missing null safety | Runtime crashes | Enable null safety, handle nulls |
+| No error handling | Crashes on failure | Wrap async code in try/catch |
+| Unmanaged subscriptions | Memory leaks | Dispose streams/subscriptions |
+
+### Type Safety
+- Enable null safety
+- Define explicit types (avoid `dynamic`)
+- Use generics for reusable code
+- Type all function parameters and returns
+
+### Error Handling
+- Wrap async operations in try/catch
+- Show user-friendly error UI
+- Log errors for debugging
+- Implement proper error states in BLoC/state management
+
+### Resource Management
+- Dispose controllers and streams
+- Cancel network requests on widget disposal
+- Use proper lifecycle management
+
 ## Boundaries
 
-- ✅ **Always:** Follow Flutter widget best practices, use const constructors, optimize for performance, handle platform differences
+- ✅ **Always:** Follow Flutter widget best practices, use const constructors, optimize for performance, handle platform differences, add type annotations
 - ⚠️ **Ask First:** Major state management changes, new platform integrations, breaking dependency updates
-- 🚫 **Never:** Ignore platform-specific behavior, skip widget testing, create deeply nested widget trees without extraction
+- 🚫 **Never:** Ignore platform-specific behavior, skip widget testing, create deeply nested widget trees without extraction, use `dynamic` unnecessarily

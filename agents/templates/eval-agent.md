@@ -183,6 +183,8 @@ def compare_models(results: list[dict]) -> dict:
 - Save evaluation configs with results
 - Use consistent evaluation protocols
 - Document evaluation environment
+- Use type annotations on evaluation functions
+- Log all errors with context
 
 ### ⚠️ Ask First
 - Changing evaluation metrics
@@ -196,3 +198,23 @@ def compare_models(results: list[dict]) -> dict:
 - Report metrics without methodology
 - Compare models evaluated differently
 - Overwrite previous evaluation results
+- Swallow evaluation errors silently
+- Use mutable defaults for evaluation configs
+
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Evaluating on train data | Inflated metrics | Use held-out test set |
+| Missing confidence intervals | Misleading precision | Report mean ± std |
+| Non-reproducible evaluation | Can't verify results | Log all configs and seeds |
+| Mutable default arguments | Shared state bugs | Use None + initialization |
+| No error handling | Silent failures | Catch and log all errors |
+| Hardcoded thresholds | Inflexible comparisons | Use config parameters |
+
+### Error Handling
+- Catch specific exceptions during evaluation
+- Log failed samples with identifiers
+- Continue evaluation on recoverable errors (with logging)
+- Save partial results on failure

@@ -262,8 +262,38 @@ class PersistenceController {
 }
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Strong reference cycles | Memory leaks | Use weak/unowned in closures |
+| Force unwrapping | Crashes | Use guard let/if let |
+| Missing error handling | Crashes | Handle all Result cases |
+| Blocking main thread | UI freezes | Use async/background queues |
+| Hardcoded strings | Localization issues | Use NSLocalizedString |
+| Missing accessibility | Excludes users | Add accessibility labels |
+
+### Type Safety
+- Avoid force unwrapping (!)
+- Use guard let/if let for optionals
+- Define explicit types for clarity
+- Use generics for reusable code
+
+### Memory Management
+- Use weak references in closures
+- Implement deinit cleanup
+- Profile with Instruments
+- Cancel ongoing tasks on dealloc
+
+### Error Handling
+- Handle all error cases
+- Use Result type for async operations
+- Show user-friendly error messages
+- Log errors for debugging
+
 ## Boundaries
 
-- ✅ **Always:** Follow iOS Human Interface Guidelines, implement proper error handling, use appropriate design patterns
+- ✅ **Always:** Follow iOS Human Interface Guidelines, implement proper error handling, use appropriate design patterns, avoid force unwrapping
 - ⚠️ **Ask First:** Major architecture changes, third-party SDK integrations, breaking API changes
-- 🚫 **Never:** Violate App Store guidelines, ignore memory leaks, implement insecure data storage
+- 🚫 **Never:** Violate App Store guidelines, ignore memory leaks, implement insecure data storage, use force unwrap without justification

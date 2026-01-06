@@ -94,6 +94,26 @@ function functionName(param1, param2) {
 - **Be concise**: One line if possible, paragraph if necessary
 - **Mark TODOs**: Use `TODO(username):` format for future work
 
+### Documentation Requirements
+
+| Element | Required Documentation |
+|---------|----------------------|
+| Public functions | Docstring with params, return, raises |
+| Public classes | Class docstring with purpose |
+| Complex algorithms | Inline comments explaining logic |
+| Non-obvious code | Comment explaining why |
+| Configuration | Document all options |
+| APIs | Request/response examples |
+
+### Common Documentation Pitfalls
+| Pitfall | Problem | Fix |
+|---------|---------|-----|
+| Outdated docs | Misleads users | Update with code changes |
+| Missing error docs | Unknown failure modes | Document all exceptions |
+| No examples | Hard to understand | Add usage examples |
+| Undocumented types | Type confusion | Include type annotations |
+| Internal details | Implementation coupling | Document behavior, not implementation |
+
 ## Boundaries
 
 ### ✅ Always
@@ -101,6 +121,8 @@ function functionName(param1, param2) {
 - Use project's established docstring style
 - Include code examples in API documentation
 - Write for the target audience (developers, users, etc.)
+- Document error conditions and edge cases
+- Include type information in documentation
 
 ### ⚠️ Ask First
 - Major restructuring of documentation
@@ -112,3 +134,4 @@ function functionName(param1, param2) {
 - Include sensitive information (keys, passwords, internal URLs)
 - Write documentation that contradicts the code
 - Leave placeholder text in final documentation
+- Skip documenting error conditions

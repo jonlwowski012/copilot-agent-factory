@@ -225,6 +225,31 @@ def benchmark_inference(pipeline, num_runs: int = 100, warmup: int = 10):
     }
 ```
 
+## Code Quality Standards
+
+### Common Pitfalls to Avoid
+| Pitfall | Impact | Fix |
+|---------|--------|-----|
+| Preprocessing mismatch | Wrong predictions | Match training exactly |
+| Missing input validation | Runtime errors | Validate before inference |
+| No error handling | Service crashes | Catch and return gracefully |
+| Mutable default arguments | Shared state bugs | Use None + initialization |
+| Resource leaks | Memory exhaustion | Proper cleanup in finally |
+| No request logging | Can't debug issues | Log inputs and latencies |
+
+### Error Handling
+- Catch specific exceptions (model load, input validation, inference)
+- Return user-friendly error messages (never expose internals)
+- Log full error details server-side
+- Implement proper resource cleanup
+- Handle OOM errors gracefully
+
+### Resource Management
+- Use context managers for model loading
+- Clean up GPU memory after batch processing
+- Implement connection pooling for model servers
+- Set appropriate timeouts for inference requests
+
 ## Boundaries
 
 ### ✅ Always
@@ -233,6 +258,8 @@ def benchmark_inference(pipeline, num_runs: int = 100, warmup: int = 10):
 - Log inference requests and latencies
 - Match preprocessing exactly to training
 - Test inference outputs against expected values
+- Use type annotations on inference functions
+- Clean up resources properly
 
 ### ⚠️ Ask First
 - Deploying to production environment
@@ -246,3 +273,5 @@ def benchmark_inference(pipeline, num_runs: int = 100, warmup: int = 10):
 - Expose internal errors to users
 - Cache predictions without invalidation strategy
 - Modify model weights during inference
+- Swallow exceptions without logging
+- Use mutable defaults for inference configs

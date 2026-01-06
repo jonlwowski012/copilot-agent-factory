@@ -238,6 +238,40 @@ trivy image myimage:latest
 - [ ] Lock files committed
 - [ ] Regular dependency updates scheduled
 
+## Code Quality Standards for Security
+
+### Common Security Pitfalls
+| Pitfall | Risk | Fix |
+|---------|------|-----|
+| Mutable default arguments | State pollution | Use None + initialization |
+| String query building | SQL/NoSQL injection | Parameterized queries only |
+| Bare exception catches | Hides security errors | Catch specific, log all |
+| Missing input validation | Injection attacks | Validate at boundary |
+| Hardcoded secrets | Credential exposure | Environment variables/vault |
+| Verbose error messages | Information disclosure | Generic user messages |
+| Missing type checks | Type confusion attacks | Type annotations + validation |
+
+### Secure Error Handling
+```
+✅ GOOD:
+- Catch specific exceptions
+- Log full details internally
+- Return generic message to user
+- Include request ID for correlation
+
+❌ BAD:
+- Catch all exceptions silently
+- Return stack traces to users
+- Log sensitive data (passwords, tokens)
+- Expose internal paths or versions
+```
+
+### Input Validation Requirements
+- Validate type, length, format, and range
+- Use allowlists over denylists when possible
+- Sanitize before database operations
+- Encode output appropriately for context (HTML, URL, SQL)
+
 ## Boundaries
 
 ### ✅ Always
@@ -246,6 +280,8 @@ trivy image myimage:latest
 - Check for hardcoded secrets and credentials
 - Validate input handling in user-facing code
 - Review authentication and authorization logic
+- Ensure parameterized queries for all database access
+- Verify proper error handling (no info leakage)
 
 ### ⚠️ Ask First
 - Recommending major security architecture changes
@@ -259,3 +295,5 @@ trivy image myimage:latest
 - Skip security review for auth-related changes
 - Recommend disabling security features
 - Store or log sensitive data in plain text
+- Accept string concatenation for queries
+- Allow bare exception catches in security-critical code
