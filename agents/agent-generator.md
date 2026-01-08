@@ -366,9 +366,9 @@ Skills use only **10 core placeholders** with intelligent fallbacks:
 - Skills use minimal placeholders with fallback instructions
 - Skills include "If not configured, try..." alternatives
 
-### Step 6b: Generate MCP Configuration (Optional)
+### Step 6b: Generate MCP Configuration
 
-Create `.github/mcp-config.json` with recommended MCP servers:
+**ALWAYS create `.github/mcp-config.json`** with recommended MCP servers:
 
 ```json
 {
@@ -377,32 +377,55 @@ Create `.github/mcp-config.json` with recommended MCP servers:
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-git"],
       "description": "Repository operations, history, and diffs",
-      "recommended": true
+      "recommended": true,
+      "priority": "essential"
     },
     "filesystem": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/repo"],
       "description": "File operations and directory browsing",
-      "recommended": true
+      "recommended": true,
+      "priority": "essential",
+      "setup": "Replace /path/to/repo with actual repository absolute path"
     },
     "postgres": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/dbname"],
       "description": "Database queries and schema inspection",
       "recommended": true,
-      "requiresConfig": true
+      "priority": "high",
+      "requiresConfig": true,
+      "setup": "Replace postgresql://localhost/dbname with actual database connection string"
     },
     "pylance": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-pylance"],
       "description": "Enhanced Python analysis and type checking",
-      "recommended": true
+      "recommended": true,
+      "priority": "high"
     }
   },
   "detectedBy": "@agent-generator",
-  "generatedAt": "2026-01-08"
+  "generatedAt": "2026-01-08",
+  "detectedPatterns": ["git repository", "python project", "postgresql database"],
+  "setupInstructions": [
+    "1. Review recommended servers (marked with 'recommended: true')",
+    "2. For servers with 'requiresConfig: true', update connection strings and credentials",
+    "3. Enable servers in your VS Code settings under 'github.copilot.chat.mcpServers'",
+    "4. Restart VS Code to activate the MCP servers",
+    "5. Agents will automatically use available MCP servers to enhance their capabilities"
+  ]
 }
 ```
+
+**Include only detected servers:**
+- Always: git, filesystem
+- If Python detected: pylance
+- If PostgreSQL detected: postgres
+- If Docker detected: docker
+- If Kubernetes detected: kubernetes
+- If GitHub workflows detected: github
+- And so on based on Step 5 detection rules
 
 **Note:** Users need to:
 1. Review recommended servers
@@ -469,10 +492,278 @@ docs/planning/
 4. Ensure fallback logic remains intact in SKILL.md
 5. Update orchestrator to reference available skills
 
-**For MCP configuration:**
-1. Generate `.github/mcp-config.json` with recommended servers
-2. Include setup instructions in generated agents
-3. Mark servers requiring configuration (database connection strings, etc.)
+**For MCP configuration (ALWAYS generate):**
+1. Create `.github/mcp-config.json` with recommended servers based on detection
+2. Include essential servers (git, filesystem) 
+3. Add detected servers (postgres, pylance, docker, kubernetes, etc.)
+4. Mark servers requiring configuration with `"requiresConfig": true`
+5. Include setup instructions and priority levels
+6. Add detection metadata (timestamp, detected patterns)
+
+**Example MCP config generation:**
+```json
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "description": "Repository operations, history, and diffs",
+      "recommended": true,
+      "priority": "essential"
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/absolute/path/to/repo"],
+      "description": "File operations and directory browsing",
+      "recommended": true,
+      "priority": "essential",
+      "setup": "Replace /absolute/path/to/repo with actual repository path"
+    }
+  },
+  "detectedBy": "@agent-generator",
+  "generatedAt": "2026-01-08",
+  "detectedPatterns": ["git repository", "python project", "postgresql database"],
+  "setupInstructions": [
+    "1. Review recommended servers (marked with 'recommended: true')",
+    "2. For servers with 'requiresConfig: true', update connection strings",
+    "3. Enable servers in VS Code settings",
+    "4. Restart VS Code to activate"
+  ]
+}
+```
+
+### Step 8b: Generate Global Instruction Files
+
+**ALWAYS create these instruction files** to provide global guidance to GitHub Copilot:
+
+#### 1. AGENT.md (Root-level agent instructions)
+
+Create `AGENT.md` in repository root with high-level project context:
+
+```markdown
+# Project Agent Instructions
+
+**Project:** {{repo_name}}
+**Type:** {{project_type}}
+**Tech Stack:** {{tech_stack}}
+
+You are an AI coding assistant for this {{project_type}} project.
+
+## Project Overview
+
+{{project_description}}
+
+## Key Technologies
+
+{{tech_stack_details}}
+
+## Architecture Patterns
+
+{{architecture_patterns}}
+
+## Development Standards
+
+### Code Style
+- **Naming:** {{naming_convention}}
+- **Line Length:** {{line_length}}
+- **Imports:** {{import_style}}
+
+### Testing
+- **Framework:** {{test_framework}}
+- **Command:** `{{test_command}}`
+- **Coverage:** Maintain above {{coverage_threshold}}%
+
+### Quality Gates
+- All tests must pass
+- Linting must pass: `{{lint_command}}`
+- Type checking must pass (if applicable)
+
+## Available Specialized Agents
+
+For specific tasks, use these specialized agents:
+
+{{active_agents_list}}
+
+## MCP Servers
+
+The following MCP servers are available:
+
+{{mcp_servers_list}}
+```
+
+#### 2. copilot-instructions.md (VS Code Copilot instructions)
+
+Create `.github/copilot-instructions.md` with editor-specific guidance:
+
+```markdown
+# GitHub Copilot Instructions
+
+**Repository:** {{repo_name}}
+**Generated:** {{generation_date}}
+
+## General Guidelines
+
+- Follow project conventions defined in AGENT.md
+- Use specialized agents via `@agent-name` for domain-specific tasks
+- Leverage MCP servers for database queries, file operations, etc.
+
+## Code Generation Standards
+
+### Always
+- Include type annotations ({{primary_language}})
+- Add docstrings/comments for public APIs
+- Follow {{naming_convention}} naming convention
+- Handle errors explicitly
+- Write tests alongside implementation
+
+### Never
+- Generate code without error handling
+- Use deprecated APIs or patterns
+- Create security vulnerabilities (SQL injection, XSS, etc.)
+- Bypass authentication/authorization
+- Commit secrets or credentials
+
+## Project-Specific Context
+
+### File Structure
+{{file_structure_overview}}
+
+### Common Commands
+- **Dev:** `{{dev_command}}`
+- **Test:** `{{test_command}}`
+- **Lint:** `{{lint_command}}`
+- **Build:** `{{build_command}}`
+
+### Dependencies Management
+{{dependencies_info}}
+
+## Workflow Integration
+
+This project uses a structured workflow:
+1. PRD → Epics → Stories (Planning)
+2. Architecture → Design (Technical Design)
+3. TDD → Implementation (Development)
+4. Test → Review → Security → Docs (Quality)
+
+Use `@orchestrator` to start feature workflows.
+```
+
+#### 3. Custom Domain Instructions (*.instructions.md)
+
+Create domain-specific instruction files based on detected patterns:
+
+**testing.instructions.md** (if tests detected):
+```markdown
+# Testing Instructions
+
+**Framework:** {{test_framework}}
+**Command:** `{{test_command}}`
+
+When writing tests:
+- Follow AAA pattern (Arrange, Act, Assert)
+- Use descriptive test names
+- Mock external dependencies
+- Test edge cases and error conditions
+- Maintain {{coverage_threshold}}% coverage
+
+## Test Structure
+{{test_structure_pattern}}
+
+## Common Fixtures
+{{common_fixtures}}
+```
+
+**api.instructions.md** (if API framework detected):
+```markdown
+# API Development Instructions
+
+**Framework:** {{api_framework}}
+
+When creating API endpoints:
+- Validate all input data
+- Use appropriate HTTP status codes
+- Include error handling
+- Add OpenAPI/Swagger documentation
+- Implement rate limiting for public endpoints
+- Use authentication/authorization middleware
+
+## API Patterns
+{{api_patterns}}
+```
+
+**database.instructions.md** (if database detected):
+```markdown
+# Database Instructions
+
+**System:** {{database_system}}
+**ORM:** {{orm_system}}
+**Migrations:** {{migration_tool}}
+
+When working with database:
+- Always use migrations for schema changes
+- Add indexes for frequently queried columns
+- Use transactions for multi-step operations
+- Avoid N+1 queries
+- Use prepared statements (prevent SQL injection)
+
+## Migration Workflow
+{{migration_workflow}}
+```
+
+**frontend.instructions.md** (if frontend framework detected):
+```markdown
+# Frontend Instructions
+
+**Framework:** {{frontend_framework}}
+**UI Library:** {{ui_library}}
+
+When building UI:
+- Use {{state_management}} for state management
+- Follow component composition patterns
+- Implement accessibility (ARIA labels, keyboard nav)
+- Optimize performance (lazy loading, memoization)
+- Handle loading and error states
+
+## Component Patterns
+{{component_patterns}}
+```
+
+**ml.instructions.md** (if ML framework detected):
+```markdown
+# Machine Learning Instructions
+
+**Framework:** {{ml_framework}}
+
+When working with ML:
+- Set random seeds for reproducibility
+- Log hyperparameters and metrics
+- Save model checkpoints regularly
+- Validate data before training
+- Monitor for overfitting
+
+## Training Patterns
+{{training_patterns}}
+```
+
+#### File Placement
+
+- `AGENT.md` → Repository root
+- `copilot-instructions.md` → `.github/` directory
+- `*.instructions.md` → `.github/instructions/` directory
+
+**Create directory structure:**
+```
+project-root/
+├── AGENT.md                           # Global agent instructions
+└── .github/
+    ├── copilot-instructions.md        # VS Code Copilot instructions
+    └── instructions/                  # Domain-specific instructions
+        ├── testing.instructions.md
+        ├── api.instructions.md
+        ├── database.instructions.md
+        ├── frontend.instructions.md
+        └── ml.instructions.md
+```
 
 ## Placeholder Reference
 
@@ -630,12 +921,46 @@ To generate agents for a repository:
 1. Copy this file and the `templates/` folder to the target repo
 2. Invoke this agent: "@agent-generator analyze this repository and generate all appropriate agent.md files"
 3. Review generated agents in `.github/agents/` and customize as needed
-4. Optionally delete `templates/` folder after generation
+4. Review generated MCP config in `.github/mcp-config.json` and configure connection strings
+5. Optionally delete `templates/` folder after generation
+
+## Output Files
+
+When invoked, this agent will generate:
+
+1. **Agent files** in `.github/agents/`:
+   - `orchestrator.md`
+   - `prd-agent.md`, `epic-agent.md`, `story-agent.md`, etc.
+   - Domain-specific agents based on detection
+   
+2. **Skill files** in `.github/skills/`:
+   - `creating-unit-tests/SKILL.md` (with supporting files)
+   - `creating-api-endpoints/SKILL.md` (with templates)
+   - Other skills based on detection
+
+3. **MCP configuration** in `.github/mcp-config.json`:
+   - Essential MCP servers (git, filesystem)
+   - Detected MCP servers (postgres, docker, pylance, etc.)
+   - Setup instructions and connection string templates
+   - Priority levels and detection metadata
+
+4. **Global instruction files**:
+   - `AGENT.md` in repository root
+   - `.github/copilot-instructions.md`
+   - `.github/instructions/*.instructions.md` (domain-specific)
+
+5. **Planning directory structure** in `docs/planning/`:
+   - `prd/`, `epics/`, `stories/`, `architecture/`, `design/`, `test-design/`
 
 ## Example Invocation
 
 ```
-@agent-generator Please analyze this repository and generate the appropriate agent.md files. 
+@agent-generator Please analyze this repository and generate all appropriate files:
+- Agent files (.github/agents/*.md)
+- Skills (.github/skills/*/SKILL.md)
+- MCP configuration (.github/mcp-config.json)
+- Global instructions (AGENT.md, copilot-instructions.md, *.instructions.md)
+
 Focus on detecting the tech stack, finding build/test/lint commands, and creating agents 
 that match the project's actual structure.
 ```

@@ -13,12 +13,40 @@ Instead of manually writing agent.md files and skill documentation for each proj
 - 🛠️ **Customizes templates** with your repo-specific commands and structure
 - ⚡ **Outputs ready-to-use agents and skills** that know your codebase inside and out
 - 🧩 **Recommends MCP servers** to supercharge agent capabilities with database access, filesystem ops, and more
-- 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
+- � **Generates global instruction files** (AGENT.md, copilot-instructions.md, domain-specific *.instructions.md)
+- �🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
 - 🌐 **Generates portable skills** that work across VS Code, CLI, and GitHub.com
 
 **Result:** Your Copilot becomes both a domain expert (agents) and a workflow guide (skills) for your specific project.
 
 > **NEW:** 🧩 **MCP Server Auto-Detection** - Automatically recommends Model Context Protocol servers (database access, filesystem ops, container management, etc.) to supercharge agent capabilities. See [MCP Servers Guide](docs/MCP-SERVERS.md).
+
+---
+
+## 🚀 Quick Start
+
+**Get started in 3 steps:**
+
+1. **Copy templates to your repository:**
+   ```bash
+   cp -r .github/agents /path/to/your/repo/.github/
+   cp -r agents/skill-templates /path/to/your/repo/.github/skills/
+   ```
+
+2. **Generate customized configuration:**
+   ```
+   @agent-generator Analyze this repository and generate all appropriate agents, skills, and mcp servers.
+   ```
+   This creates: agent files, skills, MCP config, AGENT.md, copilot-instructions.md, and domain-specific *.instructions.md
+
+3. **Start using agents:**
+   ```
+   @orchestrator Start a new feature: [your feature description]
+   @test-agent Write tests for [component]
+   @review-agent Review my changes
+   ```
+
+**That's it!** Your agents and skills are ready. Continue reading to understand how everything works.
 
 ---
 
@@ -116,6 +144,59 @@ The generator creates `.github/mcp-config.json`:
 4. **Restart** your editor to activate the servers
 
 **Agents automatically know about available MCP servers** and will use them to provide richer responses.
+
+---
+
+## Global Instruction Files
+
+The agent factory generates multiple instruction files to provide context to GitHub Copilot at different scopes:
+
+### AGENT.md (Repository Root)
+
+Root-level instructions visible to all Copilot interactions in the repository:
+- High-level project overview and architecture
+- Tech stack and key technologies
+- Development standards and quality gates
+- List of available specialized agents
+- Links to MCP servers
+
+### copilot-instructions.md (.github/)
+
+VS Code-specific instructions for Copilot Chat:
+- Code generation standards (always/never rules)
+- File structure overview
+- Common commands (dev, test, lint, build)
+- Workflow integration guidance
+
+### Domain-Specific Instructions (.github/instructions/)
+
+Automatically generated based on detected technologies:
+
+| File | Generated When | Contains |
+|------|----------------|----------|
+| **testing.instructions.md** | Test framework detected | Test patterns, fixtures, coverage requirements |
+| **api.instructions.md** | API framework detected | Endpoint patterns, validation, error handling |
+| **database.instructions.md** | Database detected | Migration workflow, query patterns, indexes |
+| **frontend.instructions.md** | Frontend framework detected | Component patterns, state management, accessibility |
+| **ml.instructions.md** | ML framework detected | Training patterns, reproducibility, monitoring |
+
+### How They Work Together
+
+```
+Scope:      Global              Editor-Specific       Domain-Specific
+            ↓                   ↓                     ↓
+File:       AGENT.md  →  copilot-instructions.md  →  *.instructions.md
+Priority:   Baseline            Overrides             Specialized
+```
+
+Copilot reads all instruction files and combines them, with more specific instructions taking precedence.
+
+**Example hierarchy:**
+- `AGENT.md`: "Follow test-driven development"
+- `copilot-instructions.md`: "Always write tests alongside implementation"
+- `testing.instructions.md`: "Use pytest fixtures from conftest.py"
+
+Result: Copilot follows all three, with the most specific guidance (testing.instructions.md) taking precedence for test-related tasks.
 
 ---
 
@@ -217,10 +298,16 @@ The generator will:
 1. Scan your repository structure
 2. Detect tech stack, frameworks, and tools
 3. Extract build/test/lint commands from configs
-4. Select relevant agents AND skills based on detected patterns
-5. Customize templates with repo-specific values
-6. Output agents to `.github/agents/` and skills to `.github/skills/`
-7. **Default behavior**: Generate BOTH agents and skills for hybrid-eligible patterns
+4. Detect and recommend relevant MCP servers
+5. Select relevant agents AND skills based on detected patterns
+6. Customize templates with repo-specific values
+7. Output agents to `.github/agents/` and skills to `.github/skills/`
+8. Generate `.github/mcp-config.json` with recommended MCP servers
+9. Generate global instruction files:
+   - `AGENT.md` in repository root
+   - `.github/copilot-instructions.md`
+   - `.github/instructions/*.instructions.md` (domain-specific)
+10. **Default behavior**: Generate BOTH agents and skills for hybrid-eligible patterns
 
 **Generation options:**
 ```
@@ -275,14 +362,23 @@ The generator will:
 ## Directory Structure
 
 ```
-.github/
-├── agents/                    # Role-based expert agents
-│   ├── agent-generator.md     # Meta-agent that creates other agents and skills
-│   ├── orchestrator.md        # Coordinates all agents + workflow management
-│   └── templates/             # Agent templates with {{placeholders}}
-├── skills/                    # Workflow-based skills (portable across tools)  
-│   └── skill-templates/       # Skill templates with minimal placeholders
-└── mcp-config.json            # Auto-detected MCP server recommendations
+project-root/
+├── AGENT.md                   # Global agent instructions (root level)
+└── .github/
+    ├── agents/                    # Role-based expert agents
+    │   ├── agent-generator.md     # Meta-agent that creates other agents and skills
+    │   ├── orchestrator.md        # Coordinates all agents + workflow management
+    │   └── templates/             # Agent templates with {{placeholders}}
+    ├── skills/                    # Workflow-based skills (portable across tools)  
+    │   └── skill-templates/       # Skill templates with minimal placeholders
+    ├── copilot-instructions.md    # VS Code Copilot instructions
+    ├── instructions/              # Domain-specific instructions
+    │   ├── testing.instructions.md
+    │   ├── api.instructions.md
+    │   ├── database.instructions.md
+    │   ├── frontend.instructions.md
+    │   └── ml.instructions.md
+    └── mcp-config.json            # Auto-detected MCP server recommendations
 ```
 
 **Full template structure:**
