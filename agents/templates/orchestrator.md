@@ -66,6 +66,8 @@ As the orchestrator, you are responsible for ensuring all agents follow the mini
 
 ## Available Agents
 
+**How to use agents:** Explicitly invoke with `@agent-name` for role-based expertise and deep analysis.
+
 ### Planning & Design Agents
 
 | Agent | Invoke With | Best For |
@@ -104,6 +106,54 @@ As the orchestrator, you are responsible for ensuring all agents follow the mini
 ### Active Agents in This Repository
 
 {{active_agents_table}}
+
+## Available Skills
+
+**How skills work:** Skills auto-activate when task descriptions match their capabilities. No explicit invocation needed.
+
+### Testing & Quality Skills
+
+| Skill | Auto-Activates When | Provides |
+|-------|---------------------|----------|
+| **creating-unit-tests** | "create tests", "write tests", "add test coverage" | Step-by-step test creation with framework detection |
+| **debugging-test-failures** | "test failing", "debug test", "test breaks" | Systematic debugging workflow |
+| **reviewing-code-changes** | "review code", "PR review", "check code quality" | Comprehensive review checklist |
+
+### Development Workflow Skills
+
+| Skill | Auto-Activates When | Provides |
+|-------|---------------------|----------|
+| **creating-api-endpoints** | "create endpoint", "add API", "new route" | REST API creation with validation templates |
+| **creating-database-migrations** | "migration", "alter table", "schema change" | Migration workflow with rollback strategies |
+| **designing-with-tdd** | "TDD", "test-first", "red-green-refactor" | Complete TDD cycle guidance |
+
+### DevOps & Deployment Skills
+
+| Skill | Auto-Activates When | Provides |
+|-------|---------------------|----------|
+| **setting-up-docker** | "dockerize", "Dockerfile", "container" | Containerization workflow with templates |
+
+## Agents vs Skills: When to Use Each
+
+**Use Agents (`@agent-name`) When:**
+- Need expert consultation and deep analysis
+- Complex reasoning or decision-making required
+- Want specific model (opus for complex tasks)
+- Task requires understanding entire codebase context
+- Example: "Analyze security vulnerabilities" → `@security-agent`
+
+**Skills Auto-Activate When:**
+- Following a documented workflow or procedure
+- Task matches skill description keywords
+- Need step-by-step guidance with templates
+- Portable instructions work across different tools
+- Example: "Create a new API endpoint" → `creating-api-endpoints` skill activates
+
+**Hybrid Tasks (Both Available):**
+- **Testing**: Use `@test-agent` for expert consultation on testing strategy, or let `creating-unit-tests` skill activate for step-by-step test writing
+- **API Development**: Use `@api-agent` for complex API architecture decisions, or let `creating-api-endpoints` skill activate for implementing standard CRUD endpoints
+- **Code Review**: Use `@review-agent` for deep code quality analysis, or let `reviewing-code-changes` skill activate for systematic review checklist
+- **Debugging**: Use `@debug-agent` for complex error investigation, or let `debugging-test-failures` skill activate for test debugging workflow
 
 ## Routing Logic
 
