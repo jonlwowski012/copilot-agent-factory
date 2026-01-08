@@ -1,0 +1,157 @@
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "description": "Repository operations, history, and diffs",
+      "recommended": true,
+      "priority": "essential"
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/repo"],
+      "description": "File operations and directory browsing",
+      "recommended": true,
+      "priority": "essential",
+      "setup": "Replace /path/to/repo with your repository path"
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/dbname"],
+      "description": "Database queries and schema inspection",
+      "recommended": true,
+      "priority": "high",
+      "requiresConfig": true,
+      "setup": "Replace postgresql://localhost/dbname with your database connection string"
+    },
+    "pylance": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-pylance"],
+      "description": "Enhanced Python analysis and type checking",
+      "recommended": true,
+      "priority": "high",
+      "detectedBy": "Python project files"
+    },
+    "docker": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-docker"],
+      "description": "Container management and image operations",
+      "recommended": true,
+      "priority": "high",
+      "detectedBy": "Dockerfile or docker-compose.yml"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "description": "GitHub repository management and operations",
+      "recommended": true,
+      "priority": "high",
+      "detectedBy": ".github/ directory with workflows"
+    },
+    "kubernetes": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-kubernetes"],
+      "description": "Kubernetes cluster operations and pod management",
+      "recommended": false,
+      "priority": "medium",
+      "detectedBy": "k8s/ or kubernetes/ directory"
+    },
+    "aws": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-aws"],
+      "description": "AWS cloud resource management",
+      "recommended": false,
+      "priority": "medium",
+      "requiresConfig": true,
+      "detectedBy": "AWS SDK in dependencies",
+      "setup": "Configure AWS credentials via environment variables or ~/.aws/credentials"
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Persistent knowledge graph for complex projects",
+      "recommended": false,
+      "priority": "medium",
+      "detectedBy": "Complex project with many files"
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "HTTP requests and web content fetching",
+      "recommended": false,
+      "priority": "low",
+      "detectedBy": "API client code"
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "description": "Web search capabilities via Brave Search API",
+      "recommended": false,
+      "priority": "low",
+      "requiresConfig": true,
+      "setup": "Set BRAVE_API_KEY environment variable"
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "description": "Slack workspace operations",
+      "recommended": false,
+      "priority": "specialized",
+      "requiresConfig": true,
+      "detectedBy": "Slack SDK in dependencies",
+      "setup": "Configure Slack OAuth token"
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "description": "Browser automation and web scraping",
+      "recommended": false,
+      "priority": "specialized",
+      "detectedBy": "Puppeteer in dependencies"
+    },
+    "google-maps": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-maps"],
+      "description": "Google Maps API integration",
+      "recommended": false,
+      "priority": "specialized",
+      "requiresConfig": true,
+      "detectedBy": "Google Maps SDK in dependencies",
+      "setup": "Set GOOGLE_MAPS_API_KEY environment variable"
+    },
+    "google-drive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-drive"],
+      "description": "Google Drive file access and operations",
+      "recommended": false,
+      "priority": "specialized",
+      "requiresConfig": true,
+      "detectedBy": "Google Drive SDK in dependencies",
+      "setup": "Configure Google OAuth credentials"
+    },
+    "time": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-time"],
+      "description": "Date and time queries",
+      "recommended": false,
+      "priority": "low",
+      "detectedBy": "Date/time libraries detected"
+    }
+  },
+  "detectedBy": "@agent-generator",
+  "generatedAt": "2026-01-08",
+  "setupInstructions": [
+    "1. Review recommended servers (marked with 'recommended: true')",
+    "2. For servers with 'requiresConfig: true', update connection strings and credentials",
+    "3. Enable servers in your VS Code settings under 'github.copilot.chat.mcpServers'",
+    "4. Restart VS Code to activate the MCP servers",
+    "5. Agents will automatically use available MCP servers to enhance their capabilities"
+  ],
+  "priorityLevels": {
+    "essential": "Always recommended for all projects",
+    "high": "Recommended based on detected tech stack",
+    "medium": "Optional, recommended for specific patterns",
+    "low": "Optional enhancement",
+    "specialized": "Only for projects with specific integrations"
+  }
+}

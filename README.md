@@ -12,10 +12,13 @@ Instead of manually writing agent.md files and skill documentation for each proj
 - 🎯 **Selects relevant agents AND skills** based on detected patterns (API, ML, testing, etc.)
 - 🛠️ **Customizes templates** with your repo-specific commands and structure
 - ⚡ **Outputs ready-to-use agents and skills** that know your codebase inside and out
+- 🧩 **Recommends MCP servers** to supercharge agent capabilities with database access, filesystem ops, and more
 - 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
 - 🌐 **Generates portable skills** that work across VS Code, CLI, and GitHub.com
 
 **Result:** Your Copilot becomes both a domain expert (agents) and a workflow guide (skills) for your specific project.
+
+> **NEW:** 🧩 **MCP Server Auto-Detection** - Automatically recommends Model Context Protocol servers (database access, filesystem ops, container management, etc.) to supercharge agent capabilities. See [MCP Servers Guide](docs/MCP-SERVERS.md).
 
 ---
 
@@ -37,6 +40,82 @@ This factory generates **both agents and skills** to provide comprehensive AI as
 - **Use Agents** (`@agent-name`) for expert consultation, deep analysis, and complex reasoning
 - **Skills auto-activate** when your task description matches their workflow (no explicit invocation needed)
 - **Hybrid Approach**: Many capabilities exist as both (e.g., `@test-agent` + `creating-unit-tests` skill)
+
+---
+
+## MCP Server Auto-Detection
+
+The agent factory automatically detects and recommends **Model Context Protocol (MCP) servers** to enhance your agents' capabilities:
+
+### What are MCP Servers?
+
+MCP servers extend GitHub Copilot's abilities by providing:
+- 📦 **Direct database access** - Query PostgreSQL, MySQL, SQLite without writing code
+- 📁 **Filesystem operations** - Read/write files, browse directories efficiently  
+- 💻 **Enhanced language support** - Deep Python analysis with Pylance
+- 🐳 **Container management** - Inspect and control Docker containers
+- ☁️ **Cloud operations** - Manage AWS, GCP, Azure resources
+- 🔗 **Integration tools** - Connect to GitHub, Slack, Google services
+
+### Auto-Detection in Action
+
+When you run `@agent-generator`, it automatically:
+
+**Always Recommends (Essential):**
+- `@modelcontextprotocol/server-git` - For any git repository
+- `@modelcontextprotocol/server-filesystem` - File operations
+
+**Detects and Recommends Based on Your Stack:**
+
+| You Have | We Recommend | Why |
+|----------|--------------|-----|
+| PostgreSQL/MySQL config | `@modelcontextprotocol/server-postgres` | Direct database queries |
+| Python project | `@modelcontextprotocol/server-pylance` | Enhanced type checking |
+| Dockerfile | `@modelcontextprotocol/server-docker` | Container management |
+| `.github/workflows/` | `@modelcontextprotocol/server-github` | GitHub operations |
+| `k8s/` or `kubernetes/` | `@modelcontextprotocol/server-kubernetes` | Cluster management |
+| AWS SDK in deps | `@modelcontextprotocol/server-aws` | Cloud resource ops |
+| Slack SDK | `@modelcontextprotocol/server-slack` | Slack integration |
+| Puppeteer in deps | `@modelcontextprotocol/server-puppeteer` | Browser automation |
+
+### Generated Configuration
+
+The generator creates `.github/mcp-config.json`:
+
+```json
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "description": "Repository operations, history, and diffs",
+      "recommended": true
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/repo"],
+      "description": "File operations and directory browsing",
+      "recommended": true
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/dbname"],
+      "description": "Database queries and schema inspection",
+      "recommended": true,
+      "requiresConfig": true
+    }
+  }
+}
+```
+
+### Setup Instructions
+
+1. **Review** `.github/mcp-config.json` to see recommended servers
+2. **Configure** connection strings for databases, cloud providers, etc.
+3. **Enable** in VS Code settings or your editor's MCP configuration
+4. **Restart** your editor to activate the servers
+
+**Agents automatically know about available MCP servers** and will use them to provide richer responses.
 
 ---
 
@@ -201,6 +280,12 @@ The generator will:
 │   ├── agent-generator.md     # Meta-agent that creates other agents and skills
 │   ├── orchestrator.md        # Coordinates all agents + workflow management
 │   └── templates/             # Agent templates with {{placeholders}}
+├── skills/                    # Workflow-based skills (portable across tools)  
+│   └── skill-templates/       # Skill templates with minimal placeholders
+└── mcp-config.json            # Auto-detected MCP server recommendations
+```
+
+**Full template structure:**
 │       ├── Planning & Design Agents
 │       │   ├── prd-agent.md           # Product Requirements Documents
 │       │   ├── epic-agent.md          # Epic breakdown from PRDs
@@ -422,6 +507,20 @@ overrides:
   tech_stack: "Python 3.11, PyTorch 2.1, Lightning"
   test_command: "pytest -v --cov=src"
   lint_command: "ruff check --fix . && ruff format ."
+
+# Customize MCP server recommendations
+mcp_servers:
+  include:
+    - postgres
+    - docker
+    - kubernetes
+  exclude:
+    - aws
+  custom:
+    - name: "custom-mcp-server"
+      command: "node"
+      args: ["./mcp-servers/custom.js"]
+      description: "Custom internal tool integration"
 ```
 
 ## Best Practices
@@ -536,3 +635,5 @@ To improve the templates or add new agents:
 
 - [GitHub Blog: How to Write Great Agents.md](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/)
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io/)
+- [MCP Servers Registry](https://github.com/modelcontextprotocol/servers)

@@ -256,7 +256,53 @@ Map common directories:
 | `data/`, `datasets/` | Data files |
 | `api/`, `routes/` | API endpoints |
 
-### Step 5: Select Agents AND Skills to Generate
+### Step 5: Detect Recommended MCP Servers
+
+Based on detected tech stack and patterns, recommend relevant Model Context Protocol (MCP) servers to enhance agent capabilities:
+
+#### MCP Server Detection Rules
+
+| Detection Pattern | MCP Server | Purpose | When to Recommend |
+|-------------------|------------|---------|-------------------|
+| PostgreSQL, MySQL, SQLite | `@modelcontextprotocol/server-postgres` | Direct database queries, schema inspection | Database files or ORM detected |
+| Git repository (`.git/`) | `@modelcontextprotocol/server-git` | Repository operations, history, diffs | Always for git repos |
+| Filesystem operations | `@modelcontextprotocol/server-filesystem` | File operations, directory browsing | Always |
+| Python projects | `@modelcontextprotocol/server-pylance` | Enhanced Python analysis, type checking | Python detected |
+| Docker files | `@modelcontextprotocol/server-docker` | Container management, image operations | Dockerfile or docker-compose.yml |
+| Kubernetes configs | `@modelcontextprotocol/server-kubernetes` | Cluster operations, pod management | `k8s/` or `kubernetes/` directory |
+| AWS configs | `@modelcontextprotocol/server-aws` | Cloud resource management | `.aws/` or AWS SDK in deps |
+| GitHub workflows | `@modelcontextprotocol/server-github` | Repository management, PR operations | `.github/` directory |
+| Web scraping/APIs | `@modelcontextprotocol/server-fetch` | HTTP requests, web content fetching | API clients detected |
+| Memory/state needs | `@modelcontextprotocol/server-memory` | Persistent knowledge graph | Complex projects |
+| Search requirements | `@modelcontextprotocol/server-brave-search` | Web search capabilities | Research-heavy projects |
+| Google integrations | `@modelcontextprotocol/server-google-maps`, `@modelcontextprotocol/server-google-drive` | Maps API, Drive access | Google SDK in deps |
+| Slack integrations | `@modelcontextprotocol/server-slack` | Slack operations | Slack SDK in deps |
+| Puppeteer/browser | `@modelcontextprotocol/server-puppeteer` | Browser automation | Puppeteer in deps |
+| Time operations | `@modelcontextprotocol/server-time` | Date/time queries | Date libraries detected |
+
+#### MCP Server Priority Levels
+
+**Essential (Always Recommend):**
+- `@modelcontextprotocol/server-git` - For any git repository
+- `@modelcontextprotocol/server-filesystem` - For file operations
+
+**High Priority (Recommend if detected):**
+- `@modelcontextprotocol/server-postgres` - Database projects
+- `@modelcontextprotocol/server-pylance` - Python projects
+- `@modelcontextprotocol/server-docker` - Containerized applications
+- `@modelcontextprotocol/server-github` - Projects with GitHub workflows
+
+**Medium Priority (Recommend if specific patterns found):**
+- `@modelcontextprotocol/server-kubernetes` - K8s deployments
+- `@modelcontextprotocol/server-aws` - AWS cloud projects
+- `@modelcontextprotocol/server-memory` - Complex stateful applications
+
+**Specialized (Recommend only if clear need):**
+- Cloud provider servers (AWS, GCP, Azure)
+- Integration servers (Slack, Google, etc.)
+- Browser automation (Puppeteer)
+
+### Step 6: Select Agents AND Skills to Generate
 
 Generate agents and skills based on detection:
 
@@ -269,11 +315,11 @@ Generate agents and skills based on detection:
 | **architecture-agent** | Always generate (supports feature workflows) |
 | **design-agent** | Always generate (supports feature workflows) |
 | **test-design-agent** | Always generate (supports feature workflows) |
+| **orchestrator** | Always generate |
 
 #### Core Agents (Check for Hybrid Generation)
 | Agent | Generate Agent If | Generate Skill If |
 |-------|-------------------|-------------------|
-| **orchestrator** | Always generate | No skill version |
 | **test-agent** | Test framework detected | `creating-unit-tests` + `debugging-test-failures` skills |
 | **docs-agent** | `docs/` exists OR `README.md` exists | No skill version (agent sufficient) |
 | **lint-agent** | Linter config exists | No skill version (agent sufficient) |
@@ -320,7 +366,50 @@ Skills use only **10 core placeholders** with intelligent fallbacks:
 - Skills use minimal placeholders with fallback instructions
 - Skills include "If not configured, try..." alternatives
 
-### Step 6: Create Directory Structures
+### Step 6b: Generate MCP Configuration (Optional)
+
+Create `.github/mcp-config.json` with recommended MCP servers:
+
+```json
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "description": "Repository operations, history, and diffs",
+      "recommended": true
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/repo"],
+      "description": "File operations and directory browsing",
+      "recommended": true
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/dbname"],
+      "description": "Database queries and schema inspection",
+      "recommended": true,
+      "requiresConfig": true
+    },
+    "pylance": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-pylance"],
+      "description": "Enhanced Python analysis and type checking",
+      "recommended": true
+    }
+  },
+  "detectedBy": "@agent-generator",
+  "generatedAt": "2026-01-08"
+}
+```
+
+**Note:** Users need to:
+1. Review recommended servers
+2. Update connection strings (for database servers)
+3. Enable servers in their editor settings
+
+### Step 7: Create Directory Structures
 
 When generating, create both agent and skill directories:
 
@@ -359,13 +448,19 @@ docs/planning/
 └── test-design/   # Test strategy documents
 ```
 
-### Step 7: Generate Customized Agents AND Skills
+**MCP Configuration (Optional):**
+```
+.github/mcp-config.json    # Recommended MCP servers configuration
+```
+
+### Step 8: Generate Customized Agents AND Skills
 
 **For each agent:**
 1. Read template from `templates/{agent-name}.md`
 2. Replace all `{{placeholder}}` markers with detected values (60+ placeholders)
-3. Write to `.github/agents/{agent-name}.md`
-4. Update orchestrator's `{{active_agents_table}}`
+3. Add recommended MCP servers section to agent instructions
+4. Write to `.github/agents/{agent-name}.md`
+5. Update orchestrator's `{{active_agents_table}}`
 
 **For each skill:**
 1. Read template from `skill-templates/{skill-name}/SKILL.md`
@@ -373,6 +468,11 @@ docs/planning/
 3. Copy supporting files (scripts, templates) to `.github/skills/{skill-name}/`
 4. Ensure fallback logic remains intact in SKILL.md
 5. Update orchestrator to reference available skills
+
+**For MCP configuration:**
+1. Generate `.github/mcp-config.json` with recommended servers
+2. Include setup instructions in generated agents
+3. Mark servers requiring configuration (database connection strings, etc.)
 
 ## Placeholder Reference
 
@@ -387,6 +487,14 @@ When customizing templates, replace these markers:
 | `{{test_dirs}}` | Test directories found |
 | `{{doc_dirs}}` | Documentation directories found |
 | `{{config_dirs}}` | Configuration directories found |
+
+### MCP Server Placeholders
+| Placeholder | Source |
+|-------------|--------|
+| `{{recommended_mcp_servers}}` | List of recommended MCP servers based on detection |
+| `{{mcp_server_list}}` | Formatted list with descriptions for agent instructions |
+| `{{essential_mcp_servers}}` | Essential servers (git, filesystem) |
+| `{{optional_mcp_servers}}` | Optional servers based on tech stack |
 
 ### Command Placeholders
 | Placeholder | Source |
@@ -480,6 +588,19 @@ You are an expert [role] for this project.
 
 ## Commands
 - **Command:** `actual command` (what it does)
+
+## Recommended MCP Servers
+
+To enhance capabilities, consider enabling these Model Context Protocol servers:
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, diffs
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- [List detected MCP servers with descriptions]
+
+**Setup:** See `.github/mcp-config.json` for configuration details.
 
 ## Standards
 - Naming conventions with examples
