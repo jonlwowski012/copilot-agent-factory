@@ -79,22 +79,44 @@ As the orchestrator, you are responsible for ensuring all agents follow the mini
 | **design-agent** | `@design-agent` | Technical specs, API contracts, data models |
 | **test-design-agent** | `@test-design-agent` | Test strategy, test cases (TDD pre-implementation) |
 
-### Core Agents
+### Core Development Agents
 
 | Agent | Invoke With | Best For |
 |-------|-------------|----------|
-| **docs-agent** | `@docs-agent` | Documentation, READMEs, API docs, comments, docstrings |
 | **test-agent** | `@test-agent` | Writing tests, test coverage, test debugging, TDD |
+| **docs-agent** | `@docs-agent` | Documentation, READMEs, API docs, comments, docstrings |
 | **lint-agent** | `@lint-agent` | Code formatting, style fixes, linter errors |
 | **review-agent** | `@review-agent` | Code review, PR feedback, best practices |
-| **api-agent** | `@api-agent` | API endpoints, routes, request/response handling |
-| **security-agent** | `@security-agent` | Security vulnerabilities, secure coding, audits |
-| **devops-agent** | `@devops-agent` | CI/CD, Docker, deployments, infrastructure |
 | **debug-agent** | `@debug-agent` | Error investigation, log analysis, troubleshooting |
 | **refactor-agent** | `@refactor-agent` | Code restructuring, design patterns, tech debt |
 | **performance-agent** | `@performance-agent` | Profiling, optimization, bottlenecks |
+| **security-agent** | `@security-agent` | Security vulnerabilities, secure coding, audits |
+| **devops-agent** | `@devops-agent` | CI/CD, Docker, deployments, infrastructure |
 
-### ML/AI Agents (if applicable)
+### Backend & API Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **api-agent** | `@api-agent` | REST/GraphQL endpoints, routes, request/response handling |
+| **database-agent** | `@database-agent` | Schema design, migrations, queries, database optimization |
+
+### Mobile Development Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **mobile-ios-agent** | `@mobile-ios-agent` | Native iOS apps (Swift/SwiftUI) |
+| **mobile-react-native-agent** | `@mobile-react-native-agent` | Cross-platform React Native apps |
+| **mobile-flutter-agent** | `@mobile-flutter-agent` | Cross-platform Flutter apps (Dart) |
+
+### Frontend Development Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **frontend-react-agent** | `@frontend-react-agent` | React components, hooks, state management |
+| **frontend-vue-agent** | `@frontend-vue-agent` | Vue.js components, composition API, Pinia |
+| **frontend-angular-agent** | `@frontend-angular-agent` | Angular components, services, RxJS |
+
+### ML & AI Agents
 
 | Agent | Invoke With | Best For |
 |-------|-------------|----------|
@@ -102,6 +124,55 @@ As the orchestrator, you are responsible for ensuring all agents follow the mini
 | **data-prep** | `@data-prep` | Data loading, preprocessing, augmentation, datasets |
 | **eval-agent** | `@eval-agent` | Model evaluation, metrics, benchmarking |
 | **inference-agent** | `@inference-agent` | Model inference, predictions, serving |
+
+### Rapid Studio Agents (Fast Prototyping)
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **rapid-prototyper** | `@rapid-prototyper` | Quick MVP development, proof of concepts |
+| **frontend-developer** | `@frontend-developer` | Rapid UI development |
+| **mobile-app-builder** | `@mobile-app-builder` | Quick mobile app prototypes |
+| **ai-engineer** | `@ai-engineer` | Fast AI feature integration |
+| **backend-architect** | `@backend-architect` | Quick backend APIs and services |
+| **test-writer-fixer** | `@test-writer-fixer` | Rapid test creation and fixes |
+
+### Design & UX Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **ui-designer** | `@ui-designer` | UI/UX design, component libraries, design systems |
+| **brand-guardian** | `@brand-guardian` | Brand consistency, style guides, design tokens |
+| **ux-researcher** | `@ux-researcher` | User research, usability testing, analytics |
+
+### Product & Analytics Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **feedback-synthesizer** | `@feedback-synthesizer` | Analyzing user feedback, feature prioritization |
+| **analytics-reporter** | `@analytics-reporter` | Metrics, KPIs, usage analytics, dashboards |
+
+### Project Management Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **experiment-tracker** | `@experiment-tracker` | A/B tests, feature flags, experiment analysis |
+| **project-shipper** | `@project-shipper` | Release planning, deployment coordination |
+| **studio-producer** | `@studio-producer` | Project coordination, resource allocation |
+
+### Operations & Infrastructure Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **infrastructure-maintainer** | `@infrastructure-maintainer` | Infrastructure management, monitoring, scaling |
+
+### Testing & Quality Agents
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **api-tester** | `@api-tester` | API testing, integration tests, contract testing |
+| **test-results-analyzer** | `@test-results-analyzer` | Test failure analysis, flaky test detection |
+| **tool-evaluator** | `@tool-evaluator` | Tool selection, benchmarking, recommendations |
+| **workflow-optimizer** | `@workflow-optimizer` | Process improvement, automation opportunities |
 
 ### Active Agents in This Repository
 
@@ -183,10 +254,26 @@ Request Analysis:
 │   └── Route to @review-agent
 ├── Contains "API", "endpoint", "route", "request", "response"
 │   └── Route to @api-agent
+├── Contains "database", "schema", "migration", "SQL", "query", "table"
+│   └── Route to @database-agent
+├── Contains "React", "component", "hook", "JSX", "useState", "useEffect"
+│   └── Route to @frontend-react-agent
+├── Contains "Vue", "composition API", "Pinia", "v-model"
+│   └── Route to @frontend-vue-agent
+├── Contains "Angular", "component", "service", "RxJS", "dependency injection"
+│   └── Route to @frontend-angular-agent
+├── Contains "iOS", "Swift", "SwiftUI", "UIKit"
+│   └── Route to @mobile-ios-agent
+├── Contains "React Native", "Expo", "mobile", "cross-platform"
+│   └── Route to @mobile-react-native-agent
+├── Contains "Flutter", "Dart", "widget"
+│   └── Route to @mobile-flutter-agent
 ├── Contains "security", "vulnerability", "auth", "injection", "XSS"
 │   └── Route to @security-agent
 ├── Contains "CI/CD", "pipeline", "Docker", "deploy", "GitHub Actions"
 │   └── Route to @devops-agent
+├── Contains "infrastructure", "monitoring", "scaling", "cloud"
+│   └── Route to @infrastructure-maintainer
 ├── Contains "debug", "error", "bug", "fix", "stack trace", "logs"
 │   └── Route to @debug-agent
 ├── Contains "refactor", "restructure", "clean up", "tech debt", "design pattern"
@@ -201,6 +288,32 @@ Request Analysis:
 │   └── Route to @eval-agent
 ├── Contains "inference", "predict", "serve", "deploy model"
 │   └── Route to @inference-agent
+├── Contains "prototype", "MVP", "proof of concept", "quick demo"
+│   └── Route to @rapid-prototyper
+├── Contains "UI design", "design system", "component library", "style guide"
+│   └── Route to @ui-designer
+├── Contains "brand", "design tokens", "theme", "brand consistency"
+│   └── Route to @brand-guardian
+├── Contains "user research", "usability", "user testing", "UX"
+│   └── Route to @ux-researcher
+├── Contains "user feedback", "feature request", "prioritization"
+│   └── Route to @feedback-synthesizer
+├── Contains "analytics", "metrics", "KPI", "dashboard", "reporting"
+│   └── Route to @analytics-reporter
+├── Contains "A/B test", "experiment", "feature flag", "variation"
+│   └── Route to @experiment-tracker
+├── Contains "release", "deployment plan", "shipping", "rollout"
+│   └── Route to @project-shipper
+├── Contains "project coordination", "resource allocation", "timeline"
+│   └── Route to @studio-producer
+├── Contains "API test", "integration test", "contract test", "postman"
+│   └── Route to @api-tester
+├── Contains "test failure", "flaky test", "test analysis"
+│   └── Route to @test-results-analyzer
+├── Contains "tool selection", "tool comparison", "evaluate tool"
+│   └── Route to @tool-evaluator
+├── Contains "workflow", "process improvement", "automation", "optimize workflow"
+│   └── Route to @workflow-optimizer
 └── General development task
     └── Handle directly or suggest appropriate agent
 ```
@@ -288,20 +401,53 @@ This is the recommended workflow for new features. Each phase has an approval ga
 #### Phase 4: Development
 ```
 7. Development agents implement based on approved artifacts:
-   - @api-agent         → API endpoints
-   - @database-agent    → Schema, migrations
-   - @frontend-*-agent  → UI components
-   - Other domain agents as needed
+   
+   Backend Features:
+   - @api-agent           → REST/GraphQL endpoints
+   - @database-agent      → Schema design, migrations
+   - @backend-architect   → Service architecture (rapid prototyping)
+   
+   Frontend Features:
+   - @frontend-react-agent / @frontend-vue-agent / @frontend-angular-agent
+   - @ui-designer         → Component design, design systems
+   - @frontend-developer  → Rapid UI implementation
+   
+   Mobile Features:
+   - @mobile-ios-agent / @mobile-react-native-agent / @mobile-flutter-agent
+   - @mobile-app-builder  → Rapid mobile prototypes
+   
+   ML/AI Features:
+   - @data-prep           → Dataset preparation
+   - @ml-trainer          → Model training
+   - @ai-engineer         → AI feature integration
    
    User: /approve when implementation complete
 ```
 
-#### Phase 5: Review
+#### Phase 5: Quality & Testing
 ```
-8. @test-agent        → Execute tests, verify coverage
-9. @review-agent      → Code review, best practices
-10. @security-agent   → Security audit
-11. @docs-agent       → Update documentation
+8. Testing:
+   - @test-agent               → Unit/integration tests, coverage
+   - @test-writer-fixer        → Rapid test creation
+   - @api-tester               → API testing (if applicable)
+   - @test-results-analyzer    → Analyze test failures
+   
+   User: /approve when tests pass
+```
+
+#### Phase 6: Review & Security
+```
+9. Code Quality:
+   - @lint-agent               → Format, style fixes
+   - @review-agent             → Code review, best practices
+   - @security-agent           → Security audit
+   - @performance-agent        → Performance checks
+   
+10. Documentation:
+    - @docs-agent              → Update docs, READMEs, comments
+    - @analytics-reporter      → Add analytics/metrics (if needed)
+    
+    User: /approve when quality gates pass
 ```
 
 ### Artifact Directory Structure
@@ -347,16 +493,49 @@ Let's begin with the PRD...
 ───────────────────────────────────────────────────────
 ```
 
-### New Feature Development (Quick)
-For smaller changes that don't need full workflow:
+### Quick Feature Development (Skip Planning)
+For smaller changes that don't need full planning workflow:
 ```
-1. @review-agent      → Understand requirements, plan approach
-2. [You code]         → Implement the feature
+1. @review-agent / @architecture-agent → Understand requirements, plan approach
+2. Implementation (choose based on feature type):
+   Backend:    @api-agent + @database-agent
+   Frontend:   @frontend-*-agent + @ui-designer
+   Mobile:     @mobile-*-agent
+   ML/AI:      @ml-trainer + @data-prep
 3. @test-agent        → Write tests for new code
 4. @lint-agent        → Format and fix style issues
-5. @security-agent    → Security review
+5. @security-agent    → Security review (production code)
 6. @docs-agent        → Update documentation
 7. @review-agent      → Final review before PR
+```
+
+### Rapid Prototyping Workflow
+For MVPs and quick proof of concepts:
+```
+1. @rapid-prototyper       → Plan MVP scope
+2. Choose rapid agents:
+   - @frontend-developer   → Quick UI
+   - @backend-architect    → Quick API
+   - @mobile-app-builder   → Quick mobile app
+   - @ai-engineer          → Quick AI features
+3. @test-writer-fixer     → Basic test coverage
+4. @review-agent          → Quick review
+5. @project-shipper       → Deploy demo
+```
+
+### Full-Stack Feature Workflow
+For features spanning frontend + backend:
+```
+1. @architecture-agent    → Design system integration
+2. @database-agent        → Schema changes
+3. @api-agent             → Backend endpoints
+4. @frontend-*-agent      → UI components
+5. @api-tester            → API integration tests
+6. @test-agent            → End-to-end tests
+7. @security-agent        → Security review
+8. @performance-agent     → Load testing
+9. @docs-agent            → Update API docs
+10. @review-agent         → Final review
 ```
 
 ### Bug Fix Workflow

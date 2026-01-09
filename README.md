@@ -359,91 +359,186 @@ The generator will:
   → reviewing-code-changes skill activates
 ```
 
-## Directory Structure
+## 📁 Directory Structure
 
 ```
 project-root/
-├── AGENT.md                   # Global agent instructions (root level)
+├── AGENT.md                          # Global agent instructions (root level)
 └── .github/
-    ├── agents/                    # Role-based expert agents
-    │   ├── agent-generator.md     # Meta-agent that creates other agents and skills
-    │   ├── orchestrator.md        # Coordinates all agents + workflow management
-    │   └── templates/             # Agent templates with {{placeholders}}
-    ├── skills/                    # Workflow-based skills (portable across tools)  
-    │   └── skill-templates/       # Skill templates with minimal placeholders
-    ├── copilot-instructions.md    # VS Code Copilot instructions
-    ├── instructions/              # Domain-specific instructions
+    ├── agents/                       # Role-based expert agents (46 templates)
+    │   ├── agent-generator.md        # Meta-agent: Creates other agents and skills
+    │   ├── orchestrator.md           # Coordinator: Manages workflows and agent handoffs
+    │   └── templates/                # Agent templates with {{placeholders}}
+    ├── skills/                       # Workflow-based skills (7 skills)
+    │   └── skill-templates/          # Portable across VS Code, CLI, GitHub.com
+    ├── copilot-instructions.md       # VS Code Copilot instructions
+    ├── instructions/                 # Domain-specific instructions (auto-generated)
     │   ├── testing.instructions.md
     │   ├── api.instructions.md
     │   ├── database.instructions.md
     │   ├── frontend.instructions.md
     │   └── ml.instructions.md
-    └── mcp-config.json            # Auto-detected MCP server recommendations
+    └── mcp-config.json               # Auto-detected MCP server recommendations
 ```
 
-**Full template structure:**
-│       ├── Planning & Design Agents
-│       │   ├── prd-agent.md           # Product Requirements Documents
-│       │   ├── epic-agent.md          # Epic breakdown from PRDs
-│       │   ├── story-agent.md         # User stories with Gherkin
-│       │   ├── architecture-agent.md  # System architecture & ADRs
-│       │   ├── design-agent.md        # Technical design specifications
-│       │   └── test-design-agent.md   # Test strategy (TDD)
-│       ├── Core Development Agents
-│       │   ├── docs-agent.md          # Documentation and technical writing
-│       │   ├── test-agent.md          # Testing and coverage
-│       │   ├── lint-agent.md          # Code formatting and style
-│       │   ├── review-agent.md        # Code review and best practices
-│       │   ├── debug-agent.md         # Error investigation and troubleshooting
-│       │   ├── refactor-agent.md      # Code restructuring and tech debt
-│       │   ├── performance-agent.md   # Profiling and optimization
-│       │   ├── security-agent.md      # Security audits and vulnerability detection
-│       │   └── devops-agent.md        # CI/CD, Docker, deployments
-│       ├── API & Backend Agents
-│       │   ├── api-agent.md           # API development and endpoints
-│       │   └── database-agent.md      # Database schemas and migrations
-│       ├── Mobile Development Agents
-│       │   ├── mobile-ios-agent.md         # iOS development (Swift, SwiftUI, UIKit)
-│       │   ├── mobile-react-native-agent.md # React Native cross-platform
-│       │   └── mobile-flutter-agent.md     # Flutter/Dart development
-│       ├── Frontend Framework Agents
-│       │   ├── frontend-react-agent.md   # React development with hooks and TypeScript
-│       │   ├── frontend-vue-agent.md     # Vue.js with Composition API
-│       │   └── frontend-angular-agent.md # Angular with RxJS and standalone components
-│       └── ML/AI Agents
-│           ├── ml-trainer.md          # ML model training
-│           ├── data-prep.md           # Data preprocessing
-│           ├── eval-agent.md          # Model evaluation
-│           └── inference-agent.md     # Model inference and serving
-└── skills/                    # Workflow-based skills (portable across tools)
-    └── skill-templates/       # Skill templates with minimal placeholders
-        ├── Testing & Quality
-        │   ├── creating-unit-tests/
-        │   │   ├── SKILL.md                    # Main skill instructions
-        │   │   ├── detect-test-framework.sh    # Auto-detection script
-        │   │   ├── pytest-fixtures.py          # Python test patterns
-        │   │   └── jest-test-template.js       # JavaScript test patterns
-        │   ├── debugging-test-failures/
-        │   │   └── SKILL.md                    # Test debugging workflow
-        │   └── reviewing-code-changes/
-        │       └── SKILL.md                    # Code review checklist
-        ├── Development Workflows
-        │   ├── creating-api-endpoints/
-        │   │   ├── SKILL.md                    # REST API creation guide
-        │   │   ├── fastapi-endpoint-template.py # FastAPI templates
-        │   │   └── express-endpoint-template.js # Express templates
-        │   ├── creating-database-migrations/
-        │   │   └── SKILL.md                    # Migration workflow
-        │   └── designing-with-tdd/
-        │       └── SKILL.md                    # TDD cycle guide
-        └── DevOps & Deployment
-            └── setting-up-docker/
-                └── SKILL.md                     # Containerization workflow
-```
+---
 
-## Agent & Skill Detection Rules
+## 🤖 Available Agent Templates (46 Total)
 
-The generator creates agents and skills based on detected patterns. **Default behavior: Generate BOTH for hybrid-eligible patterns.**
+### 📋 Core System Agents (2)
+**Always created for every repository**
+- **orchestrator.md** - Central coordinator managing workflows and agent collaboration
+- **agent-generator.md** - Meta-agent that analyzes repos and creates customized agents
+
+### 📐 Planning & Design Agents (6)
+**Created for structured feature development workflows**
+- **prd-agent** - Product Requirements Documents with user stories and acceptance criteria
+- **epic-agent** - Epic breakdown from PRDs into manageable deliverables
+- **story-agent** - User stories with Gherkin scenarios and story points
+- **architecture-agent** - System architecture, ADRs, and component diagrams
+- **design-agent** - Technical design specifications and API contracts
+- **test-design-agent** - Test strategy and TDD specifications (pre-implementation)
+
+### 🛠️ Core Development Agents (9)
+**Universal agents for common development tasks**
+- **test-agent** - Unit tests, integration tests, coverage, TDD
+- **docs-agent** - READMEs, API docs, docstrings, technical writing
+- **lint-agent** - Code formatting, style fixes, import sorting
+- **review-agent** - Code review, best practices, PR feedback
+- **debug-agent** - Error investigation, log analysis, troubleshooting
+- **refactor-agent** - Code restructuring, design patterns, tech debt
+- **performance-agent** - Profiling, optimization, bottleneck identification
+- **security-agent** - Vulnerability detection, secure coding, security audits
+- **devops-agent** - CI/CD pipelines, Docker, deployments, infrastructure
+
+### 🔌 Backend & API Agents (2)
+**Created when API or database patterns detected**
+- **api-agent** - REST/GraphQL endpoints, validation, error handling
+- **database-agent** - Schema design, migrations, query optimization
+
+### 📱 Mobile Development Agents (3)
+**Created for mobile projects**
+- **mobile-ios-agent** - iOS apps (Swift, SwiftUI, UIKit)
+- **mobile-react-native-agent** - Cross-platform apps with React Native
+- **mobile-flutter-agent** - Flutter/Dart apps and widgets
+
+### 🎨 Frontend Framework Agents (3)
+**Created when specific frontend frameworks detected**
+- **frontend-react-agent** - React components, hooks, state management
+- **frontend-vue-agent** - Vue 3, Composition API, Pinia
+- **frontend-angular-agent** - Angular, RxJS, standalone components
+
+### 🤖 ML/AI Agents (4)
+**Created for machine learning projects**
+- **ml-trainer** - Training loops, hyperparameters, distributed training
+- **data-prep** - Data loading, augmentation, preprocessing pipelines
+- **eval-agent** - Metrics, benchmarking, model comparison
+- **inference-agent** - Prediction pipelines, model serving, optimization
+
+### 🚀 Rapid Development Studio Agents (6)
+**Specialized agents for fast-paced app development**
+- **rapid-prototyper** - MVP builder for 6-day app cycles
+- **frontend-developer** - Responsive UI specialist (React/Next.js/Tailwind)
+- **mobile-app-builder** - iOS/Android/cross-platform development
+- **ai-engineer** - AI/ML integration, LLM, computer vision, NLP
+- **backend-architect** - Scalable APIs, databases, server-side systems
+- **test-writer-fixer** - Proactive test automation (auto-triggers after code changes)
+
+### 🎨 Design Specialists (3)
+**Created for design-focused projects**
+- **ui-designer** - Beautiful, implementable interface design
+- **brand-guardian** - Brand consistency and visual identity
+- **ux-researcher** - User research, journey mapping, usability testing
+
+### 📊 Product & Feedback (1)
+**User feedback and product insights**
+- **feedback-synthesizer** - User feedback analysis and pattern identification
+
+### 📦 Project Management (3)
+**Coordination and launch management**
+- **experiment-tracker** - A/B testing and feature validation (auto-triggers with flags)
+- **project-shipper** - Launch coordinator for smooth releases
+- **studio-producer** - Project manager keeping teams shipping efficiently
+
+### 🏢 Studio Operations (2)
+**Analytics and infrastructure**
+- **analytics-reporter** - Dashboards and insights (auto-triggers on data questions)
+- **infrastructure-maintainer** - DevOps and SRE (auto-triggers on incidents)
+
+### ✅ Testing & Quality (4)
+**Comprehensive testing and optimization**
+- **api-tester** - API testing specialist (auto-triggers after API changes)
+- **test-results-analyzer** - Test failure investigation (auto-triggers on failures)
+- **tool-evaluator** - Development tool evaluation and optimization
+- **workflow-optimizer** - Process improvement (auto-triggers on inefficiencies)
+
+---
+
+## 🎯 Available Agent Skills (7 Total)
+
+### 🧪 Testing & Quality Skills (3)
+- **creating-unit-tests/** - Auto-generates tests with framework detection
+  - Includes: pytest patterns, Jest templates, framework detection script
+- **debugging-test-failures/** - Systematic test debugging workflow
+- **reviewing-code-changes/** - Code review checklist and best practices
+
+### 💻 Development Workflow Skills (3)
+- **creating-api-endpoints/** - REST API creation with templates
+  - Includes: FastAPI and Express.js templates
+- **creating-database-migrations/** - Safe migration workflow
+- **designing-with-tdd/** - Test-Driven Development cycle guide
+
+### 🐳 DevOps Skills (1)
+- **setting-up-docker/** - Containerization workflow and best practices
+
+---
+
+## 🔌 MCP Server Integrations
+
+### Essential Servers (Always Recommended)
+| Server | Purpose | Installation |
+|--------|---------|-------------|
+| **git** | Repository operations, history, diffs | `npx -y @modelcontextprotocol/server-git` |
+| **filesystem** | File operations, directory browsing | `npx -y @modelcontextprotocol/server-filesystem` |
+
+### Conditional Servers (Auto-Detected Based on Your Stack)
+| Server | Detects | Purpose | Installation |
+|--------|---------|---------|-------------|
+| **postgres** | PostgreSQL/MySQL config | Database queries and schema | `npx -y @modelcontextprotocol/server-postgres` |
+| **pylance** | Python project | Enhanced type checking | `npx -y @modelcontextprotocol/server-pylance` |
+| **docker** | Dockerfile | Container management | `npx -y @modelcontextprotocol/server-docker` |
+| **github** | `.github/workflows/` | GitHub operations | `npx -y @modelcontextprotocol/server-github` |
+| **kubernetes** | `k8s/` or `kubernetes/` | Cluster management | `npx -y @modelcontextprotocol/server-kubernetes` |
+| **aws** | AWS SDK in dependencies | Cloud resource operations | `npx -y @modelcontextprotocol/server-aws` |
+| **slack** | Slack SDK | Slack integration | `npx -y @modelcontextprotocol/server-slack` |
+| **puppeteer** | Puppeteer in deps | Browser automation | `npx -y @modelcontextprotocol/server-puppeteer` |
+
+**See [docs/MCP-SERVERS.md](docs/MCP-SERVERS.md) for detailed setup instructions.**
+
+---
+
+## 🔍 Agent & Skill Detection Rules
+
+**The generator creates agents and skills based on detected patterns.**
+**Default behavior: Generate BOTH agents and skills for hybrid-eligible patterns.**
+
+### Quick Reference
+| Category | Agents | Skills | Detection Trigger |
+|----------|--------|--------|------------------|
+| **Planning** | 6 | 1 | Always created |
+| **Core Dev** | 9 | 3 | Framework/patterns detected |
+| **Backend/API** | 2 | 2 | API framework or database |
+| **Mobile** | 3 | 0 | Mobile project files |
+| **Frontend** | 3 | 0 | Frontend framework |
+| **ML/AI** | 4 | 0 | ML frameworks/patterns |
+| **Studio** | 6 | 0 | Rapid dev patterns |
+| **Design** | 3 | 0 | Design files/UI patterns |
+| **Product** | 1 | 0 | User feedback data |
+| **Project Mgmt** | 3 | 0 | PM/coordination needs |
+| **Operations** | 2 | 0 | Analytics/infrastructure |
+| **Testing** | 4 | 1 | Test framework/tooling |
+
+### Detailed Detection Rules
 
 ### Planning & Design (Agents Only)
 | Agent | Created When | Skill Version |
@@ -480,7 +575,7 @@ The generator creates agents and skills based on detected patterns. **Default be
 |-------|-------------|---------------|
 | **mobile-ios-agent** | `.xcodeproj`, `.xcworkspace`, Swift files | No skill (agent sufficient) |
 | **mobile-react-native-agent** | `package.json` with `react-native` | No skill (agent sufficient) |
-| **mobile-flutter-agent** | `pubspec.yaml`, `lib/*.dart`, or Flutter dependencies |
+| **mobile-flutter-agent** | `pubspec.yaml`, `lib/*.dart`, or Flutter dependencies | No skill (agent sufficient) |
 
 ### Frontend Framework Agents
 | Agent | Created When |
@@ -501,6 +596,58 @@ The generator creates agents and skills based on detected patterns. **Default be
 | **data-prep** | `data/` directory or data processing libraries |
 | **eval-agent** | `eval.py`, `metrics/`, or ML framework detected |
 | **inference-agent** | `inference.py`, `predict.py`, or model serving patterns |
+
+### Engineering Department (Rapid Development Studio)
+| Agent | Created When | Skill Version |
+|-------|-------------|---------------|
+| **rapid-prototyper** | Startup/MVP projects, or user requests rapid prototyping | No skill (requires MVP expertise) |
+| **frontend-developer** | Frontend framework detected (React/Vue/Angular/Next.js) | No skill (agent sufficient) |
+| **mobile-app-builder** | Mobile project detected (iOS/Android/RN/Flutter) | No skill (agent sufficient) |
+| **ai-engineer** | AI/ML frameworks, LLM integration, computer vision libs | No skill (requires AI expertise) |
+| **backend-architect** | Backend framework (FastAPI/Express/Django) or API detected | Uses **creating-api-endpoints** skill |
+| **test-writer-fixer** | Test framework detected, auto-triggers after code changes | Uses **creating-unit-tests**, **debugging-test-failures** |
+
+### Design Department
+| Agent | Created When | Skill Version |
+|-------|-------------|---------------|
+| **ui-designer** | Frontend project or UI components detected | No skill (agent sufficient) |
+| **visual-storyteller** | Design assets, presentations, or branding needs | No skill (agent sufficient) |
+| **brand-guardian** | Branding files, style guides, or design system | No skill (agent sufficient) |
+| **ux-researcher** | User research docs or UX patterns detected | No skill (agent sufficient) |
+| **whimsy-injector** | Auto-triggers after UI changes to add delight | No skill (agent sufficient) |
+
+### Design Department
+| Agent | Created When | Skill Version |
+|-------|-------------|---------------|
+| **ui-designer** | Frontend project or UI components detected | No skill (agent sufficient) |
+| **brand-guardian** | Branding files, style guides, or design system | No skill (agent sufficient) |
+| **ux-researcher** | User research docs or UX patterns detected | No skill (agent sufficient) |
+
+### Product Department
+| Agent | Created When | Skill Version |
+|-------|-------------|---------------|
+| **feedback-synthesizer** | User feedback, surveys, or customer data | No skill (requires analysis expertise) |
+
+### Project Management Department
+| Agent | Created When | Skill Version |
+|-------|-------------|---------------|
+| **experiment-tracker** | A/B tests, feature flags, or experimentation detected | No skill (requires statistical analysis) |
+| **project-shipper** | Release process, launch planning, or go-to-market | No skill (requires launch coordination) |
+| **studio-producer** | Team coordination, project management, or agile workflow | No skill (requires PM expertise) |
+
+### Studio Operations Department
+| Agent | Created When | Skill Version |
+|-------|-------------|---------------|
+| **analytics-reporter** | Analytics platform, dashboards, or data warehouse detected | No skill (requires data analysis) |
+| **infrastructure-maintainer** | DevOps, monitoring, or incident response detected | No skill (requires SRE expertise) |
+
+### Testing & Quality Department
+| Agent | Created When | Skill Version |
+|-------|-------------|---------------|
+| **api-tester** | API endpoints detected, auto-triggers after API changes | Uses **creating-api-endpoints** skill |
+| **test-results-analyzer** | Test failures detected, auto-triggers on failures | Uses **debugging-test-failures** skill |
+| **tool-evaluator** | Development tools, toolchain optimization | No skill (requires tool evaluation) |
+| **workflow-optimizer** | Process inefficiencies, bottlenecks, or workflow issues | No skill (requires process analysis) |
 
 ## Template Placeholders
 
@@ -685,6 +832,37 @@ Based on analysis of [2,500+ repositories](https://github.blog/ai-and-ml/github-
 - **data-prep**: Data loading, augmentation, preprocessing, pipelines
 - **eval-agent**: Metrics, benchmarking, model comparison, validation
 - **inference-agent**: Prediction pipelines, model serving, optimization, deployment
+
+### Engineering Department (Rapid Development Studio)
+- **rapid-prototyper**: MVP building, 6-day app cycles, rapid prototyping, tech stack selection (React/Next.js, Supabase, Tailwind)
+- **frontend-developer**: Responsive UI development, component architecture, accessibility (WCAG), performance optimization (LCP <2.5s)
+- **mobile-app-builder**: iOS/Android/cross-platform apps, React Native/Flutter, push notifications, biometric auth, 60fps performance
+- **ai-engineer**: AI/ML integration, LLM usage, prompt engineering, computer vision, NLP, responsible AI, cost management
+- **backend-architect**: Scalable APIs (REST/GraphQL), authentication (JWT/OAuth2), database optimization, security best practices
+- **test-writer-fixer**: Proactive test automation (auto-triggers after code changes), test quality, flaky test resolution
+
+### Design Department
+- **ui-designer**: Beautiful interface design, design systems, accessibility (4.5:1 contrast), mobile-first design, rapid UI conceptualization
+- **brand-guardian**: Brand consistency, visual identity systems (logo, colors, typography), cross-platform consistency, brand compliance
+- **ux-researcher**: User research methodologies, user journey mapping, persona development, usability testing, behavioral insights
+
+### Product Department
+- **feedback-synthesizer**: User feedback analysis, pattern identification, sentiment analysis, prioritization matrix, behavioral correlation
+
+### Project Management Department
+- **experiment-tracker**: A/B testing, feature flag tracking, statistical significance analysis, experiment documentation, data-driven decisions (auto-triggers with flags)
+- **project-shipper**: Launch coordination, release management, go-to-market execution, cross-team coordination, post-launch monitoring
+- **studio-producer**: Project management, team velocity optimization, blocker removal, stakeholder management, meeting efficiency (<20% time)
+
+### Studio Operations Department
+- **analytics-reporter**: Dashboard creation, data visualization, metrics tracking (DAU/MAU, retention, revenue), insights generation (auto-triggers on data questions)
+- **infrastructure-maintainer**: DevOps, site reliability (99.9% uptime), incident response (<15 min), deployment automation, monitoring (auto-triggers on incidents)
+
+### Testing & Quality Department
+- **api-tester**: API endpoint testing, contract validation, authentication testing, performance testing (<500ms P95), security testing (auto-triggers after API changes)
+- **test-results-analyzer**: Test failure investigation, flaky test detection, root cause analysis, test reliability improvement (auto-triggers on failures)
+- **tool-evaluator**: Development tool evaluation, toolchain optimization, TCO analysis, vendor assessment, adoption strategy
+- **workflow-optimizer**: Process improvement, bottleneck identification, automation opportunities, DORA metrics, developer velocity optimization (auto-triggers on inefficiencies)
 
 ## Example Generated Output
 
