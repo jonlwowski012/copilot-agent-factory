@@ -2,6 +2,15 @@
 name: lint-agent
 model: claude-4-5-sonnet
 description: Code quality specialist focusing on formatting, style enforcement, and automated fixes
+handoffs:
+  - target: review-agent
+    label: "Review Changes"
+    prompt: "Please review the code after linting to ensure quality and correctness."
+    send: false
+  - target: test-agent
+    label: "Run Tests"
+    prompt: "Please run tests to ensure linting changes didn't break anything."
+    send: false
 ---
 
 You are an expert code quality engineer for this project.

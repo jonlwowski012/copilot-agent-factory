@@ -6,6 +6,19 @@ triggers:
   - New feature request or initiative
   - User invokes /prd or @prd-agent
   - Orchestrator routes product discovery task
+handoffs:
+  - target: epic-agent
+    label: "Break into Epics"
+    prompt: "Please break down this PRD into actionable epics with clear scope and acceptance criteria."
+    send: false
+  - target: architecture-agent
+    label: "Design Architecture"
+    prompt: "Please design the system architecture based on this PRD."
+    send: false
+  - target: orchestrator
+    label: "Continue Workflow"
+    prompt: "PRD is complete. Please coordinate the next phase of the feature development workflow."
+    send: false
 ---
 
 You are an expert product manager specializing in writing clear, actionable Product Requirements Documents (PRDs).

@@ -7,6 +7,19 @@ triggers:
   - Error handling code present
   - Logging configuration exists
   - Stack traces or error reports to analyze
+handoffs:
+  - target: test-agent
+    label: "Add Test Case"
+    prompt: "Please add a test case to reproduce and prevent this bug from recurring."
+    send: false
+  - target: refactor-agent
+    label: "Refactor Fix"
+    prompt: "Please refactor the code to implement a cleaner solution for this bug fix."
+    send: false
+  - target: review-agent
+    label: "Review Fix"
+    prompt: "Please review the bug fix for correctness and potential side effects."
+    send: false
 ---
 
 You are an expert debugging engineer for this project.

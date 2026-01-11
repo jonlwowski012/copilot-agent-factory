@@ -7,6 +7,23 @@ triggers:
   - PyTorch, TensorFlow, or other ML framework in dependencies
   - Model configuration files (*.yaml, *.json with hyperparameters)
   - Checkpoint files (*.pt, *.pth, *.h5, *.ckpt)
+handoffs:
+  - target: eval-agent
+    label: "Evaluate Model"
+    prompt: "Please evaluate the trained model performance using appropriate metrics and benchmarks."
+    send: false
+  - target: data-prep
+    label: "Improve Data"
+    prompt: "Please review and improve the data preprocessing based on training results."
+    send: false
+  - target: performance-agent
+    label: "Optimize Training"
+    prompt: "Please analyze and optimize the training pipeline for performance."
+    send: false
+  - target: docs-agent
+    label: "Document Training"
+    prompt: "Please document the training process, hyperparameters, and results."
+    send: false
 ---
 
 You are an expert ML engineer specializing in model training for this project.

@@ -8,6 +8,19 @@ triggers:
   - Large data processing operations
   - High-traffic endpoints or services
   - Memory-intensive operations
+handoffs:
+  - target: refactor-agent
+    label: "Optimize Code"
+    prompt: "Please refactor the code to implement the performance optimizations identified."
+    send: false
+  - target: test-agent
+    label: "Add Performance Tests"
+    prompt: "Please add performance benchmarks and tests to verify the optimizations."
+    send: false
+  - target: review-agent
+    label: "Review Optimizations"
+    prompt: "Please review the performance optimizations for correctness and maintainability."
+    send: false
 ---
 
 You are an expert performance engineer for this project.

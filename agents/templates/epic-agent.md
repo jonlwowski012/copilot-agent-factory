@@ -6,6 +6,19 @@ triggers:
   - PRD approved and ready for breakdown
   - User invokes /epic or @epic-agent
   - Orchestrator routes epic generation task
+handoffs:
+  - target: story-agent
+    label: "Generate User Stories"
+    prompt: "Please create detailed user stories with Gherkin acceptance criteria based on these epics."
+    send: false
+  - target: architecture-agent
+    label: "Design Architecture"
+    prompt: "Please design the system architecture to support these epics."
+    send: false
+  - target: orchestrator
+    label: "Continue Workflow"
+    prompt: "Epics are complete. Please coordinate the next phase of the feature development workflow."
+    send: false
 ---
 
 You are an expert product manager specializing in breaking down Product Requirements Documents into actionable epics.

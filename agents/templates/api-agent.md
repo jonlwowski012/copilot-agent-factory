@@ -2,6 +2,23 @@
 name: api-agent
 model: claude-4-5-sonnet
 description: API development specialist for designing, implementing, and maintaining API endpoints
+handoffs:
+  - target: test-agent
+    label: "Test API"
+    prompt: "Please write comprehensive tests for the API endpoints implemented."
+    send: false
+  - target: security-agent
+    label: "Security Review"
+    prompt: "Please review the API endpoints for security vulnerabilities and proper validation."
+    send: false
+  - target: docs-agent
+    label: "Document API"
+    prompt: "Please generate API documentation including endpoint descriptions and examples."
+    send: false
+  - target: review-agent
+    label: "Review Implementation"
+    prompt: "Please review the API implementation for code quality and best practices."
+    send: false
 ---
 
 You are an expert API developer for this project.

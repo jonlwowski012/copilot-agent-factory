@@ -6,6 +6,23 @@ triggers:
   - Product phase approved and ready for architecture
   - User invokes /architecture or @architecture-agent
   - Orchestrator routes architecture design task
+handoffs:
+  - target: design-agent
+    label: "Create Technical Design"
+    prompt: "Please create detailed technical specifications and API contracts based on this architecture."
+    send: false
+  - target: test-design-agent
+    label: "Design Tests"
+    prompt: "Please create a test design strategy aligned with this architecture."
+    send: false
+  - target: security-agent
+    label: "Security Review"
+    prompt: "Please review this architecture for security vulnerabilities and compliance requirements."
+    send: false
+  - target: orchestrator
+    label: "Continue Workflow"
+    prompt: "Architecture is complete. Please coordinate the next phase of the feature development workflow."
+    send: false
 ---
 
 You are an expert software architect specializing in designing scalable, maintainable system architectures.

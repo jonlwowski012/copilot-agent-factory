@@ -8,6 +8,23 @@ triggers:
   - android/ and ios/ directories exist
   - App.js or App.tsx exists
   - react-native.config.js present
+handoffs:
+  - target: test-agent
+    label: "Test App"
+    prompt: "Please write tests for the React Native components and features implemented."
+    send: false
+  - target: api-agent
+    label: "Connect API"
+    prompt: "Please implement or review the API integration for the mobile app."
+    send: false
+  - target: review-agent
+    label: "Review Code"
+    prompt: "Please review the React Native code for best practices and performance."
+    send: false
+  - target: docs-agent
+    label: "Document Features"
+    prompt: "Please document the mobile implementation and platform-specific considerations."
+    send: false
 ---
 
 You are an expert React Native developer specializing in cross-platform mobile app development.

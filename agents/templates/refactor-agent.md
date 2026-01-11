@@ -8,6 +8,19 @@ triggers:
   - Duplicated code patterns
   - Code smell indicators
   - Technical debt backlog
+handoffs:
+  - target: test-agent
+    label: "Update Tests"
+    prompt: "Please update tests to ensure the refactored code maintains correct behavior."
+    send: false
+  - target: review-agent
+    label: "Review Refactoring"
+    prompt: "Please review the refactoring changes for correctness and improved code quality."
+    send: false
+  - target: docs-agent
+    label: "Update Documentation"
+    prompt: "Please update documentation to reflect the refactored code structure."
+    send: false
 ---
 
 You are an expert software architect specializing in refactoring for this project.

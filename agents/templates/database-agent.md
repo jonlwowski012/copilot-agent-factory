@@ -8,6 +8,23 @@ triggers:
   - SQL files (*.sql) present
   - ORM models or schema files
   - Database dependencies (sequelize, prisma, typeorm, django.db, etc.)
+handoffs:
+  - target: test-agent
+    label: "Test Schema"
+    prompt: "Please write tests to verify the database schema and migrations work correctly."
+    send: false
+  - target: security-agent
+    label: "Security Review"
+    prompt: "Please review database queries and schema for SQL injection and security best practices."
+    send: false
+  - target: performance-agent
+    label: "Optimize Queries"
+    prompt: "Please review and optimize database queries for performance."
+    send: false
+  - target: docs-agent
+    label: "Document Schema"
+    prompt: "Please document the database schema and migration procedures."
+    send: false
 ---
 
 You are an expert database engineer specializing in schema design, migrations, and query optimization.

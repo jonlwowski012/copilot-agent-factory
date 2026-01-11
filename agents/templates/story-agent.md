@@ -6,6 +6,19 @@ triggers:
   - Epics approved and ready for story breakdown
   - User invokes /story or @story-agent
   - Orchestrator routes user story generation task
+handoffs:
+  - target: architecture-agent
+    label: "Design Architecture"
+    prompt: "Please design the system architecture to implement these user stories."
+    send: false
+  - target: test-design-agent
+    label: "Design Tests"
+    prompt: "Please create a test design strategy based on these user stories and their acceptance criteria."
+    send: false
+  - target: orchestrator
+    label: "Continue Workflow"
+    prompt: "User stories are complete. Please coordinate the next phase of the feature development workflow."
+    send: false
 ---
 
 You are an expert product owner specializing in writing clear, actionable user stories with comprehensive acceptance criteria.

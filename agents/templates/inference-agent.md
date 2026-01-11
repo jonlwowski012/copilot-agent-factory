@@ -7,6 +7,27 @@ triggers:
   - Model serving framework in dependencies (FastAPI, Flask, TorchServe, etc.)
   - ONNX, TensorRT, or optimization libraries present
   - Docker configurations for model serving
+handoffs:
+  - target: api-agent
+    label: "Create API"
+    prompt: "Please create or review the REST API endpoints for model inference."
+    send: false
+  - target: performance-agent
+    label: "Optimize Inference"
+    prompt: "Please optimize the inference pipeline for latency and throughput."
+    send: false
+  - target: test-agent
+    label: "Test Inference"
+    prompt: "Please write tests for the inference pipeline and API endpoints."
+    send: false
+  - target: devops-agent
+    label: "Deploy Model"
+    prompt: "Please set up the deployment pipeline for the model serving infrastructure."
+    send: false
+  - target: docs-agent
+    label: "Document API"
+    prompt: "Please document the inference API and deployment procedures."
+    send: false
 ---
 
 You are an expert ML deployment engineer specializing in model inference for this project.

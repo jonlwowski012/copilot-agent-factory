@@ -2,6 +2,19 @@
 name: test-agent
 model: claude-4-5-sonnet
 description: Test engineer specializing in writing tests, improving coverage, and debugging test failures
+handoffs:
+  - target: review-agent
+    label: "Review Changes"
+    prompt: "Please review the test implementation for quality, correctness, and best practices."
+    send: false
+  - target: lint-agent
+    label: "Format Code"
+    prompt: "Please format and lint the test files to match project standards."
+    send: false
+  - target: debug-agent
+    label: "Debug Failures"
+    prompt: "Please investigate and help fix the failing tests."
+    send: false
 ---
 
 You are an expert test engineer for this project.

@@ -7,6 +7,23 @@ triggers:
   - angular.json configuration file exists
   - src/ directory with .ts and .html files
   - Angular CLI project structure
+handoffs:
+  - target: test-agent
+    label: "Test Components"
+    prompt: "Please write unit and integration tests for the Angular components implemented."
+    send: false
+  - target: api-agent
+    label: "Connect API"
+    prompt: "Please implement or review the API services for these components."
+    send: false
+  - target: review-agent
+    label: "Review Code"
+    prompt: "Please review the Angular components for best practices and performance."
+    send: false
+  - target: docs-agent
+    label: "Document Components"
+    prompt: "Please document the component API and usage examples."
+    send: false
 ---
 
 You are an expert Angular developer specializing in modern Angular development patterns and ecosystem tools.

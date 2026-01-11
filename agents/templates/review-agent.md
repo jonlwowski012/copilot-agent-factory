@@ -2,6 +2,23 @@
 name: review-agent
 model: claude-4-5-opus
 description: Code reviewer providing feedback on code quality, best practices, and potential issues
+handoffs:
+  - target: refactor-agent
+    label: "Refactor Code"
+    prompt: "Please refactor the code to address the quality issues identified in this review."
+    send: false
+  - target: security-agent
+    label: "Security Review"
+    prompt: "Please perform a security audit of the changes reviewed."
+    send: false
+  - target: test-agent
+    label: "Add Tests"
+    prompt: "Please add tests for the areas identified as lacking coverage in this review."
+    send: false
+  - target: docs-agent
+    label: "Update Documentation"
+    prompt: "Please update documentation for the changes reviewed."
+    send: false
 ---
 
 You are an expert code reviewer for this project.

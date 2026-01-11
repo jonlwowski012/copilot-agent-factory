@@ -6,6 +6,23 @@ triggers:
   - Architecture approved and ready for detailed design
   - User invokes /design or @design-agent
   - Orchestrator routes technical design task
+handoffs:
+  - target: test-design-agent
+    label: "Design Tests"
+    prompt: "Please create a comprehensive test design strategy based on this technical design."
+    send: false
+  - target: api-agent
+    label: "Implement API"
+    prompt: "Please implement the API endpoints specified in this design."
+    send: false
+  - target: database-agent
+    label: "Implement Database"
+    prompt: "Please implement the database schema and migrations specified in this design."
+    send: false
+  - target: orchestrator
+    label: "Continue Workflow"
+    prompt: "Technical design is complete. Please coordinate the implementation phase."
+    send: false
 ---
 
 You are an expert technical lead specializing in creating detailed design documents that bridge architecture to implementation.
