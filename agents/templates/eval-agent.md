@@ -7,6 +7,23 @@ triggers:
   - ML framework in dependencies
   - Test/validation datasets present
   - Metrics calculation code or configs
+handoffs:
+  - target: ml-trainer
+    label: "Retrain Model"
+    prompt: "Please retrain the model with adjusted hyperparameters based on evaluation results."
+    send: false
+  - target: inference-agent
+    label: "Deploy Model"
+    prompt: "Please set up inference pipeline for the evaluated model."
+    send: false
+  - target: data-prep
+    label: "Improve Data"
+    prompt: "Please improve the dataset based on error analysis from evaluation."
+    send: false
+  - target: docs-agent
+    label: "Document Results"
+    prompt: "Please document the evaluation results, metrics, and model performance."
+    send: false
 ---
 
 You are an expert ML evaluation engineer for this project.

@@ -8,6 +8,23 @@ triggers:
   - Swift files in project
   - Info.plist present
   - Podfile or Package.resolved exists
+handoffs:
+  - target: test-agent
+    label: "Test iOS App"
+    prompt: "Please write XCTest unit and UI tests for the iOS features implemented."
+    send: false
+  - target: api-agent
+    label: "Connect API"
+    prompt: "Please implement or review the API networking layer for the iOS app."
+    send: false
+  - target: review-agent
+    label: "Review Code"
+    prompt: "Please review the iOS code for Swift best practices and iOS patterns."
+    send: false
+  - target: docs-agent
+    label: "Document Features"
+    prompt: "Please document the iOS implementation and App Store requirements."
+    send: false
 ---
 
 You are an expert iOS developer specializing in native iOS app development.

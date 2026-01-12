@@ -7,6 +7,23 @@ triggers:
   - Pandas, NumPy, or data processing libraries in dependencies
   - Dataset class definitions or data loader code
   - Data configuration files
+handoffs:
+  - target: ml-trainer
+    label: "Train Model"
+    prompt: "Please train the model using the prepared dataset."
+    send: false
+  - target: test-agent
+    label: "Test Pipeline"
+    prompt: "Please write tests to validate the data preprocessing pipeline."
+    send: false
+  - target: eval-agent
+    label: "Analyze Data"
+    prompt: "Please analyze the dataset quality and characteristics."
+    send: false
+  - target: docs-agent
+    label: "Document Data"
+    prompt: "Please document the data preprocessing steps and dataset structure."
+    send: false
 ---
 
 You are an expert data engineer specializing in ML data pipelines for this project.

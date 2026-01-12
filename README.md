@@ -359,6 +359,61 @@ Based on analysis of [2,500+ repositories](https://github.blog/ai-and-ml/github-
 - Missing executable commands
 - No boundaries defined
 
+## Agent Handoffs
+
+All agent templates include **handoff** configurations that enable seamless transitions between agents during development workflows. Handoffs allow agents to pass context and suggest next steps, creating a guided, multi-agent collaboration experience.
+
+### How Handoffs Work
+
+When an agent completes its task, it can present handoff buttons that:
+- Transfer context to the next appropriate agent
+- Pre-fill prompts with relevant information
+- Guide users through multi-step workflows
+- Enable approval-based transitions
+
+### Example Workflow with Handoffs
+
+```
+1. @prd-agent creates PRD
+   → Handoff options: "Break into Epics" (@epic-agent), "Design Architecture" (@architecture-agent)
+
+2. @epic-agent breaks down PRD
+   → Handoff options: "Generate User Stories" (@story-agent), "Design Architecture" (@architecture-agent)
+
+3. @architecture-agent designs system
+   → Handoff options: "Create Technical Design" (@design-agent), "Security Review" (@security-agent)
+
+4. @test-design-agent creates test strategy
+   → Handoff options: "Implement Tests" (@test-agent), "Start Implementation" (@api-agent)
+
+5. @api-agent implements endpoints
+   → Handoff options: "Test API" (@test-agent), "Security Review" (@security-agent), "Document API" (@docs-agent)
+
+6. @review-agent reviews code
+   → Handoff options: "Refactor Code" (@refactor-agent), "Add Tests" (@test-agent), "Update Documentation" (@docs-agent)
+```
+
+### Handoff Configuration
+
+Each agent template includes handoffs in the YAML frontmatter:
+
+```yaml
+---
+name: api-agent
+handoffs:
+  - target: test-agent
+    label: "Test API"
+    prompt: "Please write comprehensive tests for the API endpoints implemented."
+    send: false
+  - target: security-agent
+    label: "Security Review"
+    prompt: "Please review the API endpoints for security vulnerabilities."
+    send: false
+---
+```
+
+The `send: false` setting means handoffs require user approval before transitioning, maintaining developer control over the workflow.
+
 ## Agent Capabilities
 
 ### Orchestrator

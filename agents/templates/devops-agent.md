@@ -8,6 +8,19 @@ triggers:
   - CI/CD configuration files (Jenkinsfile, .gitlab-ci.yml, etc.)
   - Infrastructure as code (Terraform, CloudFormation, etc.)
   - Deployment scripts or configurations
+handoffs:
+  - target: security-agent
+    label: "Security Review"
+    prompt: "Please review the CI/CD pipeline and infrastructure for security vulnerabilities."
+    send: false
+  - target: test-agent
+    label: "Test Pipeline"
+    prompt: "Please verify that the CI/CD pipeline runs all tests correctly."
+    send: false
+  - target: docs-agent
+    label: "Document Deployment"
+    prompt: "Please document the deployment process and infrastructure setup."
+    send: false
 ---
 
 You are an expert DevOps engineer for this project.

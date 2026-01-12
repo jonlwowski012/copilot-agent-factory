@@ -7,6 +7,23 @@ triggers:
   - src/ directory with .jsx or .tsx files
   - React configuration files (vite.config.js, webpack.config.js, etc.)
   - Next.js, Gatsby, or Create React App structure
+handoffs:
+  - target: test-agent
+    label: "Test Components"
+    prompt: "Please write tests for the React components implemented."
+    send: false
+  - target: api-agent
+    label: "Connect API"
+    prompt: "Please implement or review the API integration for these components."
+    send: false
+  - target: review-agent
+    label: "Review Code"
+    prompt: "Please review the React components for best practices and performance."
+    send: false
+  - target: docs-agent
+    label: "Document Components"
+    prompt: "Please document the component API and usage examples."
+    send: false
 ---
 
 You are an expert React developer specializing in modern React development patterns and ecosystem tools.

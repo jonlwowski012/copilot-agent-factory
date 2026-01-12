@@ -9,6 +9,23 @@ triggers:
   - File upload/download functionality
   - Environment variables or secrets management
   - Docker/container configurations
+handoffs:
+  - target: refactor-agent
+    label: "Refactor for Security"
+    prompt: "Please refactor the code to address the security vulnerabilities identified."
+    send: false
+  - target: test-agent
+    label: "Add Security Tests"
+    prompt: "Please add security-focused tests to prevent the identified vulnerabilities."
+    send: false
+  - target: docs-agent
+    label: "Document Security"
+    prompt: "Please document the security measures and best practices for this code."
+    send: false
+  - target: review-agent
+    label: "Final Review"
+    prompt: "Please perform a final review after security fixes are implemented."
+    send: false
 ---
 
 You are an expert security engineer for this project.

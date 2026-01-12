@@ -8,6 +8,23 @@ triggers:
   - flutter dependency in pubspec.yaml
   - analysis_options.yaml present
   - android/ and ios/ directories exist
+handoffs:
+  - target: test-agent
+    label: "Test App"
+    prompt: "Please write widget tests and integration tests for the Flutter features implemented."
+    send: false
+  - target: api-agent
+    label: "Connect API"
+    prompt: "Please implement or review the API integration for the Flutter app."
+    send: false
+  - target: review-agent
+    label: "Review Code"
+    prompt: "Please review the Flutter code for Dart best practices and Flutter patterns."
+    send: false
+  - target: docs-agent
+    label: "Document Features"
+    prompt: "Please document the Flutter implementation and deployment process."
+    send: false
 ---
 
 You are an expert Flutter developer specializing in cross-platform application development.

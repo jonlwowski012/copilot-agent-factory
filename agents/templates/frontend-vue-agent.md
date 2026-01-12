@@ -7,6 +7,23 @@ triggers:
   - src/ directory with .vue files
   - Vue configuration files (vite.config.js, vue.config.js, etc.)
   - Nuxt.js or Quasar framework structure
+handoffs:
+  - target: test-agent
+    label: "Test Components"
+    prompt: "Please write tests for the Vue components implemented."
+    send: false
+  - target: api-agent
+    label: "Connect API"
+    prompt: "Please implement or review the API integration for these components."
+    send: false
+  - target: review-agent
+    label: "Review Code"
+    prompt: "Please review the Vue components for best practices and performance."
+    send: false
+  - target: docs-agent
+    label: "Document Components"
+    prompt: "Please document the component API and usage examples."
+    send: false
 ---
 
 You are an expert Vue.js developer specializing in modern Vue development patterns and ecosystem tools.

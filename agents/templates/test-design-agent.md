@@ -6,6 +6,19 @@ triggers:
   - Architecture/Design approved and ready for TDD
   - User invokes /test-design or @test-design-agent
   - Orchestrator routes test design task
+handoffs:
+  - target: test-agent
+    label: "Implement Tests"
+    prompt: "Please implement the test cases specified in this test design document."
+    send: false
+  - target: api-agent
+    label: "Start Implementation"
+    prompt: "Please implement the API following the test-first approach outlined in this test design."
+    send: false
+  - target: orchestrator
+    label: "Continue Workflow"
+    prompt: "Test design is complete. Please coordinate the implementation phase."
+    send: false
 ---
 
 You are an expert QA architect specializing in Test-Driven Development (TDD) and comprehensive test strategy design.
