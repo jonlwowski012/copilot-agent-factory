@@ -97,6 +97,11 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | Template | Purpose |
 |----------|---------|
 | `api-agent.md` | API endpoints, routes, request/response handling |
+| `backend-agent.md` | Server-side logic, business rules, application architecture |
+| `cloud-agent.md` | AWS/GCP/Azure infrastructure, Terraform, serverless |
+| `microservices-agent.md` | Distributed systems, service communication, K8s |
+| `queue-agent.md` | Message queues, async processing, background jobs |
+| `observability-agent.md` | Logging, metrics, tracing, monitoring |
 | `ml-trainer.md` | Model training, hyperparameters, training loops |
 | `data-prep.md` | Data loading, preprocessing, augmentation |
 | `eval-agent.md` | Model evaluation, metrics, benchmarking |
@@ -416,16 +421,76 @@ Generate agents in this order to handle dependencies:
 To generate agents for a repository:
 
 1. Copy this file and the `templates/` folder to the target repo
-2. Invoke this agent: "@agent-generator analyze this repository and generate all appropriate agent.md files"
+2. Invoke this agent using one of the strategies below
 3. Review generated agents in `.github/agents/` and customize as needed
 4. Optionally delete `templates/` folder after generation
 
-## Example Invocation
+## IMPORTANT: Batch Generation Strategy
 
+**To avoid hitting context length limits**, generate agents in batches rather than all at once.
+
+### Recommended Approach: Generate in Phases
+
+**Phase 1: Analysis & Setup (always start here)**
 ```
-@agent-generator Please analyze this repository and generate the appropriate agent.md files. 
-Focus on detecting the tech stack, finding build/test/lint commands, and creating agents 
-that match the project's actual structure.
+@agent-generator Analyze this repository and:
+1. Detect tech stack, commands, and patterns
+2. Create the planning directory structure (docs/planning/)
+3. List which agents should be generated (but don't generate them yet)
+```
+
+**Phase 2: Planning Agents**
+```
+@agent-generator Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent, architecture-agent, design-agent, test-design-agent
+```
+
+**Phase 3: Core Development Agents**
+```
+@agent-generator Generate core agents: test-agent, docs-agent, lint-agent, review-agent, debug-agent, refactor-agent
+```
+
+**Phase 4: Quality & DevOps Agents**
+```
+@agent-generator Generate quality agents: security-agent, performance-agent, devops-agent
+```
+
+**Phase 5: Domain-Specific Agents (if detected)**
+```
+@agent-generator Generate domain agents: api-agent, database-agent
+```
+
+### Batch Size Guidelines
+
+| Batch | Max Items | Why |
+|-------|-----------|-----|
+| Analysis + Setup | N/A | Creates config files, no agents |
+| Planning Agents | 7 agents | Related, similar size |
+| Core Agents | 6 agents | Most commonly needed |
+| Quality/DevOps | 3 agents | Less frequently changed |
+| Domain Agents | 2-4 agents | Project-specific |
+
+**Never try to generate more than 7 agents in a single request.**
+
+## Example Invocations
+
+### ❌ AVOID: All-at-once (hits context limits)
+```
+@agent-generator Please analyze this repository and generate ALL agents
+```
+
+### ✅ RECOMMENDED: Phased Generation
+```
+@agent-generator Analyze this repository and report recommended agents
+
+@agent-generator Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent
+
+@agent-generator Generate core agents: test-agent, docs-agent, lint-agent, review-agent
+```
+
+### Single Agent Generation
+```
+@agent-generator Generate only api-agent for this FastAPI project
+@agent-generator Generate only test-agent using pytest conventions
 ```
 
 ## Example Generated Active Agents Table
@@ -450,7 +515,13 @@ For the orchestrator's `{{active_agents_table}}` placeholder:
 | @devops-agent | ✅ Active | GitHub Actions, Docker |
 | @debug-agent | ✅ Active | Error investigation, troubleshooting |
 | @refactor-agent | ✅ Active | Code restructuring, tech debt |
-| @api-agent | ✅ Active | FastAPI endpoints |
+| @performance-agent | ✅ Active | Profiling, optimization, bottlenecks |
+| @api-agent | ✅ Active | API endpoints, REST/GraphQL |
+| @backend-agent | ✅ Active | Server-side logic, business rules |
+| @cloud-agent | ✅ Active | AWS/GCP/Azure, Terraform, serverless |
+| @microservices-agent | ✅ Active | Distributed systems, K8s, service mesh |
+| @queue-agent | ✅ Active | Message queues, async jobs, Celery/Kafka |
+| @observability-agent | ✅ Active | Logging, metrics, tracing, monitoring |
 | @ml-trainer | ✅ Active | PyTorch model training |
 | @data-prep | ✅ Active | Dataset preparation |
 | @eval-agent | ✅ Active | Model evaluation, metrics |
