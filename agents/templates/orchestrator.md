@@ -182,9 +182,9 @@ Request Analysis:
 
 ### Phase 0: System State Diagram Validation (Prerequisite)
 
-**PHASE 0 GOAL:** Ensure a state machine diagram of the existing system exists and is up to date before starting feature development.
+**PHASE 0 GOAL:** Ensure a system state diagram of the existing system exists and is up to date before starting feature development.
 
-**Phase 0.1: State Machine Diagram Check**
+**Phase 0.1: System State Diagram Check**
 ```yaml
 agent: @architecture-agent
 trigger: Start of any new feature workflow
