@@ -1,8 +1,12 @@
 ---
 name: orchestrator
 model: claude-4-5-opus
-description: Master coordinator for Copilot Agent Factory - routes tasks to specialized agents and manages 5-phase workflows with strict enforcement
+description: Master coordinator for Copilot Agent Factory - routes tasks to specialized agents and manages 6-phase workflows with strict enforcement
 handoffs:
+  - target: architecture-agent
+    label: "Phase 0: Verify State Diagram"
+    prompt: "Check if docs/system-state-diagram.md exists and is up to date. If not, create or update a state machine diagram showing the current system states and transitions."
+    send: false
   - target: prd-agent
     label: "Start Phase 1: PRD"
     prompt: "Create a Product Requirements Document for this feature: {{feature_description}}"
@@ -175,6 +179,42 @@ Request Analysis:
 3. **Each phase produces a documented artifact** - verify file creation
 4. **Track state rigorously** - maintain workflow state throughout
 5. **Validate prerequisites** - ensure previous phase completed before starting next
+
+### Phase 0: System State Diagram Validation (Prerequisite)
+
+**PHASE 0 GOAL:** Ensure a state machine diagram of the existing system exists and is up to date before starting feature development.
+
+**Phase 0.1: State Machine Diagram Check**
+```yaml
+agent: @architecture-agent
+trigger: Start of any new feature workflow
+input: Current system codebase and documentation
+output: docs/system-state-diagram.md
+validation: State diagram file must exist and be current
+gate: MUST wait for `/approve` or `/skip`
+handoff_to: @prd-agent
+handoff_prompt: "Create a Product Requirements Document for this feature"
+```
+
+**Phase 0 Tasks:**
+1. Check if `docs/system-state-diagram.md` exists
+2. If it doesn't exist:
+   - Invoke @architecture-agent to analyze the system
+   - Generate state machine diagram showing system states and transitions
+   - Save to `docs/system-state-diagram.md`
+3. If it exists:
+   - Invoke @architecture-agent to review current codebase
+   - Compare with existing diagram
+   - Update if system has changed
+4. Present diagram to user for approval
+
+**Phase 0 Completion Checklist:**
+- [ ] State diagram exists in docs/system-state-diagram.md
+- [ ] Diagram reflects current system state
+- [ ] Diagram approved or skipped
+- [ ] Ready to proceed to Phase 1
+
+---
 
 ### Phase 1: Product Planning (Sequential with Approval Gates)
 
@@ -360,7 +400,7 @@ validation: Documentation is complete and accurate
 **ORCHESTRATOR MUST ENFORCE THESE RULES:**
 
 1. **Sequential Execution:**
-   - Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5
+   - Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5
    - NEVER skip phases unless explicitly commanded with `/skip`
    - NEVER proceed without approval gates
 
@@ -394,15 +434,17 @@ Track the current workflow state with this structure:
 ```yaml
 workflow:
   feature: "Feature name (kebab-case)"
-  current_phase: 1-5  # Must be 1, 2, 3, 4, or 5
-  current_step: "1.1" | "1.2" | "1.3" | "2.1" | "2.2" | "3.1" | "4.1" | "5.1" | "5.2"
+  current_phase: 0-5  # Must be 0, 1, 2, 3, 4, or 5
+  current_step: "0.1" | "1.1" | "1.2" | "1.3" | "2.1" | "2.2" | "3.1" | "4.1" | "5.1" | "5.2"
   phase_names:
+    0: "System State Diagram Validation"
     1: "Product Planning"
     2: "Architecture & Design"
     3: "Test Strategy (TDD)"
     4: "Implementation"
     5: "Review & Quality Assurance"
   artifacts:
+    state_diagram: "docs/system-state-diagram.md"
     prd: "docs/planning/prd/{feature}-{date}.md"
     epics: "docs/planning/epics/{feature}-epics-{date}.md"
     stories: "docs/planning/stories/{feature}-stories-{date}.md"
@@ -410,6 +452,7 @@ workflow:
     design: "docs/planning/design/{feature}-design-{date}.md"
     test_design: "docs/planning/test-design/{feature}-test-design-{date}.md"
   completed_phases:
+    phase_0: false
     phase_1: false
     phase_2: false
     phase_3: false
@@ -425,6 +468,7 @@ workflow:
 4. **`/status` command shows current state and what's needed to proceed**
 
 **Phase Completion Criteria:**
+- **Phase 0:** System state diagram exists and is current
 - **Phase 1:** PRD + Epics + Stories files exist and approved
 - **Phase 2:** Architecture + Design files exist and approved
 - **Phase 3:** Test Design file exists and approved
@@ -572,7 +616,7 @@ The following MCP servers are available to enhance agent capabilities:
 
 ## Example Workflows
 
-### Full 5-Phase Feature Development Workflow
+### Full 6-Phase Feature Development Workflow (Including Phase 0)
 
 ```
 User: "@orchestrator Start a new feature: OAuth2 authentication system"
@@ -580,8 +624,28 @@ User: "@orchestrator Start a new feature: OAuth2 authentication system"
 Orchestrator: 
 🚀 Starting Feature Development Workflow
 Feature: oauth2-authentication-system
-Phase: 1.1 - Product Requirements Document
+Phase: 0.1 - System State Diagram Validation
 
+Checking for existing state diagram...
+
+Orchestrator:
+📋 Phase 0.1 - Checking system state diagram
+Invoking @architecture-agent to verify/create state diagram...
+
+[State diagram is created or updated]
+
+Orchestrator:
+✅ Phase 0.1 Complete: System State Diagram Validation
+📄 Artifact: docs/system-state-diagram.md
+📋 Summary: State diagram showing current system states and transitions is up to date.
+⏭️  Next: Phase 1.1 - Product Requirements Document
+
+Type `/approve` to proceed or `/skip` to skip.
+
+User: /approve
+
+Orchestrator:
+✓ Phase 0.1 approved. Starting Phase 1.1 - Product Requirements Document
 Invoking @prd-agent...
 
 [PRD is created]
@@ -641,7 +705,7 @@ Type `/approve` to proceed or `/skip` to skip.
 
 User: /approve
 
-[...workflow continues through all 5 phases...]
+[...workflow continues through all phases...]
 ```
 
 ### Using `/status` Command
@@ -656,6 +720,7 @@ Current Phase: 2.1 - Architecture Design
 Status: awaiting_approval
 
 Completed Phases:
+✅ Phase 0.1 - State Diagram (docs/system-state-diagram.md)
 ✅ Phase 1.1 - PRD (docs/planning/prd/oauth2-authentication-system-20260111.md)
 ✅ Phase 1.2 - Epics (docs/planning/epics/oauth2-authentication-system-epics-20260111.md)
 ✅ Phase 1.3 - Stories (docs/planning/stories/oauth2-authentication-system-stories-20260111.md)
