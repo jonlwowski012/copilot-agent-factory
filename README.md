@@ -26,24 +26,23 @@ The agent factory includes a comprehensive **Feature Development Workflow** with
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│  PHASE 1: PRODUCT    →   PHASE 2: ARCHITECTURE   →   PHASE 3: TDD     │
-│  ─────────────────       ───────────────────────       ───────────    │
-│  @prd-agent              @architecture-agent           @test-design   │
-│  @epic-agent             @design-agent                   -agent       │
-│  @story-agent                                                         │
-│         ↓                        ↓                          ↓         │
-│    [/approve]               [/approve]                 [/approve]     │
-│    [/skip]                  [/skip]                    [/skip]        │
+│  PHASE 0: STATE      →   PHASE 1: PRODUCT    →   PHASE 2: ARCHITECTURE │
+│  ─────────────────       ─────────────────       ─────────────────────  │
+│  @architecture-agent     @prd-agent              @architecture-agent    │
+│  (State Diagram)         @epic-agent             @design-agent          │
+│                          @story-agent                                   │
+│         ↓                        ↓                        ↓             │
+│    [/approve]               [/approve]               [/approve]         │
+│    [/skip]                  [/skip]                  [/skip]            │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                        PHASE 4: DEVELOPMENT                            │
-│  ──────────────────────────────────────────────────────────────────   │
-│  @api-agent, @database-agent, @frontend-*-agent, etc.                 │
-│                              ↓                                         │
-│                         [/approve]                                     │
-├─────────────────────────────────────────────────────────────────────────┤
-│                         PHASE 5: REVIEW                                │
-│  ──────────────────────────────────────────────────────────────────   │
-│  @test-agent → @review-agent → @security-agent → @docs-agent          │
+│  PHASE 3: TDD        →   PHASE 4: DEVELOPMENT   →   PHASE 5: REVIEW    │
+│  ─────────────────       ──────────────────────      ────────────────  │
+│  @test-design-agent      @api-agent, etc.            @test-agent       │
+│                                                       @review-agent     │
+│                                                       @docs-agent       │
+│         ↓                        ↓                        ↓             │
+│    [/approve]               [/approve]               [Complete]         │
+│    [/skip]                  [/skip]                                     │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -58,22 +57,24 @@ The agent factory includes a comprehensive **Feature Development Workflow** with
 
 ### Planning Artifacts
 
-All planning artifacts are stored in `docs/planning/` with consistent naming:
+All planning artifacts are stored in `docs/` and `docs/planning/` with consistent naming:
 
 ```
-docs/planning/
-├── prd/
-│   └── {feature-name}-{YYYYMMDD}.md          # Product Requirements Document
-├── epics/
-│   └── {feature-name}-epics-{YYYYMMDD}.md    # Epic breakdown
-├── stories/
-│   └── {feature-name}-stories-{YYYYMMDD}.md  # User stories with Gherkin
-├── architecture/
-│   └── {feature-name}-architecture-{YYYYMMDD}.md  # System architecture & ADRs
-├── design/
-│   └── {feature-name}-design-{YYYYMMDD}.md   # Technical design specs
-└── test-design/
-    └── {feature-name}-test-design-{YYYYMMDD}.md  # Test strategy (TDD)
+docs/
+├── system-state-diagram.md                           # System state machine
+└── planning/
+    ├── prd/
+    │   └── {feature-name}-{YYYYMMDD}.md          # Product Requirements Document
+    ├── epics/
+    │   └── {feature-name}-epics-{YYYYMMDD}.md    # Epic breakdown
+    ├── stories/
+    │   └── {feature-name}-stories-{YYYYMMDD}.md  # User stories with Gherkin
+    ├── architecture/
+    │   └── {feature-name}-architecture-{YYYYMMDD}.md  # System architecture & ADRs
+    ├── design/
+    │   └── {feature-name}-design-{YYYYMMDD}.md   # Technical design specs
+    └── test-design/
+        └── {feature-name}-test-design-{YYYYMMDD}.md  # Test strategy (TDD)
 ```
 
 ### Starting a Feature Development Workflow
@@ -83,10 +84,11 @@ docs/planning/
 ```
 
 The orchestrator will:
-1. Begin with `@prd-agent` to generate a PRD
+1. **Phase 0:** Check/create/update the system state diagram with `@architecture-agent`
 2. Wait for your `/approve` or `/skip`
-3. Proceed through each phase with approval gates
-4. Coordinate development and review phases
+3. **Phase 1:** Begin with `@prd-agent` to generate a PRD
+4. Continue through each phase with approval gates
+5. Coordinate development and review phases
 
 ---
 
