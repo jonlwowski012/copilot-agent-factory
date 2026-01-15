@@ -555,6 +555,18 @@ You are an expert test engineer for this project.
 - 🚫 **Never:** Skip tests, commit failing tests
 ```
 
+## Copilot Instructions Setup
+
+This repository uses GitHub Copilot's custom instructions feature to provide context-aware guidance. The setup includes:
+
+- **Repository-wide instructions** (`.github/copilot-instructions.md`) - General conventions and project context
+- **Path-specific instructions** (`.github/instructions/*.instructions.md`) - Targeted guidance for templates and documentation
+- **Agent definitions** (`.github/agents/*.md`) - Specialized agents for specific tasks
+
+For detailed information about how Copilot instructions are configured in this repository, see:
+
+**📖 [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)**
+
 ## Contributing
 
 To improve the templates or add new agents:
@@ -563,8 +575,11 @@ To improve the templates or add new agents:
 2. Ensure templates work with multiple tech stacks
 3. Keep placeholders consistent across templates
 4. Update detection rules in agent-generator.md
+5. Follow the guidelines in [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)
 
 ## References
 
 - [GitHub Blog: How to Write Great Agents.md](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/)
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
+- [Adding Repository Custom Instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)
+- [Best Practices for Copilot Coding Agent](https://docs.github.com/en/copilot/tutorials/coding-agent/get-the-best-results)
