@@ -1,3 +1,7 @@
+---
+applyTo: "agents/templates/**/*.md,agents/skill-templates/**/*.md,.github/agents/*.md"
+---
+
 # Template Development Instructions
 
 **Domain:** Agent & Skill Template Creation  

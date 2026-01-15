@@ -1,3 +1,7 @@
+---
+applyTo: "README.md,docs/**/*.md,*.md"
+---
+
 # Documentation Instructions
 
 **Domain:** Markdown Documentation (README, guides, examples)  
