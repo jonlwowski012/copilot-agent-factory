@@ -287,6 +287,7 @@ The generator creates agents based on detected patterns:
 | **data-prep** | `data/` directory or data processing libraries |
 | **eval-agent** | `eval.py`, `metrics/`, or ML framework detected |
 | **inference-agent** | `inference.py`, `predict.py`, or model serving patterns |
+| **metaflow-agent** | `metaflow` in dependencies or Flow class with `@step` decorators |
 
 ### Robotics Agents
 | Agent | Created When |
@@ -341,6 +342,10 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 | Placeholder | Description | Example Values |
 |-------------|-------------|----------------|
 | `{{ml_framework}}` | ML framework in use | "PyTorch", "TensorFlow" |
+| `{{metaflow_version}}` | Metaflow version | "2.11.0" |
+| `{{flows_dirs}}` | Metaflow pipeline directories | "`flows/`, `workflows/`" |
+| `{{execution_environment}}` | Metaflow execution target | "local", "AWS Batch", "Kubernetes" |
+| `{{run_flow_command}}` | Command to run Metaflow flow | "python my_flow.py run" |
 | `{{docstring_style}}` | Docstring convention | "Google", "NumPy", "Sphinx" |
 
 ## Customization
@@ -529,6 +534,7 @@ The `send: false` setting means handoffs require user approval before transition
 - **data-prep**: Data loading, augmentation, preprocessing, pipelines
 - **eval-agent**: Metrics, benchmarking, model comparison, validation
 - **inference-agent**: Prediction pipelines, model serving, optimization, deployment
+- **metaflow-agent**: ML workflow orchestration, experiment tracking, pipeline management
 
 ## Example Generated Output
 

@@ -152,6 +152,7 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | `data-prep.md` | Data loading, preprocessing, augmentation |
 | `eval-agent.md` | Model evaluation, metrics, benchmarking |
 | `inference-agent.md` | Model inference, predictions, serving |
+| `metaflow-agent.md` | ML workflow orchestration, pipeline management, experiment tracking |
 
 ### Robotics Agents
 | Template | Purpose |
@@ -301,6 +302,7 @@ Generate agents based on detection:
 | **data-prep** | `data/` directory OR data processing imports (pandas, numpy, etc.) |
 | **eval-agent** | `eval.py` OR `evaluate.py` OR `metrics/` OR ML framework detected |
 | **inference-agent** | `inference.py` OR `predict.py` OR model serving patterns |
+| **metaflow-agent** | `metaflow` in dependencies OR Flow class with `@step` decorators OR `flows/` directory OR metaflow imports |
 
 #### Robotics Agents
 | Agent | Generate If |
