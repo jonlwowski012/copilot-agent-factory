@@ -19,7 +19,7 @@ This generator supports two target platforms with different output formats:
 | Platform | Output Format | Output Location |
 |----------|---------------|-----------------|
 | **VS Code** (GitHub Copilot) | Multiple `.md` files (one per agent) | User-specified (default: `.github/agents/`) |
-| **Claude Code** | Single consolidated `CLAUDE.md` file | User-specified (default: `CLAUDE.md`) |
+| **Claude Code** | Multiple `.md` files (one per agent) | User-specified (default: `.claude/agents/`) |
 
 ### Required Parameters
 
@@ -36,13 +36,12 @@ When invoking the agent-generator, you **MUST** specify:
 - Output to specified directory (e.g., `--output .github/agents/`)
 
 **Claude Code Output (`--platform claude-code`):**
-- Generates a single consolidated `CLAUDE.md` file
+- Generates individual `.md` files per agent
 - YAML frontmatter includes only: `name`, `model`, `description` (strips `triggers` and `handoffs`)
-- Agents are concatenated with `---` separators
-- Output to specified file (e.g., `--output CLAUDE.md`)
+- Output to specified directory (e.g., `--output .claude/agents/`)
 
 **Dual Output (`--platform both`):**
-- Requires two output paths: `--output-vscode <dir>` and `--output-claude <file>`
+- Requires two output paths: `--output-vscode <dir>` and `--output-claude <dir>`
 - Generates both formats simultaneously
 
 ## CRITICAL: Agent File Header Format
@@ -321,42 +320,10 @@ For each selected agent:
 3. Replace all `{{placeholder}}` markers with detected values in the agent body
 4. **Output based on platform:**
    - **VS Code:** Write individual files to `{output-dir}/{agent-name}.md`
-   - **Claude Code:** Append to single output file with `---` separator between agents
-5. Update orchestrator's `{{active_agents_table}}` with generated agents (VS Code only)
+   - **Claude Code:** Write individual files to `{output-dir}/{agent-name}.md`
+5. Update orchestrator's `{{active_agents_table}}` with generated agents
 
 **CRITICAL:** When customizing templates, only replace `{{placeholders}}` in the agent body content. Never modify or remove the core YAML frontmatter sections (name, model, description).
-
-### Claude Code Single-File Format
-
-When generating for Claude Code, concatenate all agents into one file:
-
-```markdown
-# CLAUDE.md
-
----
-name: orchestrator
-model: claude-4-5-opus
-description: Central coordinator that routes tasks to specialized agents
----
-
-You are the central coordinator for this project...
-
----
-name: test-agent
-model: claude-4-5-sonnet
-description: Test engineering specialist
----
-
-You are an expert test engineer...
-
----
-name: docs-agent
-model: claude-4-5-sonnet
-description: Documentation specialist
----
-
-You are an expert technical writer...
-```
 
 ## Placeholder Reference
 
@@ -485,15 +452,11 @@ You are an expert [role] for this project.
 - 🚫 **Never:** Forbidden actions
 ```
 
-### Claude Code Output (Single File)
+### Claude Code Output (Multiple Files)
 
-Generate a consolidated `CLAUDE.md` with stripped YAML:
+Generate each agent file with stripped YAML frontmatter (no `triggers` or `handoffs`):
 
 ```markdown
-# CLAUDE.md
-# Auto-generated from agent-templates/ for Claude Code
-# Source: https://github.com/[repo]/agent-templates/
-
 ---
 name: {agent-name}
 model: claude-4-5-sonnet
@@ -523,14 +486,6 @@ You are an expert [role] for this project.
 - ✅ **Always:** Safe actions to take
 - ⚠️ **Ask First:** Actions requiring confirmation
 - 🚫 **Never:** Forbidden actions
-
----
-name: {next-agent-name}
-model: claude-4-5-sonnet
-description: Description of next agent
----
-
-[Next agent content...]
 ```
 
 ## Generation Order
@@ -563,13 +518,13 @@ Analyze this repository and generate agents
 
 **Generate for Claude Code:**
 ```
-@agent-generator --platform claude-code --output CLAUDE.md
+@agent-generator --platform claude-code --output .claude/agents/
 Analyze this repository and generate agents
 ```
 
 **Generate for Both Platforms:**
 ```
-@agent-generator --platform both --output-vscode .github/agents/ --output-claude CLAUDE.md
+@agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
 Analyze this repository and generate agents
 ```
 
@@ -612,13 +567,21 @@ Generate quality agents: security-agent, performance-agent, devops-agent
 Generate domain agents: api-agent, database-agent
 ```
 
-### Claude Code: Generate All at Once
+### Claude Code: Generate in Phases
 
-For Claude Code, since output is a single file, you can generate all agents in fewer phases:
+For Claude Code, follow the same phased approach:
 
 ```
-@agent-generator --platform claude-code --output CLAUDE.md
-Analyze this repository and generate all applicable agents
+@agent-generator --platform claude-code --output .claude/agents/
+Analyze this repository and:
+1. Detect tech stack, commands, and patterns
+2. List which agents should be generated (but don't generate them yet)
+
+@agent-generator --platform claude-code --output .claude/agents/
+Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent
+
+@agent-generator --platform claude-code --output .claude/agents/
+Generate core agents: test-agent, docs-agent, lint-agent, review-agent
 ```
 
 ### Batch Size Guidelines
@@ -651,17 +614,20 @@ Generate core agents: test-agent, docs-agent, lint-agent, review-agent
 ### Claude Code Examples
 
 ```
-@agent-generator --platform claude-code --output CLAUDE.md
-Analyze this repository and generate all applicable agents
+@agent-generator --platform claude-code --output .claude/agents/
+Analyze this repository and report recommended agents
 
-@agent-generator --platform claude-code --output agents.md
-Generate only the core agents for this project
+@agent-generator --platform claude-code --output .claude/agents/
+Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent
+
+@agent-generator --platform claude-code --output .claude/agents/
+Generate core agents: test-agent, docs-agent, lint-agent, review-agent
 ```
 
 ### Dual Platform Examples
 
 ```
-@agent-generator --platform both --output-vscode .github/agents/ --output-claude CLAUDE.md
+@agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
 Analyze this repository and generate agents for both VS Code and Claude Code
 ```
 
@@ -671,7 +637,7 @@ Analyze this repository and generate agents for both VS Code and Claude Code
 @agent-generator --platform vscode --output .github/agents/
 Generate only api-agent for this FastAPI project
 
-@agent-generator --platform claude-code --output CLAUDE.md
+@agent-generator --platform claude-code --output .claude/agents/
 Generate only test-agent using pytest conventions
 ```
 

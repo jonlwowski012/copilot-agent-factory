@@ -9,7 +9,7 @@ Transform any codebase into an AI-powered development environment by automatical
 | Platform | Output Format | Default Location |
 |----------|---------------|------------------|
 | **VS Code** (GitHub Copilot) | Multiple `.md` files (one per agent) | `.github/agents/` |
-| **Claude Code** | Single consolidated `CLAUDE.md` file | `CLAUDE.md` |
+| **Claude Code** | Multiple `.md` files (one per agent) | `.claude/agents/` |
 
 ## What is this?
 
@@ -121,14 +121,14 @@ Analyze this repository and generate all appropriate agents
 **For Claude Code:**
 
 ```
-@agent-generator --platform claude-code --output CLAUDE.md
+@agent-generator --platform claude-code --output .claude/agents/
 Analyze this repository and generate all appropriate agents
 ```
 
 **For Both Platforms:**
 
 ```
-@agent-generator --platform both --output-vscode .github/agents/ --output-claude CLAUDE.md
+@agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
 Analyze this repository and generate agents for both platforms
 ```
 
@@ -156,7 +156,7 @@ The generator will:
 
 **Claude Code:**
 
-Agents are available in your `CLAUDE.md` file and Claude will automatically use them based on context.
+Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
 
 ## Directory Structure
 
@@ -223,7 +223,7 @@ automatic_agent_gen/
 
 ### Claude Code
 
-- **Output:** Single `CLAUDE.md` file at repo root
+- **Output:** Multiple `.md` files in `.claude/agents/`
 - **YAML Frontmatter:** Simplified format with `name`, `model`, `description` only (no `triggers` or `handoffs`)
 - **Invocation:** Claude uses agents automatically based on context
 - **Handoffs:** Not supported (Claude handles routing internally)
