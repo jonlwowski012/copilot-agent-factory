@@ -1,6 +1,6 @@
 ---
 name: metaflow-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: ML workflow specialist for building production-grade data science pipelines with Metaflow orchestration
 triggers:
   - metaflow in dependencies (requirements.txt, pyproject.toml, setup.py)
