@@ -1,20 +1,27 @@
 # Copilot Agent Factory 🏭
 
-**Auto-generate customized GitHub Copilot agents for any repository in seconds.**
+**Auto-generate customized agents for VS Code (GitHub Copilot) or Claude Code from any repository.**
 
-Transform any codebase into an AI-powered development environment by automatically detecting your tech stack, frameworks, and patterns, then generating perfectly tailored GitHub Copilot agents that understand your project's specific needs.
+Transform any codebase into an AI-powered development environment by automatically detecting your tech stack, frameworks, and patterns, then generating perfectly tailored agents that understand your project's specific needs.
+
+## Supported Platforms
+
+| Platform | Output Format | Default Location |
+|----------|---------------|------------------|
+| **VS Code** (GitHub Copilot) | Multiple `.md` files (one per agent) | `.github/agents/` |
+| **Claude Code** | Multiple `.md` files (one per agent) | `.claude/agents/` |
 
 ## What is this?
 
-Instead of manually writing agent.md files for each project, Copilot Agent Factory:
+Instead of manually writing agent files for each project, Copilot Agent Factory:
 
 - 🔍 **Scans your repository** to detect languages, frameworks, and tools
 - 🎯 **Selects relevant agents** based on detected patterns (API, ML, testing, etc.)
 - 🛠️ **Customizes templates** with your repo-specific commands and structure
-- ⚡ **Outputs ready-to-use agents** that know your codebase inside and out
+- ⚡ **Outputs ready-to-use agents** in the format for your preferred IDE
 - 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
 
-**Result:** Your Copilot agents become domain experts for your specific project, not generic assistants.
+**Result:** Your agents become domain experts for your specific project, not generic assistants.
 
 ---
 
@@ -96,19 +103,33 @@ The orchestrator will:
 
 ### 1. Copy to Your Repository
 
-**Important:** GitHub Copilot agents must be placed in the `.github/agents/` directory of your repository to function properly.
-
 ```bash
-# From this project, copy the agents to your target repo
-cp -r .github/agents /path/to/your/repo/.github/
+# From this project, copy the generator and templates to your target repo
+cp agent-generator.md /path/to/your/repo/
+cp -r agent-templates /path/to/your/repo/
 ```
 
-### 2. Generate Customized Agents
+### 2. Generate Agents for Your Platform
 
-Invoke the agent-generator in your repository:
+**For VS Code (GitHub Copilot):**
 
 ```
-@agent-generator Analyze this repository and generate all appropriate agent.md files.
+@agent-generator --platform vscode --output .github/agents/
+Analyze this repository and generate all appropriate agents
+```
+
+**For Claude Code:**
+
+```
+@agent-generator --platform claude-code --output .claude/agents/
+Analyze this repository and generate all appropriate agents
+```
+
+**For Both Platforms:**
+
+```
+@agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
+Analyze this repository and generate agents for both platforms
 ```
 
 The generator will:
@@ -117,11 +138,11 @@ The generator will:
 3. Extract build/test/lint commands from configs
 4. Select relevant agents based on detected patterns
 5. Customize templates with repo-specific values
-6. Output ready-to-use agent files
+6. Output agents in the appropriate format for your platform
 
 ### 3. Use Your Agents
 
-Once generated, invoke agents directly:
+**VS Code (GitHub Copilot):**
 
 ```
 # Start a full feature workflow with approval gates
@@ -129,58 +150,83 @@ Once generated, invoke agents directly:
 
 # Or invoke individual agents directly
 @prd-agent Create a PRD for the payment processing feature
-@architecture-agent Design the system architecture for this feature
-@test-design-agent Create test strategy before implementation
-
-# Development agents
 @test-agent Write tests for the UserService class
-@lint-agent Fix all style issues in src/
-@docs-agent Update the README with new API endpoints
 @review-agent Review my changes before I create a PR
 ```
+
+**Claude Code:**
+
+Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
 
 ## Directory Structure
 
 ```
-.github/agents/
-├── agent-generator.md    # Meta-agent that creates other agents
-├── orchestrator.md       # Coordinates all agents + workflow management
-└── templates/            # Agent templates with {{placeholders}}
-    ├── Planning & Design Agents
-    │   ├── prd-agent.md           # Product Requirements Documents
-    │   ├── epic-agent.md          # Epic breakdown from PRDs
-    │   ├── story-agent.md         # User stories with Gherkin
-    │   ├── architecture-agent.md  # System architecture & ADRs
-    │   ├── design-agent.md        # Technical design specifications
-    │   └── test-design-agent.md   # Test strategy (TDD)
-    ├── Core Development Agents
-    │   ├── docs-agent.md          # Documentation and technical writing
-    │   ├── test-agent.md          # Testing and coverage
-    │   ├── lint-agent.md          # Code formatting and style
-    │   ├── review-agent.md        # Code review and best practices
-    │   ├── debug-agent.md         # Error investigation and troubleshooting
-    │   ├── refactor-agent.md      # Code restructuring and tech debt
-    │   ├── performance-agent.md   # Profiling and optimization
-    │   ├── security-agent.md      # Security audits and vulnerability detection
-    │   └── devops-agent.md        # CI/CD, Docker, deployments
-    ├── API & Backend Agents
-    │   └── api-agent.md           # API development and endpoints
-    ├── Mobile Development Agents
-    │   ├── mobile-ios-agent.md         # iOS development (Swift, SwiftUI, UIKit)
-    │   ├── mobile-react-native-agent.md # React Native cross-platform
-    │   └── mobile-flutter-agent.md     # Flutter/Dart development
-    ├── Frontend Framework Agents
-    │   ├── frontend-react-agent.md   # React development with hooks and TypeScript
-    │   ├── frontend-vue-agent.md     # Vue.js with Composition API
-    │   └── frontend-angular-agent.md # Angular with RxJS and standalone components
-    ├── Database Agents
-    │   └── database-agent.md      # Schema design, migrations, query optimization
-    └── ML/AI Agents
-        ├── ml-trainer.md          # ML model training
-        ├── data-prep.md           # Data preprocessing
-        ├── eval-agent.md          # Model evaluation
-        └── inference-agent.md     # Model inference and serving
+automatic_agent_gen/
+├── agent-generator.md        # Meta-agent that creates other agents
+├── agent-templates/          # Shared agent templates with {{placeholders}}
+│   ├── Planning & Design Agents
+│   │   ├── prd-agent.md           # Product Requirements Documents
+│   │   ├── epic-agent.md          # Epic breakdown from PRDs
+│   │   ├── story-agent.md         # User stories with Gherkin
+│   │   ├── architecture-agent.md  # System architecture & ADRs
+│   │   ├── design-agent.md        # Technical design specifications
+│   │   └── test-design-agent.md   # Test strategy (TDD)
+│   ├── Core Development Agents
+│   │   ├── orchestrator.md        # Coordinates all agents + workflow management
+│   │   ├── docs-agent.md          # Documentation and technical writing
+│   │   ├── test-agent.md          # Testing and coverage
+│   │   ├── lint-agent.md          # Code formatting and style
+│   │   ├── review-agent.md        # Code review and best practices
+│   │   ├── debug-agent.md         # Error investigation and troubleshooting
+│   │   ├── refactor-agent.md      # Code restructuring and tech debt
+│   │   ├── performance-agent.md   # Profiling and optimization
+│   │   ├── security-agent.md      # Security audits and vulnerability detection
+│   │   └── devops-agent.md        # CI/CD, Docker, deployments
+│   ├── API & Backend Agents
+│   │   ├── api-agent.md           # API development and endpoints
+│   │   └── backend-agent.md       # Server-side logic
+│   ├── Mobile Development Agents
+│   │   ├── mobile-ios-agent.md         # iOS development (Swift, SwiftUI, UIKit)
+│   │   ├── mobile-react-native-agent.md # React Native cross-platform
+│   │   └── mobile-flutter-agent.md     # Flutter/Dart development
+│   ├── Frontend Framework Agents
+│   │   ├── frontend-react-agent.md   # React development with hooks and TypeScript
+│   │   ├── frontend-vue-agent.md     # Vue.js with Composition API
+│   │   └── frontend-angular-agent.md # Angular with RxJS and standalone components
+│   ├── Database Agents
+│   │   └── database-agent.md      # Schema design, migrations, query optimization
+│   └── ML/AI Agents
+│       ├── ml-trainer.md          # ML model training
+│       ├── data-prep.md           # Data preprocessing
+│       ├── eval-agent.md          # Model evaluation
+│       └── inference-agent.md     # Model inference and serving
+├── AGENT.md                  # Global agent conventions
+├── README.md                 # This documentation
+└── docs/                     # Planning artifacts
+    └── planning/
+        ├── prd/              # Product Requirements Documents
+        ├── epics/            # Epic breakdowns
+        ├── stories/          # User stories with Gherkin
+        ├── architecture/     # System architecture & ADRs
+        ├── design/           # Technical design specs
+        └── test-design/      # Test strategy documents
 ```
+
+## Platform Differences
+
+### VS Code (GitHub Copilot)
+
+- **Output:** Multiple `.md` files in `.github/agents/`
+- **YAML Frontmatter:** Full format with `name`, `model`, `description`, `triggers`, `handoffs`
+- **Invocation:** `@agent-name` in VS Code chat
+- **Handoffs:** Supported for agent-to-agent transitions
+
+### Claude Code
+
+- **Output:** Multiple `.md` files in `.claude/agents/`
+- **YAML Frontmatter:** Simplified format with `name`, `model`, `description` only (no `triggers` or `handoffs`)
+- **Invocation:** Claude uses agents automatically based on context
+- **Handoffs:** Not supported (Claude handles routing internally)
 
 ## Agent Detection Rules
 
@@ -294,14 +340,20 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 
 ### Adding New Agent Templates
 
-1. Create a new template in `.github/agents/templates/`:
+1. Create a new template in `agent-templates/`:
 
 ```markdown
 ---
 name: my-agent
+model: claude-4-5-sonnet
 description: What this agent does
 triggers:
   - file patterns or conditions that indicate this agent is needed
+handoffs:
+  - target: related-agent
+    label: "Next Step"
+    prompt: "Handoff context"
+    send: false
 ---
 
 You are an expert [role] for this project.
@@ -324,6 +376,8 @@ You are an expert [role] for this project.
 ```
 
 2. Update `agent-generator.md` to detect when your agent should be created
+
+**Note:** The `triggers` and `handoffs` sections are VS Code-specific and will be automatically stripped when generating for Claude Code.
 
 ### Overriding Detection
 
@@ -361,9 +415,11 @@ Based on analysis of [2,500+ repositories](https://github.blog/ai-and-ml/github-
 - Missing executable commands
 - No boundaries defined
 
-## Agent Handoffs
+## Agent Handoffs (VS Code Only)
 
 All agent templates include **handoff** configurations that enable seamless transitions between agents during development workflows. Handoffs allow agents to pass context and suggest next steps, creating a guided, multi-agent collaboration experience.
+
+**Note:** Handoffs are a VS Code (GitHub Copilot) feature and are automatically stripped when generating for Claude Code.
 
 ### How Handoffs Work
 
