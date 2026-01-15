@@ -10,6 +10,7 @@ Transform any codebase into an AI-powered development environment by automatical
 |----------|---------------|------------------|
 | **VS Code** (GitHub Copilot) | Multiple `.md` files (one per agent) | `.github/agents/` |
 | **Claude Code** | Multiple `.md` files (one per agent) | `.claude/agents/` |
+| **Cursor IDE** | Multiple `.mdc` files (one per agent) | `.cursor/agents/` |
 
 ## What is this?
 
@@ -125,11 +126,25 @@ Analyze this repository and generate all appropriate agents
 Analyze this repository and generate all appropriate agents
 ```
 
-**For Both Platforms:**
+**For Cursor IDE:**
+
+```
+@agent-generator --platform cursor --output .cursor/agents/
+Analyze this repository and generate all appropriate agents
+```
+
+**For Multiple Platforms:**
 
 ```
 @agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
 Analyze this repository and generate agents for both platforms
+```
+
+Or specify individual platforms:
+
+```
+@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/agents/
+Analyze this repository and generate agents for all three platforms
 ```
 
 The generator will:
@@ -157,6 +172,10 @@ The generator will:
 **Claude Code:**
 
 Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
+
+**Cursor IDE:**
+
+Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context. You can also use `.cursorrules` in your project root for additional project-wide AI instructions.
 
 ## Directory Structure
 
@@ -227,6 +246,14 @@ automatic_agent_gen/
 - **YAML Frontmatter:** Simplified format with `name`, `model`, `description` only (no `triggers` or `handoffs`)
 - **Invocation:** Claude uses agents automatically based on context
 - **Handoffs:** Not supported (Claude handles routing internally)
+
+### Cursor IDE
+
+- **Output:** Multiple `.mdc` files (Markdown Cursor format) in `.cursor/agents/`
+- **YAML Frontmatter:** Cursor-specific format with `description`, `globs`, `alwaysApply` (no `triggers` or `handoffs`)
+- **Invocation:** Cursor uses agents automatically based on context and file patterns
+- **Handoffs:** Not supported (Cursor handles routing internally)
+- **Additional:** Can use `.cursorrules` file in project root for global project instructions
 
 ## Agent Detection Rules
 
@@ -377,7 +404,7 @@ You are an expert [role] for this project.
 
 2. Update `agent-generator.md` to detect when your agent should be created
 
-**Note:** The `triggers` and `handoffs` sections are VS Code-specific and will be automatically stripped when generating for Claude Code.
+**Note:** The `triggers` and `handoffs` sections are VS Code-specific and will be automatically stripped when generating for Claude Code or Cursor IDE. For Cursor, the YAML frontmatter is converted to include `description`, `globs`, and `alwaysApply` fields instead.
 
 ### Overriding Detection
 
