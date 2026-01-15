@@ -1,6 +1,6 @@
 ---
 name: robotics-ros-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: ROS (Robot Operating System) specialist for ROS 1 and ROS 2 development including nodes, topics, services, and launch files
 triggers:
   - package.xml file exists (ROS package)

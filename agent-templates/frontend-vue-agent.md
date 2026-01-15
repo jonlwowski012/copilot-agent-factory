@@ -1,6 +1,6 @@
 ---
 name: frontend-vue-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Vue.js development specialist for component architecture, state management, and Vue ecosystem tools
 triggers:
   - package.json contains "vue" dependency

@@ -1,6 +1,6 @@
 ---
 name: frontend-react-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: React development specialist for component architecture, state management, and modern React patterns
 triggers:
   - package.json contains "react" dependency

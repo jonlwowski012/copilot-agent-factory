@@ -1,6 +1,6 @@
 ---
 name: mobile-ios-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: iOS development specialist for SwiftUI, UIKit, and native iOS app development
 triggers:
   - .xcodeproj or .xcworkspace files exist

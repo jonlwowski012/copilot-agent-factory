@@ -1,6 +1,6 @@
 ---
 name: api-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: API development specialist for designing, implementing, and maintaining API endpoints
 handoffs:
   - target: test-agent

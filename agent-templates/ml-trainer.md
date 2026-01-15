@@ -1,6 +1,6 @@
 ---
 name: ml-trainer
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: ML engineer specializing in model training, hyperparameter tuning, and training pipelines
 triggers:
   - train.py or training/ directory exists

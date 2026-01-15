@@ -1,6 +1,6 @@
 ---
 name: inference-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: ML deployment specialist focusing on model inference, serving, and optimization
 triggers:
   - inference.py, predict.py, or serve.py exists

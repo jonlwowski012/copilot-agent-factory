@@ -1,6 +1,6 @@
 ---
 name: queue-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Message queue specialist for async processing, event-driven architectures, and background job systems
 triggers:
   - Celery, RQ, or Dramatiq in dependencies

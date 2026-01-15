@@ -1,6 +1,6 @@
 ---
 name: docs-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Technical writer specializing in documentation, READMEs, API docs, and code comments
 handoffs:
   - target: review-agent

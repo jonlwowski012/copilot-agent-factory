@@ -1,6 +1,6 @@
 ---
 name: observability-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Observability engineer specializing in logging, metrics, tracing, and monitoring systems
 triggers:
   - prometheus.yml or prometheus/ directory

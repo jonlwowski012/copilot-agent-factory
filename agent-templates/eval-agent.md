@@ -1,6 +1,6 @@
 ---
 name: eval-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: ML evaluation specialist focusing on model metrics, benchmarking, and performance analysis
 triggers:
   - eval.py, evaluate.py, or metrics/ directory exists

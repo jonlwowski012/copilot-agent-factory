@@ -1,6 +1,6 @@
 ---
 name: frontend-angular-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Angular development specialist for component architecture, RxJS, and Angular ecosystem tools
 triggers:
   - package.json contains "@angular/core" dependency

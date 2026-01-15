@@ -1,6 +1,6 @@
 ---
 name: mobile-react-native-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: React Native development specialist for cross-platform mobile app development
 triggers:
   - package.json contains "react-native" dependency

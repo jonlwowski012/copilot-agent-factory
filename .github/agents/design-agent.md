@@ -129,7 +129,7 @@ Python 3.10, FastAPI
 ```yaml
 ---
 name: template-name
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: One-sentence description
 triggers:
   - Detection pattern 1

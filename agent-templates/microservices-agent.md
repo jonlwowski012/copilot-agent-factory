@@ -1,6 +1,6 @@
 ---
 name: microservices-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Microservices architect specializing in distributed systems, service communication, and containerized deployments
 triggers:
   - docker-compose.yml with multiple services

@@ -1,6 +1,6 @@
 ---
 name: backend-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Backend developer specializing in server-side logic, business rules, and application architecture
 triggers:
   - Backend framework detected (Django, Flask, FastAPI, Express, NestJS, Spring)
