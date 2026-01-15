@@ -1,6 +1,6 @@
 ---
 name: devops-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: DevOps engineer specializing in CI/CD pipelines, containerization, infrastructure, and deployment automation
 triggers:
   - .github/workflows/ directory exists

@@ -1,6 +1,6 @@
 ---
 name: database-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Database specialist for schema design, migrations, query optimization, and data management
 triggers:
   - migrations/ or db/ directory exists

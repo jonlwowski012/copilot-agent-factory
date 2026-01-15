@@ -16,7 +16,7 @@ All agent templates must follow this structure:
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet | claude-4-5-opus
+model: claude-4-5-opus
 description: Clear one-sentence description of agent purpose
 triggers:
   - Specific detection pattern 1
@@ -25,9 +25,8 @@ triggers:
 ---
 ```
 
-**Model Selection Rules:**
-- **claude-4-5-opus:** orchestrator, planning agents (prd, epic, story, architecture, design, test-design), review, refactor, security, debug
-- **claude-4-5-sonnet:** docs, test, lint, api, devops, and most other development agents
+**Model Selection:**
+- **All agents now use `claude-4-5-opus`** for maximum reasoning capability and consistent high-quality output.
 
 ### 2. Agent Introduction
 

@@ -1,6 +1,6 @@
 ---
 name: robotics-jetson-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: NVIDIA Jetson specialist for edge AI robotics with CUDA, TensorRT, JetPack SDK, and hardware acceleration
 triggers:
   - Jetson-specific files or configs detected

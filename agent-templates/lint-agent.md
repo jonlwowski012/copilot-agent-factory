@@ -1,6 +1,6 @@
 ---
 name: lint-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Code quality specialist focusing on formatting, style enforcement, and automated fixes
 handoffs:
   - target: review-agent

@@ -1,6 +1,6 @@
 ---
 name: robotics-cpp-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: C++ specialist for robotics development with modern C++ standards, CMake, and embedded systems
 triggers:
   - CMakeLists.txt file exists

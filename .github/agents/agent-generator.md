@@ -56,7 +56,7 @@ For `--platform vscode`, preserve all fields including `triggers` and `handoffs`
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Description of the agent
 triggers:
   - condition1
@@ -76,41 +76,20 @@ For `--platform claude-code`, remove `triggers` and `handoffs` (VS Code-specific
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Description of the agent
 ---
 ```
 
-### Model Selection by Agent Type
+### Model Selection
 
-Use **claude-4-5-opus** (deep reasoning) for agents requiring complex analysis:
-| Agent | Reason |
-|-------|--------|
-| `orchestrator` | Complex workflow coordination and task routing |
-| `prd-agent` | Product strategy and requirements analysis |
-| `epic-agent` | Breaking down requirements into actionable epics |
-| `story-agent` | User story writing with acceptance criteria |
-| `architecture-agent` | System design and architectural decisions |
-| `design-agent` | Technical specifications and API contracts |
-| `test-design-agent` | Test strategy and TDD planning |
-| `review-agent` | Deep code quality analysis and best practices |
-| `security-agent` | Vulnerability detection and security analysis |
-| `debug-agent` | Root cause analysis and error investigation |
-| `refactor-agent` | Design patterns and architectural decisions |
-| `performance-agent` | Bottleneck analysis and optimization strategies |
+**All agents now use `claude-4-5-opus` for maximum reasoning capability.**
 
-Use **claude-4-5-sonnet** (fast, capable) for other agents:
-| Agent | Reason |
-|-------|--------|
-| `docs-agent` | Documentation generation and formatting |
-| `test-agent` | Test writing and coverage |
-| `lint-agent` | Code formatting and style fixes |
-| `api-agent` | API endpoint implementation |
-| `devops-agent` | CI/CD and deployment tasks |
-| `ml-trainer` | Training script implementation |
-| `data-prep` | Data preprocessing code |
-| `eval-agent` | Evaluation metrics implementation |
-| `inference-agent` | Inference pipeline code |
+This unified approach ensures:
+- Consistent high-quality output across all agent types
+- Deep reasoning for complex tasks
+- Better understanding of project context
+- Improved code quality and architectural decisions
 
 **Do NOT omit the `model:` field from any generated agent.**
 
@@ -343,7 +322,7 @@ You are the central coordinator for this project...
 
 ---
 name: test-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Test engineering specialist
 ---
 
@@ -351,7 +330,7 @@ You are an expert test engineer...
 
 ---
 name: docs-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Documentation specialist
 ---
 
@@ -448,7 +427,7 @@ Generate each agent file with full YAML frontmatter:
 ```markdown
 ---
 name: {agent-name}
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: One-sentence description of what this agent does
 triggers:
   - detection pattern 1
@@ -496,7 +475,7 @@ Generate a consolidated `CLAUDE.md` with stripped YAML:
 
 ---
 name: {agent-name}
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: One-sentence description of what this agent does
 ---
 
@@ -526,7 +505,7 @@ You are an expert [role] for this project.
 
 ---
 name: {next-agent-name}
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Description of next agent
 ---
 
