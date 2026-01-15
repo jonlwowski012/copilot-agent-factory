@@ -44,9 +44,9 @@ The agent factory includes a comprehensive **Feature Development Workflow** with
 ├─────────────────────────────────────────────────────────────────────────┤
 │  PHASE 3: TDD        →   PHASE 4: DEVELOPMENT   →   PHASE 5: REVIEW    │
 │  ─────────────────       ──────────────────────      ────────────────  │
-│  @test-design-agent      @api-agent, etc.            @test-agent       │
-│                                                       @review-agent     │
+│  @test-design-agent      @api-agent, etc.            @review-agent     │
 │                                                       @docs-agent       │
+│                                                                         │
 │         ↓                        ↓                        ↓             │
 │    [/approve]               [/approve]               [Complete]         │
 │    [/skip]                  [/skip]                                     │
@@ -184,7 +184,7 @@ The orchestrator coordinates a 6-phase workflow with approval gates, ensuring qu
 - **Input:** Implemented changes from Phase 4
 - **Action:** Reviews code for quality, best practices, consistency, and potential issues
 - **Output:** Review feedback and approval (or requested changes)
-- **Next:** Automatically proceeds to Phase 5.2
+- **Approval Gate:** `/approve` to continue to Phase 5.2 (or address feedback first)
 
 ##### **Phase 5.2: Documentation Update**
 - **Agent:** `@docs-agent`
@@ -210,7 +210,7 @@ The orchestrator coordinates a 6-phase workflow with approval gates, ensuring qu
 Orchestrator:
 ✅ Phase 1.1 Complete: Product Requirements Document
 
-📄 Artifact Created: docs/planning/prd/oauth2-auth-20260115.md
+📄 Artifact Created: docs/planning/prd/oauth2-auth-{YYYYMMDD}.md
 
 📋 Summary: Created comprehensive PRD defining OAuth2 authentication 
 system with social login, MFA support, and session management.
