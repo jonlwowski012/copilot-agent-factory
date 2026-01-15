@@ -153,6 +153,13 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | `eval-agent.md` | Model evaluation, metrics, benchmarking |
 | `inference-agent.md` | Model inference, predictions, serving |
 
+### Robotics Agents
+| Template | Purpose |
+|----------|---------|
+| `robotics-cpp-agent.md` | C++ development for robotics with CMake, modern C++ standards, RAII |
+| `robotics-ros-agent.md` | ROS 1 and ROS 2 development, nodes, topics, services, launch files |
+| `robotics-jetson-agent.md` | NVIDIA Jetson edge AI, CUDA, TensorRT, JetPack SDK optimization |
+
 ## Analysis Process
 
 ### Step 1: Scan Repository Structure
@@ -294,6 +301,13 @@ Generate agents based on detection:
 | **data-prep** | `data/` directory OR data processing imports (pandas, numpy, etc.) |
 | **eval-agent** | `eval.py` OR `evaluate.py` OR `metrics/` OR ML framework detected |
 | **inference-agent** | `inference.py` OR `predict.py` OR model serving patterns |
+
+#### Robotics Agents
+| Agent | Generate If |
+|-------|-------------|
+| **robotics-cpp-agent** | `CMakeLists.txt` OR `*.cpp/*.hpp` files OR C++ project structure |
+| **robotics-ros-agent** | `package.xml` (ROS package) OR `launch/` directory OR ROS dependencies in CMakeLists.txt |
+| **robotics-jetson-agent** | `*.cu` (CUDA files) OR TensorRT usage OR JetPack SDK patterns OR Jetson deployment configs |
 
 ### Step 6: Create Planning Directory Structure
 

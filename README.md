@@ -288,6 +288,13 @@ The generator creates agents based on detected patterns:
 | **eval-agent** | `eval.py`, `metrics/`, or ML framework detected |
 | **inference-agent** | `inference.py`, `predict.py`, or model serving patterns |
 
+### Robotics Agents
+| Agent | Created When |
+|-------|-------------|
+| **robotics-cpp-agent** | `CMakeLists.txt`, `*.cpp/*.hpp` files, or C++ project structure |
+| **robotics-ros-agent** | `package.xml` (ROS package), `launch/` directory, or ROS dependencies |
+| **robotics-jetson-agent** | `*.cu` (CUDA files), TensorRT usage, or Jetson-specific patterns |
+
 ## Template Placeholders
 
 Templates use `{{placeholder}}` markers that get replaced with detected values:
