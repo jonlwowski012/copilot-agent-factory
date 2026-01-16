@@ -66,7 +66,7 @@ For `--platform vscode`, preserve all fields including `triggers` and `handoffs`
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Description of the agent
 triggers:
   - condition1
@@ -86,7 +86,7 @@ For `--platform claude-code`, remove `triggers` and `handoffs` (VS Code-specific
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Description of the agent
 ---
 ```
@@ -142,6 +142,15 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | `data-prep` | Data preprocessing code |
 | `eval-agent` | Evaluation metrics implementation |
 | `inference-agent` | Inference pipeline code |
+### Model Selection
+
+**All agents now use `claude-4-5-opus` for maximum reasoning capability.**
+
+This unified approach ensures:
+- Consistent high-quality output across all agent types
+- Deep reasoning for complex tasks
+- Better understanding of project context
+- Improved code quality and architectural decisions
 
 **Do NOT omit the `model:` field from any generated agent.**
 
@@ -357,6 +366,38 @@ For each selected agent:
 
 **CRITICAL:** When customizing templates, only replace `{{placeholders}}` in the agent body content. Never modify or remove the core YAML frontmatter sections (name, model, description).
 
+### Claude Code Single-File Format
+
+When generating for Claude Code, concatenate all agents into one file:
+
+```markdown
+# CLAUDE.md
+
+---
+name: orchestrator
+model: claude-4-5-opus
+description: Central coordinator that routes tasks to specialized agents
+---
+
+You are the central coordinator for this project...
+
+---
+name: test-agent
+model: claude-4-5-opus
+description: Test engineering specialist
+---
+
+You are an expert test engineer...
+
+---
+name: docs-agent
+model: claude-4-5-opus
+description: Documentation specialist
+---
+
+You are an expert technical writer...
+```
+
 ## Placeholder Reference
 
 When customizing templates, replace these markers:
@@ -447,7 +488,7 @@ Generate each agent file with full YAML frontmatter:
 ```markdown
 ---
 name: {agent-name}
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: One-sentence description of what this agent does
 triggers:
   - detection pattern 1
@@ -491,7 +532,7 @@ Generate each agent file with stripped YAML frontmatter (no `triggers` or `hando
 ```markdown
 ---
 name: {agent-name}
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: One-sentence description of what this agent does
 ---
 
@@ -518,6 +559,14 @@ You are an expert [role] for this project.
 - ✅ **Always:** Safe actions to take
 - ⚠️ **Ask First:** Actions requiring confirmation
 - 🚫 **Never:** Forbidden actions
+
+---
+name: {next-agent-name}
+model: claude-4-5-opus
+description: Description of next agent
+---
+
+[Next agent content...]
 ```
 
 ## Generation Order

@@ -30,7 +30,7 @@ Instead of manually writing agent files for each project, Copilot Agent Factory:
 
 The agent factory includes a comprehensive **Feature Development Workflow** with approval gates at each phase. This ensures quality and user oversight throughout the development lifecycle.
 
-### Workflow Phases
+### Workflow Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -45,25 +45,191 @@ The agent factory includes a comprehensive **Feature Development Workflow** with
 ├─────────────────────────────────────────────────────────────────────────┤
 │  PHASE 3: TDD        →   PHASE 4: DEVELOPMENT   →   PHASE 5: REVIEW    │
 │  ─────────────────       ──────────────────────      ────────────────  │
-│  @test-design-agent      @api-agent, etc.            @test-agent       │
-│                                                       @review-agent     │
+│  @test-design-agent      @api-agent, etc.            @review-agent     │
 │                                                       @docs-agent       │
+│                                                                         │
 │         ↓                        ↓                        ↓             │
 │    [/approve]               [/approve]               [Complete]         │
 │    [/skip]                  [/skip]                                     │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+### Starting a Feature Development Workflow
+
+```
+@orchestrator Start a new feature: user authentication system
+```
+
+The orchestrator coordinates a 6-phase workflow with approval gates, ensuring quality and user oversight at each step.
+
+---
+
+### Phase-by-Phase Breakdown
+
+#### **Phase 0: System State Validation**
+
+**Goal:** Ensure system state diagram exists and is current before starting feature development.
+
+**Steps:**
+1. Orchestrator checks if `docs/system-state-diagram.md` exists
+2. If missing or outdated:
+   - Invokes `@architecture-agent` to analyze current system
+   - Generates state machine diagram showing system states and transitions
+   - Saves to `docs/system-state-diagram.md`
+3. Presents diagram to user for review
+
+**Output:** `docs/system-state-diagram.md` (state machine diagram)
+
+**Approval Gate:** Type `/approve` to proceed to Phase 1, or `/skip` to skip validation
+
+---
+
+#### **Phase 1: Product Planning** (3 sub-phases)
+
+**Goal:** Define requirements, break into manageable epics, and create detailed user stories.
+
+##### **Phase 1.1: Product Requirements Document**
+- **Agent:** `@prd-agent`
+- **Input:** Feature description from user
+- **Action:** Creates comprehensive PRD defining goals, requirements, success metrics, and constraints
+- **Output:** `docs/planning/prd/{feature-name}-{YYYYMMDD}.md`
+- **Approval Gate:** `/approve` to continue to Phase 1.2
+
+##### **Phase 1.2: Epic Breakdown**
+- **Agent:** `@epic-agent`
+- **Input:** PRD from Phase 1.1
+- **Action:** Breaks PRD into implementable epics with acceptance criteria and dependencies
+- **Output:** `docs/planning/epics/{feature-name}-epics-{YYYYMMDD}.md`
+- **Approval Gate:** `/approve` to continue to Phase 1.3
+
+##### **Phase 1.3: User Stories**
+- **Agent:** `@story-agent`
+- **Input:** Epics from Phase 1.2
+- **Action:** Creates detailed user stories with Gherkin scenarios and story point estimates
+- **Output:** `docs/planning/stories/{feature-name}-stories-{YYYYMMDD}.md`
+- **Approval Gate:** `/approve` to proceed to Phase 2
+
+---
+
+#### **Phase 2: Architecture & Design** (2 sub-phases)
+
+**Goal:** Design system architecture and create detailed technical specifications.
+
+##### **Phase 2.1: Architecture Design**
+- **Agent:** `@architecture-agent`
+- **Input:** All Phase 1 planning artifacts (PRD, epics, stories)
+- **Action:** Designs system architecture, creates ADRs, defines components and data flow
+- **Output:** `docs/planning/architecture/{feature-name}-architecture-{YYYYMMDD}.md`
+- **Approval Gate:** `/approve` to continue to Phase 2.2
+
+##### **Phase 2.2: Technical Design**
+- **Agent:** `@design-agent`
+- **Input:** Architecture from Phase 2.1 + all Phase 1 artifacts
+- **Action:** Creates detailed technical specs including API contracts, data models, file structure, and implementation details
+- **Output:** `docs/planning/design/{feature-name}-design-{YYYYMMDD}.md`
+- **Approval Gate:** `/approve` to proceed to Phase 3
+
+---
+
+#### **Phase 3: Test Strategy (TDD)**
+
+**Goal:** Define comprehensive test strategy before implementation begins.
+
+**Steps:**
+1. `@test-design-agent` receives design and architecture documents
+2. Creates test strategy with:
+   - Test case specifications
+   - Success criteria
+   - Testing approach (unit, integration, e2e)
+   - Coverage requirements
+3. Defines tests BEFORE code is written (TDD approach)
+
+**Input:** Design and architecture from Phase 2 + all Phase 1 artifacts
+
+**Output:** `docs/planning/test-design/{feature-name}-test-design-{YYYYMMDD}.md`
+
+**Approval Gate:** `/approve` to proceed to Phase 4 (implementation)
+
+---
+
+#### **Phase 4: Implementation**
+
+**Goal:** Implement the feature according to approved designs and test strategy.
+
+**Steps:**
+1. Orchestrator routes to appropriate development agents based on feature type:
+   - `@docs-agent` for documentation changes
+   - `@refactor-agent` for template improvements
+   - `@api-agent` for API endpoints
+   - Direct implementation for simple changes
+2. Agent implements feature following:
+   - Design specifications from Phase 2.2
+   - Test strategy from Phase 3
+   - Architecture from Phase 2.1
+3. Implementation is completed and verified
+
+**Input:** All planning artifacts from Phases 1-3
+
+**Output:** Implemented code, templates, or documentation
+
+**Approval Gate:** `/approve` to proceed to Phase 5 (review)
+
+---
+
+#### **Phase 5: Review & Quality Assurance** (2 sub-phases)
+
+**Goal:** Ensure quality, consistency, and complete documentation.
+
+##### **Phase 5.1: Code Review**
+- **Agent:** `@review-agent`
+- **Input:** Implemented changes from Phase 4
+- **Action:** Reviews code for quality, best practices, consistency, and potential issues
+- **Output:** Review feedback and approval (or requested changes)
+- **Approval Gate:** `/approve` to continue to Phase 5.2 (or address feedback first)
+
+##### **Phase 5.2: Documentation Update**
+- **Agent:** `@docs-agent`
+- **Input:** Implemented changes + review feedback
+- **Action:** Updates README, examples, and all relevant documentation to reflect changes
+- **Output:** Updated documentation
+- **Result:** **Workflow Complete** ✅
+
+---
+
 ### Workflow Commands
 
-| Command | Description |
-|---------|-------------|
-| `/approve` | Approve current phase artifact and proceed to next phase |
-| `/skip` | Skip current phase and proceed to next phase |
-| `/status` | Show current workflow state and phase |
-| `/restart` | Restart workflow from beginning |
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `/approve` | Approve current phase artifact and proceed to next phase | Type when ready to move forward |
+| `/skip` | Skip current phase and proceed to next phase | Use when phase is not needed |
+| `/status` | Show current workflow state and phase | Check progress at any time |
+| `/restart` | Restart workflow from beginning | Start over if needed |
 
-### Planning Artifacts
+### Example: Phase Transition
+
+```
+Orchestrator:
+✅ Phase 1.1 Complete: Product Requirements Document
+
+📄 Artifact Created: docs/planning/prd/oauth2-auth-20240115.md
+
+📋 Summary: Created comprehensive PRD defining OAuth2 authentication 
+system with social login, MFA support, and session management.
+
+⏭️  Next: Phase 1.2 - Epic Breakdown (@epic-agent)
+
+To proceed, type:
+- `/approve` - Move to Phase 1.2 (Epic Breakdown)
+- `/skip` - Skip to Phase 1.2
+- `/status` - View workflow state
+
+User: /approve
+
+Orchestrator: ✓ Phase 1.1 approved. Starting Phase 1.2...
+Invoking @epic-agent with PRD context...
+```
+
+### Planning Artifacts Structure
 
 All planning artifacts are stored in `docs/` and `docs/planning/` with consistent naming:
 
@@ -84,19 +250,6 @@ docs/
     └── test-design/
         └── {feature-name}-test-design-{YYYYMMDD}.md  # Test strategy (TDD)
 ```
-
-### Starting a Feature Development Workflow
-
-```
-@orchestrator Start a new feature: user authentication system
-```
-
-The orchestrator will:
-1. **Phase 0:** Check/create/update the system state diagram with `@architecture-agent`
-2. Wait for your `/approve` or `/skip`
-3. **Phase 1:** Begin with `@prd-agent` to generate a PRD
-4. Continue through each phase with approval gates
-5. Coordinate development and review phases
 
 ---
 
@@ -151,9 +304,10 @@ The generator will:
 1. Scan your repository structure
 2. Detect tech stack, frameworks, and tools
 3. Extract build/test/lint commands from configs
-4. Select relevant agents based on detected patterns
-5. Customize templates with repo-specific values
-6. Output agents in the appropriate format for your platform
+4. Inspect coding standards and style guidelines (from CONTRIBUTING.md, linter configs, code patterns)
+5. Select relevant agents based on detected patterns
+6. Customize templates with repo-specific values including coding conventions
+7. Output agents in the appropriate format for your platform
 
 ### 3. Use Your Agents
 
@@ -314,6 +468,14 @@ The generator creates agents based on detected patterns:
 | **data-prep** | `data/` directory or data processing libraries |
 | **eval-agent** | `eval.py`, `metrics/`, or ML framework detected |
 | **inference-agent** | `inference.py`, `predict.py`, or model serving patterns |
+| **metaflow-agent** | `metaflow` in dependencies or Flow class with `@step` decorators |
+
+### Robotics Agents
+| Agent | Created When |
+|-------|-------------|
+| **robotics-cpp-agent** | `CMakeLists.txt`, `*.cpp/*.hpp` files, or C++ project structure |
+| **robotics-ros-agent** | `package.xml` (ROS package), `launch/` directory, or ROS dependencies |
+| **robotics-jetson-agent** | `*.cu` (CUDA files), TensorRT usage, or Jetson-specific patterns |
 
 ## Template Placeholders
 
@@ -361,7 +523,32 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 | Placeholder | Description | Example Values |
 |-------------|-------------|----------------|
 | `{{ml_framework}}` | ML framework in use | "PyTorch", "TensorFlow" |
-| `{{docstring_style}}` | Docstring convention | "Google", "NumPy", "Sphinx" |
+| `{{metaflow_version}}` | Metaflow version | "2.11.0" |
+| `{{flows_dirs}}` | Metaflow pipeline directories | "`flows/`, `workflows/`" |
+| `{{execution_environment}}` | Metaflow execution target | "local", "AWS Batch", "Kubernetes" |
+| `{{run_flow_command}}` | Command to run Metaflow flow | "python my_flow.py run" |
+
+### Coding Standards Placeholders
+| Placeholder | Description | Example Values |
+|-------------|-------------|----------------|
+| `{{naming_convention}}` | General naming pattern | "snake_case (Python)", "camelCase (JS)" |
+| `{{file_naming}}` | File naming convention | "snake_case", "camelCase", "kebab-case" |
+| `{{function_naming}}` | Function naming style | "snake_case", "camelCase" |
+| `{{variable_naming}}` | Variable naming style | "snake_case", "camelCase" |
+| `{{class_naming}}` | Class naming style | "PascalCase" |
+| `{{constant_naming}}` | Constant naming style | "UPPER_SNAKE_CASE" |
+| `{{line_length}}` | Maximum line length | "88", "80", "120" |
+| `{{docstring_style}}` | Documentation style | "Google", "NumPy", "Sphinx", "JSDoc" |
+| `{{quote_style}}` | String quote preference | "single", "double" |
+| `{{indentation}}` | Indentation style | "4 spaces", "2 spaces", "tabs" |
+| `{{semicolons}}` | Semicolon usage (JS/TS) | "required", "optional" |
+| `{{architecture_pattern}}` | Project architecture | "MVC", "Service Layer", "Clean Architecture" |
+
+**Detection Sources:**
+1. Standards files: `CONTRIBUTING.md`, `STYLE.md`, `STYLEGUIDE.md`
+2. Linter configs: `.eslintrc`, `.prettierrc`, `ruff.toml`, `pyproject.toml`
+3. Code analysis: Patterns detected from actual source files
+4. Editor config: `.editorconfig` for basic formatting rules
 
 ## Customization
 
@@ -549,6 +736,7 @@ The `send: false` setting means handoffs require user approval before transition
 - **data-prep**: Data loading, augmentation, preprocessing, pipelines
 - **eval-agent**: Metrics, benchmarking, model comparison, validation
 - **inference-agent**: Prediction pipelines, model serving, optimization, deployment
+- **metaflow-agent**: ML workflow orchestration, experiment tracking, pipeline management
 
 ## Example Generated Output
 
@@ -658,6 +846,18 @@ You are an expert test engineer for this project.
 - 🚫 **Never:** Skip tests, commit failing tests
 ```
 
+## Copilot Instructions Setup
+
+This repository uses GitHub Copilot's custom instructions feature to provide context-aware guidance. The setup includes:
+
+- **Repository-wide instructions** (`.github/copilot-instructions.md`) - General conventions and project context
+- **Path-specific instructions** (`.github/instructions/*.instructions.md`) - Targeted guidance for templates and documentation
+- **Agent definitions** (`.github/agents/*.md`) - Specialized agents for specific tasks
+
+For detailed information about how Copilot instructions are configured in this repository, see:
+
+**📖 [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)**
+
 ## Contributing
 
 To improve the templates or add new agents:
@@ -666,6 +866,7 @@ To improve the templates or add new agents:
 2. Ensure templates work with multiple tech stacks
 3. Keep placeholders consistent across templates
 4. Update detection rules in agent-generator.md
+5. Follow the guidelines in [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)
 
 ## References
 
@@ -673,3 +874,5 @@ To improve the templates or add new agents:
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
 - [Cursor IDE Documentation - Rules](https://cursor.com/docs/context/rules)
 - [Cursor IDE Documentation - Subagents](https://cursor.com/docs/context/subagents)
+- [Adding Repository Custom Instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)
+- [Best Practices for Copilot Coding Agent](https://docs.github.com/en/copilot/tutorials/coding-agent/get-the-best-results)

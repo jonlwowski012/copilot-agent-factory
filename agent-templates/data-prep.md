@@ -1,6 +1,6 @@
 ---
 name: data-prep
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Data engineer specializing in data loading, preprocessing, augmentation, and dataset management
 triggers:
   - data/ or datasets/ directory exists

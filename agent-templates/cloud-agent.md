@@ -1,6 +1,6 @@
 ---
 name: cloud-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Cloud engineer specializing in AWS, GCP, and Azure infrastructure design, deployment, and optimization
 triggers:
   - AWS SDK or boto3 in dependencies

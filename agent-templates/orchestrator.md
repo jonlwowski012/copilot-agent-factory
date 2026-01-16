@@ -311,19 +311,34 @@ handoff_prompt: "Create comprehensive test strategy for this design (TDD approac
 **PHASE 3 GOAL:** Define test strategy before implementation (Test-Driven Development).
 
 **Phase 3.1: Test Design**
-```yaml
-agent: @test-design-agent
-prerequisite: Phase 2 completed (architecture and design exist)
-input:
-  - docs/planning/design/{feature}-design-{YYYYMMDD}.md
-  - docs/planning/architecture/{feature}-architecture-{YYYYMMDD}.md
-  - All Phase 1 artifacts
-output: docs/planning/test-design/{feature}-test-design-{YYYYMMDD}.md
-validation: Test design file must exist before proceeding to implementation
-gate: MUST wait for `/approve` or `/skip`
-handoff_to: Development agents (@docs-agent, @refactor-agent, etc.)
-handoff_prompt: "Implement the feature according to approved design and test strategy"
-```
+
+**Agent:** `@test-design-agent`
+
+**Prerequisite:** Phase 2 completed (architecture and design exist)
+
+**Input:**
+- `docs/planning/design/{feature}-design-{YYYYMMDD}.md`
+- `docs/planning/architecture/{feature}-architecture-{YYYYMMDD}.md`
+- All Phase 1 artifacts
+
+**Discrete Steps:**
+1. Invoke `@test-design-agent` with design and architecture documents
+2. Agent creates test strategy including:
+   - Test case specifications
+   - Success criteria
+   - Testing approach (unit, integration, e2e)
+   - Coverage requirements
+3. Agent defines tests BEFORE code is written (TDD approach)
+4. Save test design to `docs/planning/test-design/{feature}-test-design-{YYYYMMDD}.md`
+5. Present test design to user for approval
+
+**Output:** `docs/planning/test-design/{feature}-test-design-{YYYYMMDD}.md`
+
+**Validation:** Test design file must exist before proceeding to implementation
+
+**Approval Gate:** MUST wait for `/approve` or `/skip`
+
+**Handoff:** When approved, proceed to Phase 4 (Implementation)
 
 **Phase 3 Completion Checklist:**
 - [ ] Test strategy created in docs/planning/test-design/
@@ -339,19 +354,38 @@ handoff_prompt: "Implement the feature according to approved design and test str
 **PHASE 4 GOAL:** Implement the feature according to approved designs.
 
 **Phase 4.1: Development**
-```yaml
-agents: Route based on feature type
-  - @docs-agent (documentation changes)
-  - @refactor-agent (template improvements)
-  - Direct implementation (simple changes)
-prerequisite: Phase 3 completed (test design exists)
-input: All planning artifacts from Phases 1-3
-output: Implemented code/templates/documentation
-validation: Implementation must be complete and working
-gate: MUST wait for `/approve` before proceeding to review
-handoff_to: @review-agent
-handoff_prompt: "Review the implementation for quality, consistency, and best practices"
-```
+
+**Agents:** Route based on feature type:
+- `@docs-agent` (documentation changes)
+- `@refactor-agent` (template improvements)
+- `@api-agent` (API endpoints)
+- Direct implementation (simple changes)
+
+**Prerequisite:** Phase 3 completed (test design exists)
+
+**Input:** All planning artifacts from Phases 1-3
+
+**Discrete Steps:**
+1. Orchestrator determines feature type and selects appropriate agent:
+   - Documentation changes → `@docs-agent`
+   - Template improvements → `@refactor-agent`
+   - API endpoints → `@api-agent`
+   - Simple changes → Direct implementation
+2. Route to selected agent with context from all planning phases
+3. Agent implements feature following:
+   - Design specifications from Phase 2.2
+   - Test strategy from Phase 3
+   - Architecture from Phase 2.1
+4. Agent completes implementation and verifies it works
+5. Present implementation to user for approval
+
+**Output:** Implemented code/templates/documentation
+
+**Validation:** Implementation must be complete and working
+
+**Approval Gate:** MUST wait for `/approve` before proceeding to review
+
+**Handoff:** When approved, proceed to Phase 5.1 (Code Review)
 
 **Phase 4 Completion Checklist:**
 - [ ] Feature implemented
@@ -367,24 +401,57 @@ handoff_prompt: "Review the implementation for quality, consistency, and best pr
 **PHASE 5 GOAL:** Ensure quality, security, and documentation completeness.
 
 **Phase 5.1: Code Review**
-```yaml
-agent: @review-agent
-prerequisite: Phase 4 completed (implementation done)
-input: Implemented changes
-output: Review feedback and approval
-validation: No critical issues identified
-handoff_to: @docs-agent
-handoff_prompt: "Update all documentation to reflect the implemented changes"
-```
+
+**Agent:** `@review-agent`
+
+**Prerequisite:** Phase 4 completed (implementation done)
+
+**Input:** Implemented changes from Phase 4
+
+**Discrete Steps:**
+1. Invoke `@review-agent` with implemented changes
+2. Agent reviews code for:
+   - Quality and best practices
+   - Consistency with existing codebase
+   - Potential issues or bugs
+   - Adherence to design specifications
+3. Agent provides review feedback and approval status
+4. If issues found, request changes and wait for fixes
+5. Present review results to user for approval
+
+**Output:** Review feedback and approval (or requested changes)
+
+**Validation:** No critical issues identified
+
+**Approval Gate:** MUST wait for `/approve` to continue to Phase 5.2 (or address feedback first)
+
+**Handoff:** When approved, proceed to Phase 5.2 (Documentation Update)
+
+---
 
 **Phase 5.2: Documentation Update**
-```yaml
-agent: @docs-agent
-prerequisite: Review passed (Phase 5.1)
-input: Implemented changes + review feedback
-output: Updated README, examples, and documentation
-validation: Documentation is complete and accurate
-```
+
+**Agent:** `@docs-agent`
+
+**Prerequisite:** Review passed (Phase 5.1)
+
+**Input:** Implemented changes + review feedback
+
+**Discrete Steps:**
+1. Invoke `@docs-agent` with implementation details and review feedback
+2. Agent updates all relevant documentation:
+   - README with new features or changes
+   - Examples reflecting new functionality
+   - API documentation if applicable
+   - Architecture docs if structure changed
+3. Agent ensures documentation is accurate and complete
+4. Present updated documentation for final review
+
+**Output:** Updated README, examples, and documentation
+
+**Validation:** Documentation is complete and accurate
+
+**Result:** **Workflow Complete** ✅
 
 **Phase 5 Completion Checklist:**
 - [ ] Code reviewed for quality

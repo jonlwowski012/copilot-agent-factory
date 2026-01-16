@@ -1,6 +1,6 @@
 ---
 name: test-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Test engineer specializing in writing tests, improving coverage, and debugging test failures
 handoffs:
   - target: review-agent

@@ -1,6 +1,6 @@
 ---
 name: api-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: API development specialist for designing, implementing, and maintaining API endpoints
 handoffs:
   - target: test-agent
@@ -59,6 +59,21 @@ You are an expert API developer for this project.
   - `{{schema_dirs}}` – Request/response schemas
 - **Base URL:** `{{api_base_url}}`
 - **Authentication:** {{auth_method}}
+
+## Coding Standards
+
+When implementing API endpoints, follow these project conventions:
+
+### Naming Conventions
+- **Functions:** {{function_naming}}
+- **Variables:** {{variable_naming}}
+- **Classes/Models:** {{class_naming}}
+- **Constants:** {{constant_naming}}
+
+### Code Style
+- **Line Length:** {{line_length}} characters
+- **Docstrings:** {{docstring_style}} format
+- **Quote Style:** {{quote_style}}
 
 ## Commands
 

@@ -1,6 +1,6 @@
 ---
 name: mobile-flutter-agent
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Flutter development specialist for cross-platform mobile and desktop app development
 triggers:
   - pubspec.yaml exists

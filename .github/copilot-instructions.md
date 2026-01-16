@@ -14,7 +14,7 @@
 
 ### Always
 
-- **Include `model:` field** in agent YAML frontmatter (`claude-4-5-sonnet` or `claude-4-5-opus`)
+- **Include `model:` field** in agent YAML frontmatter (`claude-4-5-opus`)
 - Use `{{placeholder}}` convention (double braces, snake_case)
 - Follow standard agent template structure (Role → Knowledge → Standards → Boundaries → MCP)
 - Include concrete examples in templates
@@ -128,8 +128,8 @@ Phase 5: Review & Documentation
 
 ### When Working with Templates
 
-**Creating new agent templates:**
-1. Must include `model:` field (use `claude-4-5-opus` for planning/architecture/security, `claude-4-5-sonnet` for others)
+**When creating new agent templates:**
+1. Must include `model:` field (use `claude-4-5-opus`)
 2. Use standard YAML frontmatter (name, model, description, triggers)
 3. Include detection patterns in triggers
 4. Follow structure: Role → Knowledge → Standards → Boundaries → MCP
@@ -160,21 +160,19 @@ Phase 5: Review & Documentation
 
 ## Model Selection Guide
 
-Use **claude-4-5-opus** (deep reasoning) for:
-- orchestrator (workflow coordination)
-- Planning agents (prd, epic, story, architecture, design, test-design)
-- review-agent (quality analysis)
-- refactor-agent (architectural decisions)
+**All agents now use `claude-4-5-opus` for maximum reasoning capability.**
 
-Use **claude-4-5-sonnet** (fast, capable) for:
-- docs-agent (documentation)
-- Most development agents
+This unified approach ensures:
+- Consistent high-quality output across all agent types
+- Deep reasoning for complex tasks
+- Better understanding of project context
+- Improved code quality and architectural decisions
 
 **Always specify in YAML frontmatter:**
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Description
 ---
 ```

@@ -127,22 +127,21 @@ description: Description
 # After
 ---
 name: agent-name
-model: claude-4-5-sonnet
+model: claude-4-5-opus
 description: Description
 ---
 ```
 
 ### Model Selection Guide
 
-When adding or updating model fields:
+**All agents now use `claude-4-5-opus` for maximum reasoning capability.**
 
-| Agent Type | Model | Reason |
-|------------|-------|--------|
-| Planning (prd, epic, story) | claude-4-5-opus | Complex analysis |
-| Architecture & Design | claude-4-5-opus | System thinking |
-| Review & Security | claude-4-5-opus | Deep analysis |
-| Debug & Refactor | claude-4-5-opus | Root cause analysis |
-| Docs & Development | claude-4-5-sonnet | Fast, capable |
+This provides:
+- Consistent high-quality output
+- Deep reasoning for complex tasks
+- Better understanding of project context
+
+## Consistency Checks
 
 ## Consistency Checks
 
@@ -150,7 +149,7 @@ When adding or updating model fields:
 ```yaml
 ---
 name: kebab-case-name
-model: claude-4-5-sonnet | claude-4-5-opus
+model: claude-4-5-opus
 description: One-sentence description
 triggers:
   - Specific detection pattern

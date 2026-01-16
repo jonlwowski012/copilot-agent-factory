@@ -184,6 +184,14 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | `data-prep.md` | Data loading, preprocessing, augmentation |
 | `eval-agent.md` | Model evaluation, metrics, benchmarking |
 | `inference-agent.md` | Model inference, predictions, serving |
+| `metaflow-agent.md` | ML workflow orchestration, pipeline management, experiment tracking |
+
+### Robotics Agents
+| Template | Purpose |
+|----------|---------|
+| `robotics-cpp-agent.md` | C++ development for robotics with CMake, modern C++ standards, RAII |
+| `robotics-ros-agent.md` | ROS 1 and ROS 2 development, nodes, topics, services, launch files |
+| `robotics-jetson-agent.md` | NVIDIA Jetson edge AI, CUDA, TensorRT, JetPack SDK optimization |
 
 ## Analysis Process
 
@@ -212,6 +220,10 @@ Files to check:
 ├── .env / .env.example     → Environment variables (security concerns)
 ├── terraform/              → Infrastructure as code
 ├── kubernetes/ / k8s/      → Kubernetes configs
+├── CONTRIBUTING.md         → Contribution guidelines and standards
+├── STYLE.md / STYLEGUIDE.md → Code style guidelines
+├── CODING_STANDARDS.md     → Coding standards document
+├── .editorconfig           → Editor configuration for consistency
 ```
 
 ### Step 2: Detect Tech Stack
@@ -290,6 +302,203 @@ Map common directories:
 | `data/`, `datasets/` | Data files |
 | `api/`, `routes/` | API endpoints |
 
+### Step 4.5: Detect Coding Standards and Guidelines
+
+**CRITICAL: Inspect the repository for existing coding standards, style guides, and conventions to customize agents with project-specific requirements.**
+
+#### Look for Standards Documentation Files
+
+Check for explicit coding standards documents:
+
+| File | Purpose | Extract |
+|------|---------|---------|
+| `CONTRIBUTING.md` | Contribution guidelines | Code style, PR process, testing requirements |
+| `STYLE.md`, `STYLEGUIDE.md` | Style guide | Naming conventions, formatting rules, best practices |
+| `CODE_OF_CONDUCT.md` | Conduct standards | Communication guidelines, collaboration rules |
+| `CODING_STANDARDS.md` | Coding standards | Language-specific patterns, anti-patterns, conventions |
+| `.editorconfig` | Editor settings | Indentation, line endings, charset, trim trailing whitespace |
+| `README.md` (Development section) | Project-specific conventions | Build/test commands, contribution process |
+
+#### Extract from Linter/Formatter Configurations
+
+**ESLint (.eslintrc.js, .eslintrc.json, eslintConfig in package.json):**
+```javascript
+{
+  "rules": {
+    "indent": ["error", 2],           → indentation: 2 spaces
+    "quotes": ["error", "single"],    → quote_style: single quotes
+    "semi": ["error", "always"],      → semicolons required
+    "camelCase": "error"              → naming_convention: camelCase
+  }
+}
+```
+
+**Prettier (.prettierrc, .prettierrc.json):**
+```json
+{
+  "printWidth": 80,              → line_length: 80
+  "tabWidth": 2,                 → indentation: 2 spaces
+  "useTabs": false,              → spaces, not tabs
+  "semi": true,                  → semicolons required
+  "singleQuote": true,           → quote_style: single quotes
+  "trailingComma": "es5"         → trailing commas in ES5
+}
+```
+
+**Ruff (ruff.toml, pyproject.toml):**
+```toml
+[tool.ruff]
+line-length = 88              → line_length: 88
+target-version = "py311"      → python_version: 3.11
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]      → enabled rules (pycodestyle, pyflakes, isort)
+
+[tool.ruff.format]
+quote-style = "double"        → quote_style: double quotes
+indent-style = "space"        → spaces for indentation
+```
+
+**Black (pyproject.toml):**
+```toml
+[tool.black]
+line-length = 88              → line_length: 88
+target-version = ['py311']    → python_version: 3.11
+skip-string-normalization = false  → normalize string quotes
+```
+
+**TypeScript (tsconfig.json):**
+```json
+{
+  "compilerOptions": {
+    "strict": true,             → strict type checking
+    "noImplicitAny": true,      → require type annotations
+    "esModuleInterop": true     → module conventions
+  }
+}
+```
+
+#### Detect Naming Conventions from Code Samples
+
+Analyze a sample of source files to detect actual patterns:
+
+**Python naming detection:**
+```python
+# Scan 10-20 .py files and count patterns:
+def snake_case_function():     → function_naming: snake_case
+class PascalCaseClass:         → class_naming: PascalCase  
+CONSTANT_VALUE = 42            → constant_naming: UPPER_SNAKE_CASE
+variable_name = "value"        → variable_naming: snake_case
+```
+
+**JavaScript/TypeScript naming detection:**
+```javascript
+// Scan 10-20 .js/.ts files:
+function camelCaseFunction()   → function_naming: camelCase
+class PascalCaseClass          → class_naming: PascalCase
+const CONSTANT_VALUE = 42      → constant_naming: UPPER_SNAKE_CASE
+const variableName = "value"   → variable_naming: camelCase
+```
+
+**File naming detection:**
+```
+src/user_service.py            → file_naming: snake_case
+src/userService.js             → file_naming: camelCase
+src/user-service.ts            → file_naming: kebab-case
+```
+
+#### Detect Docstring/Comment Styles
+
+**Python docstrings:**
+```python
+def function():
+    """Google-style docstring.
+    
+    Args:
+        param: description
+        
+    Returns:
+        description
+    """
+    
+def function():
+    """
+    NumPy-style docstring.
+    
+    Parameters
+    ----------
+    param : type
+        description
+        
+    Returns
+    -------
+    type
+        description
+    """
+```
+
+**JavaScript/TypeScript JSDoc:**
+```javascript
+/**
+ * JSDoc comment style.
+ * @param {string} param - description
+ * @returns {boolean} description
+ */
+function example(param) { }
+```
+
+#### Detect Architecture Patterns
+
+Look for patterns indicating architectural style:
+
+| Pattern | Architecture | Evidence |
+|---------|--------------|----------|
+| `models/`, `views/`, `controllers/` | MVC | Directory structure |
+| `services/`, `repositories/` | Service Layer | Separation of concerns |
+| `microservices/`, `k8s/` | Microservices | Service isolation |
+| `domain/`, `application/`, `infrastructure/` | Clean Architecture | Layered structure |
+| `features/` with co-located tests | Feature-based | Feature folders |
+
+#### Populate Style Placeholders
+
+Use detected information to populate these placeholders:
+
+| Placeholder | Detection Method | Fallback |
+|-------------|------------------|----------|
+| `{{naming_convention}}` | Code analysis + linter config | Language defaults |
+| `{{file_naming}}` | File name pattern analysis | snake_case (Python), camelCase (JS) |
+| `{{function_naming}}` | Code analysis | snake_case (Python), camelCase (JS) |
+| `{{variable_naming}}` | Code analysis | snake_case (Python), camelCase (JS) |
+| `{{line_length}}` | Linter config (.prettierrc, ruff.toml) | 88 (Python), 80 (JS) |
+| `{{docstring_style}}` | Docstring pattern analysis | Google (Python), JSDoc (JS) |
+| `{{quote_style}}` | Linter config | double (Python), single (JS) |
+| `{{indentation}}` | .editorconfig or linter config | 4 spaces (Python), 2 spaces (JS) |
+| `{{architecture_pattern}}` | Directory structure analysis | Detected or "Not specified" |
+
+#### Integration into Agents
+
+When generating agents, incorporate detected standards into:
+
+1. **lint-agent.md:**
+   - Populate style standards section with actual config
+   - Include detected naming conventions
+   - Reference actual linter commands
+
+2. **review-agent.md:**
+   - Add project-specific quality standards from CONTRIBUTING.md
+   - Include architectural patterns to check
+   - Reference style guide if present
+
+3. **docs-agent.md:**
+   - Use detected docstring style
+   - Follow documentation conventions from CONTRIBUTING.md
+   - Match existing documentation structure
+
+4. **All domain agents:**
+   - Apply naming conventions to generated code suggestions
+   - Follow architectural patterns
+   - Respect style guidelines
+
 ### Step 5: Select Agents to Generate
 
 Generate agents based on detection:
@@ -326,6 +535,14 @@ Generate agents based on detection:
 | **data-prep** | `data/` directory OR data processing imports (pandas, numpy, etc.) |
 | **eval-agent** | `eval.py` OR `evaluate.py` OR `metrics/` OR ML framework detected |
 | **inference-agent** | `inference.py` OR `predict.py` OR model serving patterns |
+| **metaflow-agent** | `metaflow` in dependencies OR Flow class with `@step` decorators OR `flows/` directory OR metaflow imports |
+
+#### Robotics Agents
+| Agent | Generate If |
+|-------|-------------|
+| **robotics-cpp-agent** | `CMakeLists.txt` OR `*.cpp/*.hpp` files OR C++ project structure |
+| **robotics-ros-agent** | `package.xml` (ROS package) OR `launch/` directory OR ROS dependencies in CMakeLists.txt |
+| **robotics-jetson-agent** | `*.cu` (CUDA files) OR TensorRT usage OR JetPack SDK patterns OR Jetson deployment configs |
 
 ### Step 6: Create Planning Directory Structure
 
@@ -349,13 +566,27 @@ For each selected agent:
 2. **Apply platform-specific YAML handling:**
    - **VS Code (`--platform vscode`):** Preserve entire YAML frontmatter including `name`, `model`, `description`, `triggers`, `handoffs`
    - **Claude Code (`--platform claude-code`):** Strip `triggers` and `handoffs` from YAML, keep only `name`, `model`, `description`
-3. Replace all `{{placeholder}}` markers with detected values in the agent body
-4. **Output based on platform:**
+3. **Replace all `{{placeholder}}` markers with detected values** from Steps 1-4.5:
+   - Tech stack, commands, and directories from Steps 1-4
+   - **Coding standards and style conventions from Step 4.5**
+   - Use fallback values if detection fails
+4. **Integrate coding standards into agent behavior:**
+   - Add project-specific quality standards to review-agent
+   - Include actual linter rules in lint-agent
+   - Use detected docstring style in docs-agent
+   - Apply naming conventions across all domain agents
+5. **Output based on platform:**
    - **VS Code:** Write individual files to `{output-dir}/{agent-name}.md`
    - **Claude Code:** Write individual files to `{output-dir}/{agent-name}.md`
-5. Update orchestrator's `{{active_agents_table}}` with generated agents
+6. Update orchestrator's `{{active_agents_table}}` with generated agents
 
 **CRITICAL:** When customizing templates, only replace `{{placeholders}}` in the agent body content. Never modify or remove the core YAML frontmatter sections (name, model, description).
+
+**PRIORITY ORDER for Standards Detection:**
+1. Explicit standards files (CONTRIBUTING.md, STYLE.md) – highest priority
+2. Linter/formatter configurations – second priority
+3. Code analysis (actual patterns in code) – third priority
+4. Language/framework defaults – fallback
 
 ## Placeholder Reference
 
@@ -390,8 +621,14 @@ When customizing templates, replace these markers:
 | `{{file_naming}}` | File naming convention |
 | `{{function_naming}}` | Function naming convention |
 | `{{variable_naming}}` | Variable naming convention |
+| `{{class_naming}}` | Class naming convention (usually PascalCase) |
+| `{{constant_naming}}` | Constant naming convention (usually UPPER_SNAKE_CASE) |
 | `{{line_length}}` | Configured line length (default: 88 or 120) |
-| `{{docstring_style}}` | Docstring convention (Google, NumPy, Sphinx) |
+| `{{docstring_style}}` | Docstring convention (Google, NumPy, Sphinx, JSDoc) |
+| `{{quote_style}}` | Quote style (single, double) from linter config |
+| `{{indentation}}` | Indentation (spaces or tabs, and count) |
+| `{{semicolons}}` | Semicolon usage (required, optional) for JS/TS |
+| `{{trailing_commas}}` | Trailing comma style from formatter config |
 
 ### ML-Specific Placeholders
 | Placeholder | Source |
@@ -671,6 +908,159 @@ Generate only api-agent for this FastAPI project
 
 @agent-generator --platform claude-code --output .claude/agents/
 Generate only test-agent using pytest conventions
+```
+
+## Example: Coding Standards Detection
+
+### Example Repository Structure
+
+```
+my-fastapi-project/
+├── CONTRIBUTING.md          # Contains style guide and PR process
+├── .prettierrc              # Formatter config
+├── pyproject.toml           # Contains ruff configuration
+├── src/
+│   ├── api/
+│   │   ├── user_service.py  # snake_case file naming
+│   │   └── order_service.py
+│   └── models/
+│       └── user.py
+└── tests/
+    └── test_user_service.py
+```
+
+### Step 4.5 Detection Results
+
+**1. Standards Documentation:**
+- Found: `CONTRIBUTING.md`
+  - Extracted: "Use snake_case for Python files and functions"
+  - Extracted: "All PRs must include tests"
+  - Extracted: "Maximum line length: 88 characters"
+
+**2. Linter Configuration (pyproject.toml):**
+```toml
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N"]  # Enable naming checks
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+```
+
+**Detection:**
+- `{{line_length}}` = 88
+- `{{quote_style}}` = "double"
+- `{{indentation}}` = "4 spaces" (Python default)
+- `{{lint_command}}` = "ruff check ."
+- `{{lint_fix_command}}` = "ruff check --fix ."
+- `{{format_command}}` = "ruff format ."
+
+**3. Code Analysis (src/api/user_service.py):**
+```python
+"""User service module.
+
+This module handles user operations.
+"""
+
+from typing import Optional
+
+class UserService:
+    """Service for user operations."""
+    
+    def get_user(self, user_id: int) -> Optional[dict]:
+        """Get user by ID.
+        
+        Args:
+            user_id: The user ID to look up
+            
+        Returns:
+            User data or None if not found
+        """
+        pass
+
+MAX_RETRIES = 3
+```
+
+**Detection:**
+- `{{file_naming}}` = "snake_case" (user_service.py)
+- `{{function_naming}}` = "snake_case" (get_user)
+- `{{class_naming}}` = "PascalCase" (UserService)
+- `{{constant_naming}}` = "UPPER_SNAKE_CASE" (MAX_RETRIES)
+- `{{docstring_style}}` = "Google" (Args/Returns format)
+
+**4. Architecture Detection:**
+- Found: `src/api/`, `src/models/` → Service Layer pattern
+- `{{architecture_pattern}}` = "Service Layer with API routes"
+
+### Generated lint-agent.md (excerpt)
+
+```markdown
+## Commands
+
+- **Check Style:** `ruff check .`
+- **Auto-Fix:** `ruff check --fix .`
+- **Format Code:** `ruff format .`
+
+## Style Standards
+
+### Line Length: 88 characters
+
+### Naming Conventions
+
+| Element | Convention | Example |
+|---------|------------|---------|
+| Files | snake_case | `user_service.py`, `order_service.py` |
+| Classes | PascalCase | `UserService`, `DataLoader` |
+| Functions | snake_case | `get_user()`, `process_order()` |
+| Variables | snake_case | `user_name`, `order_id` |
+| Constants | UPPER_SNAKE_CASE | `MAX_RETRIES`, `API_URL` |
+
+### Docstring Style: Google
+
+```python
+def function_name(param1: str, param2: int) -> bool:
+    """Brief description.
+    
+    Longer description if needed.
+    
+    Args:
+        param1: Description of param1
+        param2: Description of param2
+        
+    Returns:
+        Description of return value
+        
+    Raises:
+        ValueError: When validation fails
+    """
+```
+
+### Quote Style: Double quotes
+
+### Indentation: 4 spaces
+```
+
+### Generated review-agent.md (excerpt)
+
+```markdown
+## Project-Specific Standards
+
+From CONTRIBUTING.md:
+- Use snake_case for Python files and functions
+- All PRs must include tests
+- Maximum line length: 88 characters
+- Follow Google-style docstrings
+
+## Architecture
+
+This project uses a **Service Layer pattern**:
+- `src/api/` – API route handlers
+- `src/models/` – Data models
+- Services should be testable independently
 ```
 
 ## Example Generated Active Agents Table
