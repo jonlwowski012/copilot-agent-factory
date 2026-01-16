@@ -293,7 +293,7 @@ Check for explicit coding standards documents:
 ```javascript
 {
   "rules": {
-    "indent": ["error", 2],           → line_length, indentation
+    "indent": ["error", 2],           → indentation: 2 spaces
     "quotes": ["error", "single"],    → quote_style: single quotes
     "semi": ["error", "always"],      → semicolons required
     "camelCase": "error"              → naming_convention: camelCase
