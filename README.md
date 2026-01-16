@@ -26,6 +26,88 @@ Instead of manually writing agent files for each project, Copilot Agent Factory:
 
 ---
 
+## Quick Start
+
+Get up and running in 3 simple steps:
+
+### 1. Copy to Your Repository
+
+```bash
+# From this project, copy the generator and templates to your target repo
+cp agent-generator.md /path/to/your/repo/
+cp -r agent-templates /path/to/your/repo/
+```
+
+### 2. Generate Agents for Your Platform
+
+**For VS Code (GitHub Copilot):**
+
+```
+@agent-generator --platform vscode --output .github/agents/
+Analyze this repository and generate all appropriate agents
+```
+
+**For Claude Code:**
+
+```
+@agent-generator --platform claude-code --output .claude/agents/
+Analyze this repository and generate all appropriate agents
+```
+
+**For Cursor IDE:**
+
+```
+@agent-generator --platform cursor --output .cursor/agents/
+Analyze this repository and generate all appropriate agents
+```
+
+**For Multiple Platforms:**
+
+```
+@agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
+Analyze this repository and generate agents for both platforms
+```
+
+Or specify all platforms:
+
+```
+@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/agents/
+Analyze this repository and generate agents for all three platforms
+```
+
+The generator will:
+1. 🔍 Scan your repository structure
+2. 🎯 Detect tech stack, frameworks, and tools
+3. 📝 Extract build/test/lint commands from configs
+4. 📚 Inspect coding standards and style guidelines
+5. ✨ Select relevant agents based on detected patterns
+6. 🛠️ Customize templates with repo-specific values
+7. 🚀 Output ready-to-use agents in the appropriate format
+
+### 3. Start Using Your Agents
+
+**VS Code (GitHub Copilot):**
+
+```
+# Start a full feature workflow with approval gates
+@orchestrator Start a new feature: user authentication system
+
+# Or invoke individual agents directly
+@prd-agent Create a PRD for the payment processing feature
+@test-agent Write tests for the UserService class
+@review-agent Review my changes before I create a PR
+```
+
+**Claude Code:**
+
+Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
+
+**Cursor IDE:**
+
+Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context.
+
+---
+
 ## Feature Development Workflow
 
 The agent factory includes a comprehensive **Feature Development Workflow** with approval gates at each phase. This ensures quality and user oversight throughout the development lifecycle.
@@ -252,84 +334,6 @@ docs/
 ```
 
 ---
-
-## Quick Start
-
-### 1. Copy to Your Repository
-
-```bash
-# From this project, copy the generator and templates to your target repo
-cp agent-generator.md /path/to/your/repo/
-cp -r agent-templates /path/to/your/repo/
-```
-
-### 2. Generate Agents for Your Platform
-
-**For VS Code (GitHub Copilot):**
-
-```
-@agent-generator --platform vscode --output .github/agents/
-Analyze this repository and generate all appropriate agents
-```
-
-**For Claude Code:**
-
-```
-@agent-generator --platform claude-code --output .claude/agents/
-Analyze this repository and generate all appropriate agents
-```
-
-**For Cursor IDE:**
-
-```
-@agent-generator --platform cursor --output .cursor/agents/
-Analyze this repository and generate all appropriate agents
-```
-
-**For Multiple Platforms:**
-
-```
-@agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
-Analyze this repository and generate agents for both platforms
-```
-
-Or specify individual platforms:
-
-```
-@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/agents/
-Analyze this repository and generate agents for all three platforms
-```
-
-The generator will:
-1. Scan your repository structure
-2. Detect tech stack, frameworks, and tools
-3. Extract build/test/lint commands from configs
-4. Inspect coding standards and style guidelines (from CONTRIBUTING.md, linter configs, code patterns)
-5. Select relevant agents based on detected patterns
-6. Customize templates with repo-specific values including coding conventions
-7. Output agents in the appropriate format for your platform
-
-### 3. Use Your Agents
-
-**VS Code (GitHub Copilot):**
-
-```
-# Start a full feature workflow with approval gates
-@orchestrator Start a new feature: user authentication system
-
-# Or invoke individual agents directly
-@prd-agent Create a PRD for the payment processing feature
-@test-agent Write tests for the UserService class
-@review-agent Review my changes before I create a PR
-```
-
-**Claude Code:**
-
-Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
-
-**Cursor IDE:**
-
-Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context. You can also use `.cursorrules` in your project root for additional project-wide AI instructions.
 
 ## Directory Structure
 
