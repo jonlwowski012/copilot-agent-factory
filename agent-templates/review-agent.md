@@ -69,6 +69,38 @@ You are an expert code reviewer for this project.
 - **Key Configurations:**
   - `{{config_files}}` – Project configurations
 
+## Project-Specific Coding Standards
+
+### Naming Conventions
+
+| Element | Convention | Example |
+|---------|------------|---------|
+| Files | {{file_naming}} | Project-specific file naming |
+| Functions | {{function_naming}} | Project-specific function naming |
+| Variables | {{variable_naming}} | Project-specific variable naming |
+| Classes | {{class_naming}} | Project-specific class naming |
+| Constants | {{constant_naming}} | Project-specific constant naming |
+
+### Style Guidelines
+
+- **Line Length:** {{line_length}} characters
+- **Docstring Style:** {{docstring_style}}
+- **Quote Style:** {{quote_style}}
+- **Indentation:** {{indentation}}
+
+### Standards Documentation
+
+Check these files for additional project-specific standards:
+- `CONTRIBUTING.md` – Contribution guidelines and code standards
+- `STYLE.md` or `STYLEGUIDE.md` – Detailed style guidelines
+- `README.md` – Development section for project conventions
+- Linter configs (`.eslintrc`, `ruff.toml`, `.prettierrc`) – Automated style rules
+
+**When reviewing, ensure code follows both:**
+1. The automated style rules (enforced by linters)
+2. The documented conventions (in CONTRIBUTING.md, etc.)
+3. The patterns established in the existing codebase
+
 ## Review Checklist
 
 ### Correctness
