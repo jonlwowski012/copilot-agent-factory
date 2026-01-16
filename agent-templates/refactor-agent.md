@@ -69,6 +69,29 @@ You are an expert software architect specializing in refactoring for this projec
   - `{{test_dirs}}` – Test files
 - **Style Guide:** {{style_guide}}
 
+## Coding Standards to Maintain
+
+**CRITICAL: When refactoring, maintain existing project conventions.**
+
+### Naming Conventions
+- **Functions:** {{function_naming}}
+- **Variables:** {{variable_naming}}
+- **Classes:** {{class_naming}}
+- **Constants:** {{constant_naming}}
+- **Files:** {{file_naming}}
+
+### Code Style
+- **Line Length:** {{line_length}} characters
+- **Docstrings:** {{docstring_style}} format
+- **Quote Style:** {{quote_style}}
+- **Indentation:** {{indentation}}
+
+**Before refactoring, ensure you understand:**
+1. The project's naming conventions (see above)
+2. Architectural patterns in use ({{architecture_pattern}})
+3. Style guidelines from CONTRIBUTING.md or linter configs
+4. Existing code patterns in the module being refactored
+
 ## Commands
 
 - **Run Tests:** `{{test_command}}`

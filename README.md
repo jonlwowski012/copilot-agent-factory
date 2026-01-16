@@ -136,9 +136,10 @@ The generator will:
 1. Scan your repository structure
 2. Detect tech stack, frameworks, and tools
 3. Extract build/test/lint commands from configs
-4. Select relevant agents based on detected patterns
-5. Customize templates with repo-specific values
-6. Output agents in the appropriate format for your platform
+4. Inspect coding standards and style guidelines (from CONTRIBUTING.md, linter configs, code patterns)
+5. Select relevant agents based on detected patterns
+6. Customize templates with repo-specific values including coding conventions
+7. Output agents in the appropriate format for your platform
 
 ### 3. Use Your Agents
 
@@ -346,7 +347,28 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 | `{{flows_dirs}}` | Metaflow pipeline directories | "`flows/`, `workflows/`" |
 | `{{execution_environment}}` | Metaflow execution target | "local", "AWS Batch", "Kubernetes" |
 | `{{run_flow_command}}` | Command to run Metaflow flow | "python my_flow.py run" |
-| `{{docstring_style}}` | Docstring convention | "Google", "NumPy", "Sphinx" |
+
+### Coding Standards Placeholders
+| Placeholder | Description | Example Values |
+|-------------|-------------|----------------|
+| `{{naming_convention}}` | General naming pattern | "snake_case (Python)", "camelCase (JS)" |
+| `{{file_naming}}` | File naming convention | "snake_case", "camelCase", "kebab-case" |
+| `{{function_naming}}` | Function naming style | "snake_case", "camelCase" |
+| `{{variable_naming}}` | Variable naming style | "snake_case", "camelCase" |
+| `{{class_naming}}` | Class naming style | "PascalCase" |
+| `{{constant_naming}}` | Constant naming style | "UPPER_SNAKE_CASE" |
+| `{{line_length}}` | Maximum line length | "88", "80", "120" |
+| `{{docstring_style}}` | Documentation style | "Google", "NumPy", "Sphinx", "JSDoc" |
+| `{{quote_style}}` | String quote preference | "single", "double" |
+| `{{indentation}}` | Indentation style | "4 spaces", "2 spaces", "tabs" |
+| `{{semicolons}}` | Semicolon usage (JS/TS) | "required", "optional" |
+| `{{architecture_pattern}}` | Project architecture | "MVC", "Service Layer", "Clean Architecture" |
+
+**Detection Sources:**
+1. Standards files: `CONTRIBUTING.md`, `STYLE.md`, `STYLEGUIDE.md`
+2. Linter configs: `.eslintrc`, `.prettierrc`, `ruff.toml`, `pyproject.toml`
+3. Code analysis: Patterns detected from actual source files
+4. Editor config: `.editorconfig` for basic formatting rules
 
 ## Customization
 

@@ -70,6 +70,23 @@ You are an expert React developer specializing in modern React development patte
   - `{{react_pages_dirs}}` – Page/screen components
   - `{{react_hooks_dirs}}` – Custom hooks
 
+## Coding Standards
+
+When implementing React components, follow these project conventions:
+
+### Naming Conventions
+- **Components:** {{class_naming}} (PascalCase by default)
+- **Functions:** {{function_naming}}
+- **Variables:** {{variable_naming}}
+- **Constants:** {{constant_naming}}
+- **Files:** {{file_naming}}
+
+### Code Style
+- **Line Length:** {{line_length}} characters
+- **Quote Style:** {{quote_style}}
+- **Semicolons:** {{semicolons}}
+- **Indentation:** {{indentation}}
+
 ## Commands
 
 - **Start Dev Server:** `{{react_dev_command}}`
