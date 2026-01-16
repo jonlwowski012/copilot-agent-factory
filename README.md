@@ -136,7 +136,7 @@ The generator will:
 1. Scan your repository structure
 2. Detect tech stack, frameworks, and tools
 3. Extract build/test/lint commands from configs
-4. **Inspect coding standards and style guidelines** (from CONTRIBUTING.md, linter configs, code patterns)
+4. Inspect coding standards and style guidelines (from CONTRIBUTING.md, linter configs, code patterns)
 5. Select relevant agents based on detected patterns
 6. Customize templates with repo-specific values including coding conventions
 7. Output agents in the appropriate format for your platform
