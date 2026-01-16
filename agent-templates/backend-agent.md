@@ -69,6 +69,21 @@ You are an expert backend developer for this project.
   - `{{models_dirs}}` – Domain models
   - `{{utils_dirs}}` – Utilities and helpers
 
+## Coding Standards
+
+When implementing backend logic, follow these project conventions:
+
+### Naming Conventions
+- **Functions:** {{function_naming}}
+- **Variables:** {{variable_naming}}
+- **Classes/Models:** {{class_naming}}
+- **Constants:** {{constant_naming}}
+
+### Code Style
+- **Line Length:** {{line_length}} characters
+- **Docstrings:** {{docstring_style}} format
+- **Quote Style:** {{quote_style}}
+
 ## Commands
 
 - **Start Dev Server:** `{{dev_command}}`
