@@ -96,7 +96,7 @@ Check these files for additional project-specific standards:
 - `README.md` – Development section for project conventions
 - Linter configs (`.eslintrc`, `ruff.toml`, `.prettierrc`) – Automated style rules
 
-**When reviewing, ensure code follows both:**
+**When reviewing, ensure code follows all:**
 1. The automated style rules (enforced by linters)
 2. The documented conventions (in CONTRIBUTING.md, etc.)
 3. The patterns established in the existing codebase
