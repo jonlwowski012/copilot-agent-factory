@@ -1,6 +1,6 @@
 # Copilot Agent Factory 🏭
 
-**Auto-generate customized agents for VS Code (GitHub Copilot) or Claude Code from any repository.**
+**Auto-generate customized agents for VS Code (GitHub Copilot), Claude Code, or Cursor IDE from any repository.**
 
 Transform any codebase into an AI-powered development environment by automatically detecting your tech stack, frameworks, and patterns, then generating perfectly tailored agents that understand your project's specific needs.
 
@@ -10,6 +10,7 @@ Transform any codebase into an AI-powered development environment by automatical
 |----------|---------------|------------------|
 | **VS Code** (GitHub Copilot) | Multiple `.md` files (one per agent) | `.github/agents/` |
 | **Claude Code** | Multiple `.md` files (one per agent) | `.claude/agents/` |
+| **Cursor IDE** | Multiple `.mdc` files (one per agent) | `.cursor/agents/` |
 
 ## What is this?
 
@@ -278,11 +279,25 @@ Analyze this repository and generate all appropriate agents
 Analyze this repository and generate all appropriate agents
 ```
 
-**For Both Platforms:**
+**For Cursor IDE:**
+
+```
+@agent-generator --platform cursor --output .cursor/agents/
+Analyze this repository and generate all appropriate agents
+```
+
+**For Multiple Platforms:**
 
 ```
 @agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
 Analyze this repository and generate agents for both platforms
+```
+
+Or specify individual platforms:
+
+```
+@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/agents/
+Analyze this repository and generate agents for all three platforms
 ```
 
 The generator will:
@@ -311,6 +326,10 @@ The generator will:
 **Claude Code:**
 
 Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
+
+**Cursor IDE:**
+
+Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context. You can also use `.cursorrules` in your project root for additional project-wide AI instructions.
 
 ## Directory Structure
 
@@ -381,6 +400,14 @@ automatic_agent_gen/
 - **YAML Frontmatter:** Simplified format with `name`, `model`, `description` only (no `triggers` or `handoffs`)
 - **Invocation:** Claude uses agents automatically based on context
 - **Handoffs:** Not supported (Claude handles routing internally)
+
+### Cursor IDE
+
+- **Output:** Multiple `.mdc` files (Markdown Cursor format) in `.cursor/agents/`
+- **YAML Frontmatter:** Cursor-specific format with `description`, `globs`, `alwaysApply` (no `triggers` or `handoffs`)
+- **Invocation:** Cursor uses agents automatically based on context and file patterns
+- **Handoffs:** Not supported (Cursor handles routing internally)
+- **Additional:** Can use `.cursorrules` file in project root for global project instructions
 
 ## Agent Detection Rules
 
@@ -564,7 +591,7 @@ You are an expert [role] for this project.
 
 2. Update `agent-generator.md` to detect when your agent should be created
 
-**Note:** The `triggers` and `handoffs` sections are VS Code-specific and will be automatically stripped when generating for Claude Code.
+**Note:** The `triggers` and `handoffs` sections are VS Code-specific and will be automatically stripped when generating for Claude Code or Cursor IDE. For Cursor, the YAML frontmatter is converted to include `description`, `globs`, and `alwaysApply` fields instead.
 
 ### Overriding Detection
 
@@ -606,7 +633,7 @@ Based on analysis of [2,500+ repositories](https://github.blog/ai-and-ml/github-
 
 All agent templates include **handoff** configurations that enable seamless transitions between agents during development workflows. Handoffs allow agents to pass context and suggest next steps, creating a guided, multi-agent collaboration experience.
 
-**Note:** Handoffs are a VS Code (GitHub Copilot) feature and are automatically stripped when generating for Claude Code.
+**Note:** Handoffs are a VS Code (GitHub Copilot) feature and are automatically stripped when generating for Claude Code or Cursor IDE.
 
 ### How Handoffs Work
 
@@ -713,12 +740,88 @@ The `send: false` setting means handoffs require user approval before transition
 
 ## Example Generated Output
 
-For a Python ML project, the generator might produce:
+For a Python ML project, the generator might produce different output formats based on the target platform:
+
+### VS Code (GitHub Copilot) Format
 
 ```markdown
 ---
 name: test-agent
+model: claude-4-5-sonnet
 description: Test engineer specializing in writing tests for ML pipelines
+triggers:
+  - pytest configuration detected
+  - test files present
+handoffs:
+  - target: review-agent
+    label: "Review Tests"
+    prompt: "Please review the test coverage and quality"
+    send: false
+---
+
+You are an expert test engineer for this project.
+
+## Project Knowledge
+- **Tech Stack:** Python 3.10, PyTorch 2.0, pytest
+- **Test Directories:**
+  - `tests/` – Unit and integration tests
+
+## Commands
+- **Run All Tests:** `pytest -v`
+- **Run with Coverage:** `pytest -v --cov=src --cov-report=html`
+
+## Standards
+- Test file naming: `test_*.py`
+- Use pytest fixtures for shared setup
+- Mock external APIs and database calls
+
+## Boundaries
+- ✅ **Always:** Write tests for new features, use descriptive names
+- ⚠️ **Ask First:** Adding new test dependencies
+- 🚫 **Never:** Skip tests, commit failing tests
+```
+
+### Claude Code Format
+
+```markdown
+---
+name: test-agent
+model: claude-4-5-sonnet
+description: Test engineer specializing in writing tests for ML pipelines
+---
+
+You are an expert test engineer for this project.
+
+## Project Knowledge
+- **Tech Stack:** Python 3.10, PyTorch 2.0, pytest
+- **Test Directories:**
+  - `tests/` – Unit and integration tests
+
+## Commands
+- **Run All Tests:** `pytest -v`
+- **Run with Coverage:** `pytest -v --cov=src --cov-report=html`
+
+## Standards
+- Test file naming: `test_*.py`
+- Use pytest fixtures for shared setup
+- Mock external APIs and database calls
+
+## Boundaries
+- ✅ **Always:** Write tests for new features, use descriptive names
+- ⚠️ **Ask First:** Adding new test dependencies
+- 🚫 **Never:** Skip tests, commit failing tests
+```
+
+### Cursor IDE Format (test-agent.mdc)
+
+```markdown
+---
+description: Test engineer specializing in writing tests for ML pipelines in this Python ML project
+globs:
+  - "tests/**/*.py"
+  - "test_*.py"
+  - "src/**/*.py"
+alwaysApply: false
 ---
 
 You are an expert test engineer for this project.
@@ -769,5 +872,7 @@ To improve the templates or add new agents:
 
 - [GitHub Blog: How to Write Great Agents.md](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/)
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
+- [Cursor IDE Documentation - Rules](https://cursor.com/docs/context/rules)
+- [Cursor IDE Documentation - Subagents](https://cursor.com/docs/context/subagents)
 - [Adding Repository Custom Instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)
 - [Best Practices for Copilot Coding Agent](https://docs.github.com/en/copilot/tutorials/coding-agent/get-the-best-results)
