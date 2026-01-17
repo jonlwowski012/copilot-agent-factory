@@ -184,6 +184,10 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | `data-prep.md` | Data loading, preprocessing, augmentation |
 | `eval-agent.md` | Model evaluation, metrics, benchmarking |
 | `inference-agent.md` | Model inference, predictions, serving |
+| `pytorch-agent.md` | PyTorch neural networks, training, optimization |
+| `tensorflow-agent.md` | TensorFlow/Keras models, training, serving |
+| `pytorch-lightning-agent.md` | Lightning modules, structured training, distributed |
+| `torchgeo-agent.md` | Geospatial deep learning, remote sensing, satellite imagery |
 | `metaflow-agent.md` | ML workflow orchestration, pipeline management, experiment tracking |
 
 ### Robotics Agents
@@ -535,6 +539,10 @@ Generate agents based on detection:
 | **data-prep** | `data/` directory OR data processing imports (pandas, numpy, etc.) |
 | **eval-agent** | `eval.py` OR `evaluate.py` OR `metrics/` OR ML framework detected |
 | **inference-agent** | `inference.py` OR `predict.py` OR model serving patterns |
+| **pytorch-agent** | `torch` OR `pytorch` in dependencies OR `import torch` statements OR `.pt/.pth` checkpoint files |
+| **tensorflow-agent** | `tensorflow` in dependencies OR `import tensorflow` statements OR `.h5/.pb` model files |
+| **pytorch-lightning-agent** | `pytorch-lightning` OR `lightning` in dependencies OR `import pytorch_lightning` statements OR LightningModule classes |
+| **torchgeo-agent** | `torchgeo` in dependencies OR `import torchgeo` statements OR geospatial dataset patterns |
 | **metaflow-agent** | `metaflow` in dependencies OR Flow class with `@step` decorators OR `flows/` directory OR metaflow imports |
 
 #### Robotics Agents
@@ -634,6 +642,13 @@ When customizing templates, replace these markers:
 | Placeholder | Source |
 |-------------|--------|
 | `{{ml_framework}}` | Detected ML framework (PyTorch, TensorFlow, etc.) |
+| `{{pytorch_version}}` | PyTorch version from dependencies |
+| `{{tensorflow_version}}` | TensorFlow version from dependencies |
+| `{{lightning_version}}` | PyTorch Lightning version from dependencies |
+| `{{torchgeo_version}}` | TorchGeo version from dependencies |
+| `{{cuda_available}}` | CUDA availability detection |
+| `{{gpu_available}}` | GPU availability detection |
+| `{{accelerator}}` | Training accelerator (cuda, mps, cpu) |
 | `{{model_dirs}}` | Model/checkpoint directories |
 | `{{data_dirs}}` | Data directories |
 | `{{train_command}}` | Training command |
@@ -1092,7 +1107,12 @@ For the orchestrator's `{{active_agents_table}}` placeholder:
 | @microservices-agent | ✅ Active | Distributed systems, K8s, service mesh |
 | @queue-agent | ✅ Active | Message queues, async jobs, Celery/Kafka |
 | @observability-agent | ✅ Active | Logging, metrics, tracing, monitoring |
-| @ml-trainer | ✅ Active | PyTorch model training |
-| @data-prep | ✅ Active | Dataset preparation |
+| @ml-trainer | ✅ Active | ML model training pipelines |
+| @pytorch-agent | ✅ Active | PyTorch neural networks, optimization |
+| @tensorflow-agent | ✅ Active | TensorFlow/Keras models, training |
+| @pytorch-lightning-agent | ✅ Active | Lightning modules, distributed training |
+| @torchgeo-agent | ✅ Active | Geospatial ML, remote sensing |
+| @data-prep | ✅ Active | Dataset preparation, augmentation |
 | @eval-agent | ✅ Active | Model evaluation, metrics |
+| @inference-agent | ✅ Active | Model serving, predictions |
 ```

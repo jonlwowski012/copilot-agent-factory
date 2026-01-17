@@ -376,7 +376,11 @@ automatic_agent_gen/
 │       ├── ml-trainer.md          # ML model training
 │       ├── data-prep.md           # Data preprocessing
 │       ├── eval-agent.md          # Model evaluation
-│       └── inference-agent.md     # Model inference and serving
+│       ├── inference-agent.md     # Model inference and serving
+│       ├── pytorch-agent.md       # PyTorch neural networks
+│       ├── tensorflow-agent.md    # TensorFlow/Keras models
+│       ├── pytorch-lightning-agent.md  # Lightning structured training
+│       └── torchgeo-agent.md      # Geospatial deep learning
 ├── AGENT.md                  # Global agent conventions
 ├── README.md                 # This documentation
 └── docs/                     # Planning artifacts
@@ -472,6 +476,10 @@ The generator creates agents based on detected patterns:
 | **data-prep** | `data/` directory or data processing libraries |
 | **eval-agent** | `eval.py`, `metrics/`, or ML framework detected |
 | **inference-agent** | `inference.py`, `predict.py`, or model serving patterns |
+| **pytorch-agent** | `torch` or `pytorch` in dependencies, `import torch` statements, or `.pt/.pth` files |
+| **tensorflow-agent** | `tensorflow` in dependencies, `import tensorflow` statements, or `.h5/.pb` files |
+| **pytorch-lightning-agent** | `pytorch-lightning` or `lightning` in dependencies, or LightningModule classes |
+| **torchgeo-agent** | `torchgeo` in dependencies, `import torchgeo` statements, or geospatial datasets |
 | **metaflow-agent** | `metaflow` in dependencies or Flow class with `@step` decorators |
 
 ### Robotics Agents
@@ -527,6 +535,13 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 | Placeholder | Description | Example Values |
 |-------------|-------------|----------------|
 | `{{ml_framework}}` | ML framework in use | "PyTorch", "TensorFlow" |
+| `{{pytorch_version}}` | PyTorch version | "2.0.0", "2.1.0" |
+| `{{tensorflow_version}}` | TensorFlow version | "2.13.0", "2.14.0" |
+| `{{lightning_version}}` | PyTorch Lightning version | "2.0.0", "2.1.0" |
+| `{{torchgeo_version}}` | TorchGeo version | "0.5.0", "0.5.1" |
+| `{{cuda_available}}` | CUDA availability | "Yes (CUDA 11.8)", "No" |
+| `{{gpu_available}}` | GPU availability | "Yes (1 GPU)", "No" |
+| `{{accelerator}}` | Training accelerator | "cuda", "mps", "cpu" |
 | `{{metaflow_version}}` | Metaflow version | "2.11.0" |
 | `{{flows_dirs}}` | Metaflow pipeline directories | "`flows/`, `workflows/`" |
 | `{{execution_environment}}` | Metaflow execution target | "local", "AWS Batch", "Kubernetes" |
