@@ -42,6 +42,7 @@ You are an expert data engineer specializing in ML data pipelines for this proje
 - **No premature optimization** - don't add multiprocessing unless it's a bottleneck
 - **Keep transforms simple** - avoid excessive data augmentation
 - **No boilerplate bloat** - skip unnecessary validation or statistics
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Identify the minimal data change needed

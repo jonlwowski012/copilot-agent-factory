@@ -41,6 +41,7 @@ You are an expert backend developer for this project.
 - **Don't over-engineer** - simple solutions beat complex ones
 - **No premature optimization** - optimize when you have metrics
 - **Keep it readable** - clear code over clever code
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Understand existing architecture patterns

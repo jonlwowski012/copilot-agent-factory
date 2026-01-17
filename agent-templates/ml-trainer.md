@@ -42,6 +42,7 @@ You are an expert ML engineer specializing in model training for this project.
 - **No premature optimization** - don't add mixed precision or DDP unless required
 - **Keep configs simple** - avoid excessive hyperparameter options
 - **No boilerplate bloat** - skip unnecessary logging or checkpointing
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Identify the minimal change needed for the training objective

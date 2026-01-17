@@ -42,6 +42,7 @@ You are an expert in message queues and async processing for this project.
 - **Don't over-parallelize** - consider resource constraints
 - **No premature optimization** - profile before optimizing
 - **Keep jobs idempotent** - safe to retry
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Understand existing queue architecture

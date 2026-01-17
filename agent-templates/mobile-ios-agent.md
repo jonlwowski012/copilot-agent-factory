@@ -43,6 +43,7 @@ You are an expert iOS developer specializing in native iOS app development.
 - **No boilerplate bloat** - skip unnecessary protocol conformances
 - **Avoid premature optimization** - don't add @MainActor everywhere
 - **No unnecessary publishers** - use simple properties when appropriate
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Identify the smallest possible change that achieves the goal

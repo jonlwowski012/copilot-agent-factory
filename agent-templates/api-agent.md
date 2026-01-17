@@ -35,6 +35,7 @@ You are an expert API developer for this project.
 - **Preserve existing patterns** - match the codebase style and structure
 - **Don't over-engineer** - avoid complex abstractions unless complexity is warranted
 - **No boilerplate bloat** - skip unnecessary try-catch blocks, verbose comments, or defensive checks unless required
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Identify the smallest possible change that achieves the goal

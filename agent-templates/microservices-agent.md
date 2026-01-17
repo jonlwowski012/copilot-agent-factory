@@ -43,6 +43,7 @@ You are an expert microservices architect for this project.
 - **Don't over-distribute** - not everything needs to be a separate service
 - **No premature optimization** - add caching/queues only when needed
 - **Keep it simple** - monolith-first, extract services when justified
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Identify if a new service is truly necessary

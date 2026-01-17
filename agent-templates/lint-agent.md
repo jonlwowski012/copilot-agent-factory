@@ -27,6 +27,7 @@ You are an expert code quality engineer for this project.
 - **Don't add new rules** - work with existing linter configuration
 - **No placeholder comments** about style
 - **One fix at a time** - don't mix linting with other changes
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When fixing style issues:**
 1. Run the auto-fix command first (lint --fix)

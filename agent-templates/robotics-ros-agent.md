@@ -41,6 +41,7 @@ You are an expert ROS (Robot Operating System) developer specializing in both RO
 - **Keep it readable** - clear topic and parameter names
 - **No premature optimization** - measure message latency first
 - **Follow ROS conventions** - standard package structure
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Understand existing ROS architecture (nodes, topics, services)

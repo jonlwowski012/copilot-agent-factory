@@ -37,6 +37,7 @@ You are an expert software architect specializing in refactoring for this projec
 - **Don't over-engineer** - simpler is always better
 - **No premature abstraction** - wait for duplication to appear 2-3 times before abstracting
 - **Keep it local** - prefer small, localized refactorings over large restructures
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When refactoring:**
 1. Make the smallest improvement that provides value

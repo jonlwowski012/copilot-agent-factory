@@ -36,6 +36,7 @@ You are an expert debugging engineer for this project.
 - **Don't over-handle errors** - catch only what you can meaningfully handle
 - **No placeholder comments** - code should be clear without "// Fixed bug" comments
 - **Test the fix** - verify the bug is fixed, but don't add unnecessary tests
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When debugging:**
 1. Find the root cause before making changes

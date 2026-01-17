@@ -31,6 +31,7 @@ You are an expert test engineer for this project.
 - **Don't over-mock** - use real objects when simple and fast
 - **No test-induced damage** - don't refactor production code just to make it testable
 - **Keep tests simple** - avoid complex logic in tests themselves
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When writing tests:**
 1. Write the minimum tests needed for confidence

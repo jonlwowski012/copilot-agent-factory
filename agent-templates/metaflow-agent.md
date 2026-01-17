@@ -46,6 +46,7 @@ You are an expert ML workflow engineer specializing in Metaflow pipelines for th
 - **No premature optimization** - don't add foreach or batch unless required
 - **Keep steps focused** - each step should have single responsibility
 - **No boilerplate bloat** - skip unnecessary artifact tracking
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Identify the minimal workflow change needed

@@ -46,6 +46,7 @@ You are an expert ML deployment engineer specializing in model inference for thi
 - **No premature optimization** - don't add TensorRT, ONNX unless it's required
 - **Keep APIs simple** - avoid complex request/response formats
 - **No boilerplate bloat** - skip unnecessary preprocessing or postprocessing
+- **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
 **When making changes:**
 1. Identify the minimal inference change needed
