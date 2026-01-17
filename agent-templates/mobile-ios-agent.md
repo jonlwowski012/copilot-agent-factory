@@ -45,6 +45,25 @@ You are an expert iOS developer specializing in native iOS app development.
 - **No unnecessary publishers** - use simple properties when appropriate
 - **Maintain low cyclomatic complexity** - functions/methods should have cyclomatic complexity < 10; refactor complex logic by extracting methods, simplifying conditionals, or using polymorphism
 
+### Method and Data Guidelines
+- **Keep the number of routines in a class as small as possible** - prefer focused, single-responsibility classes
+- **Disallow implicitly generated member functions and operators you don't want** - explicitly control what's available
+- **Minimize indirect routine calls to other classes** - reduce coupling and dependencies
+
+### Method Naming Guidelines
+- **Describe everything the method does** - method names should clearly communicate their purpose
+- **Avoid meaningless, vague, or wishy-washy verbs** - use specific, action-oriented verbs (e.g., `calculateTotal()` not `process()`)
+- **Don't differentiate method names solely by number** - use descriptive names that indicate differences (e.g., `getUserById()` and `getUserByEmail()` not `getUser1()` and `getUser2()`)
+- **Make names of methods as long as necessary, not more than 9-15 characters** - balance clarity with brevity
+- **To name a function, use a description of the return value** - functions return values, so name them accordingly (e.g., `getUserAge()`, `calculateTotal()`)
+- **To name a procedure, use a strong verb followed by an object** - procedures perform actions, so use action verbs (e.g., `createUser()`, `deleteOrder()`)
+
+### Error-Handling Guidelines
+- **Use error-handling code for conditions you expect to occur; use assertions for conditions that should never occur** - handle expected errors gracefully, assert for invariants
+- **Use assertions to document and verify preconditions and postconditions** - make contracts explicit
+- **For highly robust code, assert and then handle the error, make it fault tolerant** - verify assumptions but still handle failures
+- **Avoid empty catch blocks** - always handle or log exceptions meaningfully
+
 **When making changes:**
 1. Identify the smallest possible change that achieves the goal
 2. Reuse existing views, view models, and utilities
