@@ -1,28 +1,29 @@
 # Copilot Agent Factory 🏭
 
-**Auto-generate customized agents for VS Code (GitHub Copilot), Claude Code, or Cursor IDE from any repository.**
+**Auto-generate customized agents and skills for VS Code (GitHub Copilot), Claude Code, or Cursor IDE from any repository.**
 
-Transform any codebase into an AI-powered development environment by automatically detecting your tech stack, frameworks, and patterns, then generating perfectly tailored agents that understand your project's specific needs.
+Transform any codebase into an AI-powered development environment by automatically detecting your tech stack, frameworks, and patterns, then generating perfectly tailored agents and skills that understand your project's specific needs.
 
 ## Supported Platforms
 
-| Platform | Output Format | Default Location |
-|----------|---------------|------------------|
-| **VS Code** (GitHub Copilot) | Multiple `.md` files (one per agent) | `.github/agents/` |
-| **Claude Code** | Multiple `.md` files (one per agent) | `.claude/agents/` |
-| **Cursor IDE** | Multiple `.mdc` files (one per agent) | `.cursor/agents/` |
+| Platform | Agents | Skills | Default Location |
+|----------|--------|--------|------------------|
+| **VS Code** (GitHub Copilot) | `.md` files | `.claude/skills/` | `.github/agents/` |
+| **Claude Code** | `.md` files | `.claude/skills/` | `.claude/agents/` |
+| **Cursor IDE** | `.mdc` files | `.claude/skills/` | `.cursor/agents/` |
 
 ## What is this?
 
 Instead of manually writing agent files for each project, Copilot Agent Factory:
 
 - 🔍 **Scans your repository** to detect languages, frameworks, and tools
-- 🎯 **Selects relevant agents** based on detected patterns (API, ML, testing, etc.)
+- 🎯 **Selects relevant agents and skills** based on detected patterns (API, ML, testing, etc.)
 - 🛠️ **Customizes templates** with your repo-specific commands and structure
-- ⚡ **Outputs ready-to-use agents** in the format for your preferred IDE
+- ⚡ **Outputs ready-to-use agents and skills** in the format for your preferred IDE
 - 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
+- 🤖 **Auto-activating skills** provide step-by-step guidance for common tasks
 
-**Result:** Your agents become domain experts for your specific project, not generic assistants.
+**Result:** Your agents become domain experts and skills provide procedural automation for your specific project, not generic assistants.
 
 ---
 
@@ -105,6 +106,72 @@ Agents are available in your `.claude/agents/` directory and Claude will automat
 **Cursor IDE:**
 
 Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context.
+
+---
+
+## Agents vs Skills
+
+The factory now generates both **agents** and **skills** to provide comprehensive AI assistance:
+
+| Aspect | Agents | Skills |
+|--------|--------|--------|
+| **Purpose** | Domain expertise and decision-making | Step-by-step procedural workflows |
+| **Invocation** | Explicit: `@agent-name` | Auto-activates based on keywords |
+| **Location** | `.github/agents/` (platform-specific) | `.claude/skills/` (cross-platform) |
+| **Best For** | Code review, architecture, debugging | Setup tasks, running commands, workflows |
+| **Example** | `@test-agent` reviews test quality | "set up pytest" auto-activates pytest-setup skill |
+
+### When to Use Each
+
+**Use Agents when you need:**
+- Expert judgment and recommendations
+- Code review and architectural guidance
+- Debugging complex issues
+- Design decisions
+
+**Use Skills when you need:**
+- Step-by-step setup instructions
+- Command execution guidance
+- Workflow automation
+- Troubleshooting procedures
+
+**They work together:** Agents can invoke skills for procedural tasks, and skills can reference agents for expert guidance.
+
+### Available Skills (7)
+
+The factory includes skill templates that auto-activate based on keywords:
+
+#### Testing & Quality (3)
+- **pytest-setup** - Setup pytest with coverage  
+  *Keywords:* "set up pytest", "configure pytest", "install pytest"
+- **run-tests** - Execute tests with various options  
+  *Keywords:* "run tests", "execute tests", "test command"
+- **debug-test-failures** - Debug and fix failing tests  
+  *Keywords:* "debug test", "test failing", "fix failing test"
+
+#### Development Workflows (3)
+- **local-dev-setup** - Setup development environment  
+  *Keywords:* "dev setup", "local environment", "install dependencies"
+- **code-formatting** - Format code and fix linting  
+  *Keywords:* "format code", "fix formatting", "run formatter"
+- **git-workflow** - Git branching and commit conventions  
+  *Keywords:* "git workflow", "commit message", "branch strategy"
+
+#### DevOps & Deployment (1)
+- **ci-pipeline** - Debug CI/CD pipelines  
+  *Keywords:* "CI pipeline", "GitHub Actions", "CI failing"
+
+### Cross-Platform Skills Support
+
+Skills use the `.claude/skills/` format which works natively across all three platforms:
+
+| Platform | Skills Support | Auto-Activation |
+|----------|----------------|-----------------|
+| GitHub Copilot | ✅ Native (Dec 2025) | ✅ Yes |
+| Claude Code | ✅ Native | ✅ Yes |
+| Cursor IDE | ✅ Compatible | ✅ Yes |
+
+**Key advantage:** Skills use a single format that works everywhere, while agents need platform-specific conversion.
 
 ---
 
@@ -488,6 +555,31 @@ The generator creates agents based on detected patterns:
 | **robotics-cpp-agent** | `CMakeLists.txt`, `*.cpp/*.hpp` files, or C++ project structure |
 | **robotics-ros-agent** | `package.xml` (ROS package), `launch/` directory, or ROS dependencies |
 | **robotics-jetson-agent** | `*.cu` (CUDA files), TensorRT usage, or Jetson-specific patterns |
+
+## Skill Detection Rules
+
+The generator also creates skills based on project needs. Skills auto-activate based on keywords:
+
+### Testing & Quality Skills
+| Skill | Created When | Auto-Activates On |
+|-------|-------------|-------------------|
+| **pytest-setup** | Python project without pytest fully configured | "set up pytest", "configure pytest", "install pytest" |
+| **run-tests** | Any project with test framework | "run tests", "execute tests", "test command" |
+| **debug-test-failures** | Any project with tests | "debug test", "test failing", "fix failing test" |
+
+### Development Workflow Skills
+| Skill | Created When | Auto-Activates On |
+|-------|-------------|-------------------|
+| **local-dev-setup** | Any project | "dev setup", "local environment", "install dependencies" |
+| **code-formatting** | Linter/formatter configs detected | "format code", "fix formatting", "run formatter" |
+| **git-workflow** | Any Git repository | "git workflow", "commit message", "branch strategy" |
+
+### DevOps Skills
+| Skill | Created When | Auto-Activates On |
+|-------|-------------|-------------------|
+| **ci-pipeline** | `.github/workflows/` or CI/CD configs exist | "CI pipeline", "GitHub Actions", "CI failing" |
+
+**Skills output location:** `.claude/skills/` (works across GitHub Copilot, Claude Code, and Cursor IDE)
 
 ## Template Placeholders
 
