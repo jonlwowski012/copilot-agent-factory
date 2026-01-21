@@ -552,6 +552,162 @@ Generate agents based on detection:
 | **robotics-ros-agent** | `package.xml` (ROS package) OR `launch/` directory OR ROS dependencies in CMakeLists.txt |
 | **robotics-jetson-agent** | `*.cu` (CUDA files) OR TensorRT usage OR JetPack SDK patterns OR Jetson deployment configs |
 
+### Step 5.5: Detect and Recommend MCP Servers
+
+**CRITICAL: All generated agents MUST include an MCP Servers section with appropriate recommendations based on project detection.**
+
+Model Context Protocol (MCP) servers extend agent capabilities by providing standardized connections to external tools, data sources, and services. Detect the project's needs and recommend appropriate MCP servers.
+
+#### Essential MCP Servers (Always Include)
+
+These servers should be included in **every** generated agent:
+
+| MCP Server | Purpose | Package Name |
+|------------|---------|--------------|
+| **Git** | Repository operations, history, diffs, commit analysis | `@modelcontextprotocol/server-git` |
+| **Filesystem** | File operations, directory browsing, file search | `@modelcontextprotocol/server-filesystem` |
+
+#### Conditionally Recommended MCP Servers
+
+Detect project characteristics and recommend these servers when relevant:
+
+##### Development & Code Quality
+
+| MCP Server | Recommend When | Package Name | Purpose |
+|------------|---------------|--------------|---------|
+| **GitHub** | `.git` directory AND GitHub remote detected | `@modelcontextprotocol/server-github` | Issues, PRs, discussions, repo management |
+| **GitLab** | `.git` directory AND GitLab remote detected | `@modelcontextprotocol/server-gitlab` | GitLab issues, MRs, CI/CD integration |
+| **Sequential Thinking** | Complex reasoning tasks (planning, architecture agents) | `@modelcontextprotocol/server-sequential-thinking` | Enhanced reasoning for complex problems |
+
+##### Database & Data
+
+| MCP Server | Recommend When | Package Name | Purpose |
+|------------|---------------|--------------|---------|
+| **PostgreSQL** | `psycopg2`, `pg8000`, or `asyncpg` in deps OR PostgreSQL connection strings | `@modelcontextprotocol/server-postgres` | Database queries, schema inspection |
+| **MySQL** | `mysql-connector`, `pymysql`, or `mysqlclient` in deps | `@modelcontextprotocol/server-mysql` | MySQL database operations |
+| **MongoDB** | `pymongo` or `mongodb` in deps OR MongoDB connection strings | `@modelcontextprotocol/server-mongodb` | MongoDB operations, aggregations |
+| **Supabase** | `supabase` client in deps OR Supabase URLs in config | `@modelcontextprotocol/server-supabase` | Real-time Postgres, auth, storage |
+| **SQLite** | `*.db` or `*.sqlite` files OR `sqlite3` usage | `@modelcontextprotocol/server-sqlite` | Local database operations |
+
+##### Web & APIs
+
+| MCP Server | Recommend When | Package Name | Purpose |
+|------------|---------------|--------------|---------|
+| **Browser/Playwright** | E2E tests OR `playwright`, `puppeteer`, `selenium` in deps | `@modelcontextprotocol/server-playwright` | Browser automation, web scraping, testing |
+| **Fetch** | API integration OR web scraping detected | `@modelcontextprotocol/server-fetch` | HTTP requests, API calls, web content |
+| **Puppeteer** | Browser automation OR `puppeteer` in deps | `@modelcontextprotocol/server-puppeteer` | Headless Chrome automation |
+
+##### Cloud & Infrastructure
+
+| MCP Server | Recommend When | Package Name | Purpose |
+|------------|---------------|--------------|---------|
+| **AWS** | `boto3` in deps OR AWS SDK OR `terraform/` with AWS | `@modelcontextprotocol/server-aws-kb` | AWS service docs, billing, resources |
+| **Docker** | `Dockerfile` OR `docker-compose.yml` | `@modelcontextprotocol/server-docker` | Container management, image operations |
+| **Kubernetes** | `k8s/`, `kubernetes/` dirs OR K8s manifests | `@modelcontextprotocol/server-kubernetes` | K8s cluster management, deployments |
+
+##### Language-Specific
+
+| MCP Server | Recommend When | Package Name | Purpose |
+|------------|---------------|--------------|---------|
+| **Python LSP** | Python project detected | Language Server Protocol integration | Python code intelligence, refactoring |
+| **TypeScript LSP** | TypeScript project detected | Language Server Protocol integration | TypeScript code intelligence |
+
+##### ML & Data Science
+
+| MCP Server | Recommend When | Package Name | Purpose |
+|------------|---------------|--------------|---------|
+| **Memory** | ML training OR long-running workflows OR context persistence needed | `@modelcontextprotocol/server-memory` | Persistent context across sessions |
+| **EverArt** | Image generation OR computer vision projects | `@modelcontextprotocol/server-everart` | AI image generation integration |
+
+##### Project Management & Productivity
+
+| MCP Server | Recommend When | Package Name | Purpose |
+|------------|---------------|--------------|---------|
+| **Slack** | `slack_sdk` in deps OR Slack webhooks in config | `@modelcontextprotocol/server-slack` | Slack notifications, messages |
+| **Linear** | Project management tools detected | `@modelcontextprotocol/server-linear` | Issue tracking, project management |
+| **Notion** | Documentation OR knowledge base patterns | Custom implementation | Notion database operations |
+
+#### MCP Server Section Template
+
+When generating agents, include the following MCP Servers section with appropriate recommendations:
+
+```markdown
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing, content search
+
+**Recommended for this project:**
+{List detected MCP servers based on project characteristics}
+
+**See `.github/mcp-config.json` for configuration details.**
+```
+
+#### MCP Server Detection Logic
+
+Apply this logic when analyzing the repository:
+
+1. **Always include:** Git and Filesystem servers in every agent
+2. **Detect Git hosting:**
+   - Check `.git/config` for `github.com` → Add GitHub MCP
+   - Check `.git/config` for `gitlab.com` → Add GitLab MCP
+3. **Detect databases:**
+   - Scan dependencies for database drivers → Add corresponding database MCP
+   - Check for connection strings in config files
+4. **Detect cloud providers:**
+   - AWS: `boto3`, `aws-sdk`, Terraform with AWS provider
+   - Docker: `Dockerfile`, `docker-compose.yml`
+   - Kubernetes: K8s manifests, helm charts
+5. **Detect testing needs:**
+   - E2E tests or browser automation → Add Playwright/Browser MCP
+6. **Detect ML/AI:**
+   - PyTorch, TensorFlow → Add Memory MCP for context persistence
+   - Computer vision → Add EverArt MCP
+7. **Agent-specific recommendations:**
+   - Planning agents (prd, architecture, design) → Add Sequential Thinking MCP
+   - Test agents → Add Playwright MCP if web project
+   - DevOps agents → Add Docker, Kubernetes, AWS MCPs as applicable
+   - API agents → Add Fetch MCP and database MCPs
+   - Database agents → Add all detected database MCPs
+
+#### Example MCP Section for Python ML Project
+
+```markdown
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing, content search
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – Issue tracking, PR management, GitHub integration
+- `@modelcontextprotocol/server-postgres` – Database queries for training data and results
+- `@modelcontextprotocol/server-memory` – Persistent context for long training sessions
+- Python LSP server – Code intelligence for Python ML code
+
+**See `.github/mcp-config.json` for configuration details.**
+```
+
+#### Example MCP Section for Node.js Web API
+
+```markdown
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing, content search
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – PR reviews, issue management, CI/CD integration
+- `@modelcontextprotocol/server-postgres` – Database schema and query management
+- `@modelcontextprotocol/server-playwright` – E2E testing and browser automation
+- `@modelcontextprotocol/server-docker` – Container management and deployment
+- TypeScript LSP server – TypeScript code intelligence and refactoring
+
+**See `.github/mcp-config.json` for configuration details.**
+```
+
 ### Step 6: Create Planning Directory Structure
 
 When generating agents, also create the planning directory structure:
@@ -578,15 +734,20 @@ For each selected agent:
    - Tech stack, commands, and directories from Steps 1-4
    - **Coding standards and style conventions from Step 4.5**
    - Use fallback values if detection fails
-4. **Integrate coding standards into agent behavior:**
+4. **Add MCP Servers section** (from Step 5.5):
+   - Always include Essential servers (Git, Filesystem)
+   - Add Recommended servers based on project detection
+   - Use the MCP Server section template
+   - Include configuration reference to `.github/mcp-config.json` or `.claude/mcp-config.json`
+5. **Integrate coding standards into agent behavior:**
    - Add project-specific quality standards to review-agent
    - Include actual linter rules in lint-agent
    - Use detected docstring style in docs-agent
    - Apply naming conventions across all domain agents
-5. **Output based on platform:**
+6. **Output based on platform:**
    - **VS Code:** Write individual files to `{output-dir}/{agent-name}.md`
    - **Claude Code:** Write individual files to `{output-dir}/{agent-name}.md`
-6. Update orchestrator's `{{active_agents_table}}` with generated agents
+7. Update orchestrator's `{{active_agents_table}}` with generated agents
 
 **CRITICAL:** When customizing templates, only replace `{{placeholders}}` in the agent body content. Never modify or remove the core YAML frontmatter sections (name, model, description).
 
