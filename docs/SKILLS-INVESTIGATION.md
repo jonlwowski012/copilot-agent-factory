@@ -112,7 +112,7 @@ Example: Python ML project gets:
 ## Proposed Implementation
 
 ### Phase 1: Core Infrastructure
-1. Create `.github/skills/skill-templates/` directory structure
+1. Create `skill-templates/` directory structure
 2. Define skill template categories (testing, development, devops)
 3. Create 5-7 foundational skill templates
 4. Document skill creation guidelines

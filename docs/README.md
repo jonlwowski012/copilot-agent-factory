@@ -126,7 +126,7 @@ User: "Set up pytest"
 
 ## Next Steps (If Approved)
 
-1. Create `.github/skills/skill-templates/` structure
+1. Create `skill-templates/` structure
 2. Develop 7 foundational skill templates
 3. Update agent-generator.md for skill detection
 4. Update README.md with skills documentation

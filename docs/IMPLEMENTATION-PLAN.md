@@ -13,16 +13,16 @@ This document outlines the step-by-step implementation plan if the recommendatio
 ### 1.1 Create Directory Structure
 
 ```bash
-mkdir -p .github/skills/skill-templates/1-testing-quality
-mkdir -p .github/skills/skill-templates/2-development-workflows
-mkdir -p .github/skills/skill-templates/3-devops-deployment
+mkdir -p skill-templates/1-testing-quality
+mkdir -p skill-templates/2-development-workflows
+mkdir -p skill-templates/3-devops-deployment
 ```
 
 **Deliverable:** Empty directory structure ready for templates
 
 ### 1.2 Define Skill Template Standard
 
-Create `.github/skills/SKILL-TEMPLATE-STANDARD.md` documenting:
+Create `SKILL-TEMPLATE-STANDARD.md` documenting:
 - YAML frontmatter requirements
 - Markdown structure guidelines
 - Placeholder conventions (10 core)
@@ -33,7 +33,7 @@ Create `.github/skills/SKILL-TEMPLATE-STANDARD.md` documenting:
 
 ### 1.3 Create First Skill Template (pytest-setup)
 
-Location: `.github/skills/skill-templates/1-testing-quality/pytest-setup/`
+Location: `skill-templates/1-testing-quality/pytest-setup/`
 
 Files:
 - `SKILL.md` - Main skill instructions

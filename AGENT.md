@@ -45,7 +45,7 @@ This repository contains:
     ├── 11-operations/ (2 agents)
     └── 12-testing-quality/ (4 agents)
 
-.github/skills/skill-templates/
+skill-templates/
 ├── 1-testing-quality/ (3 skills)
 ├── 2-development-workflows/ (3 skills)
 └── 3-devops-deployment/ (1 skill)
@@ -269,7 +269,7 @@ This project uses a structured Feature Development Workflow:
 5. Common Issues and Solutions
 6. Success Criteria
 
-**See `.github/skills/SKILL-TEMPLATE-STANDARD.md` for complete guidelines.**
+**See `SKILL-TEMPLATE-STANDARD.md` for complete guidelines.**
 
 ### Skill Placeholders
 
