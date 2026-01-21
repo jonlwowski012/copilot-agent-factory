@@ -37,43 +37,45 @@ Get up and running in 3 simple steps:
 # From this project, copy the generator and templates to your target repo
 cp agent-generator.md /path/to/your/repo/
 cp -r agent-templates /path/to/your/repo/
+cp -r skill-templates /path/to/your/repo/
+cp SKILL-TEMPLATE-STANDARD.md /path/to/your/repo/
 ```
 
-### 2. Generate Agents for Your Platform
+### 2. Generate Agents and Skills for Your Platform
 
 **For VS Code (GitHub Copilot):**
 
 ```
 @agent-generator --platform vscode --output .github/agents/
-Analyze this repository and generate all appropriate agents
+Analyze this repository and generate all appropriate agents and skills
 ```
 
 **For Claude Code:**
 
 ```
 @agent-generator --platform claude-code --output .claude/agents/
-Analyze this repository and generate all appropriate agents
+Analyze this repository and generate all appropriate agents and skills
 ```
 
 **For Cursor IDE:**
 
 ```
 @agent-generator --platform cursor --output .cursor/agents/
-Analyze this repository and generate all appropriate agents
+Analyze this repository and generate all appropriate agents and skills
 ```
 
 **For Multiple Platforms:**
 
 ```
 @agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
-Analyze this repository and generate agents for both platforms
+Analyze this repository and generate agents and skills for both platforms
 ```
 
 Or specify all platforms:
 
 ```
 @agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/agents/
-Analyze this repository and generate agents for all three platforms
+Analyze this repository and generate agents and skills for all three platforms
 ```
 
 The generator will:
@@ -81,11 +83,12 @@ The generator will:
 2. 🎯 Detect tech stack, frameworks, and tools
 3. 📝 Extract build/test/lint commands from configs
 4. 📚 Inspect coding standards and style guidelines
-5. ✨ Select relevant agents based on detected patterns
+5. ✨ Select relevant agents and skills based on detected patterns
 6. 🛠️ Customize templates with repo-specific values
 7. 🚀 Output ready-to-use agents in the appropriate format
+8. 🤖 Output auto-activating skills to `.claude/skills/`
 
-### 3. Start Using Your Agents
+### 3. Start Using Your Agents and Skills
 
 **VS Code (GitHub Copilot):**
 
@@ -106,6 +109,20 @@ Agents are available in your `.claude/agents/` directory and Claude will automat
 **Cursor IDE:**
 
 Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context.
+
+**Using Skills (All Platforms):**
+
+Skills auto-activate based on keywords in your prompts. No explicit invocation needed:
+
+```
+# Skills auto-activate on natural language
+"set up pytest with coverage"  → pytest-setup skill activates
+"how do I run tests"           → run-tests skill activates
+"format my code"               → code-formatting skill activates
+"debug failing test"           → debug-test-failures skill activates
+```
+
+Skills are available in `.claude/skills/` and work across GitHub Copilot, Claude Code, and Cursor IDE.
 
 ---
 
