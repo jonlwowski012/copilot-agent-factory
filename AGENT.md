@@ -190,7 +190,7 @@ Based on project detection, agents may recommend these additional servers:
 
 ### Auto-Detection
 
-The agent-generator automatically detects project characteristics and includes appropriate MCP server recommendations in the generated agents. See [agent-generator.md Step 5.5](/home/runner/work/copilot-agent-factory/copilot-agent-factory/agent-generator.md#step-55-detect-and-recommend-mcp-servers) for detection logic.
+The agent-generator automatically detects project characteristics and includes appropriate MCP server recommendations in the generated agents. See [agent-generator.md Step 5.5](agent-generator.md#step-55-detect-and-recommend-mcp-servers) for detection logic.
 
 **See `.github/mcp-config.json` for configuration details and setup instructions.**
 

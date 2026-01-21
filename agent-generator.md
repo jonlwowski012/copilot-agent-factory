@@ -636,7 +636,7 @@ When generating agents, include the following MCP Servers section with appropria
 
 **Essential:**
 - `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
-- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing, content search
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
 
 **Recommended for this project:**
 {List detected MCP servers based on project characteristics}
@@ -678,7 +678,7 @@ Apply this logic when analyzing the repository:
 
 **Essential:**
 - `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
-- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing, content search
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
 
 **Recommended for this project:**
 - `@modelcontextprotocol/server-github` – Issue tracking, PR management, GitHub integration
@@ -696,7 +696,7 @@ Apply this logic when analyzing the repository:
 
 **Essential:**
 - `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
-- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing, content search
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
 
 **Recommended for this project:**
 - `@modelcontextprotocol/server-github` – PR reviews, issue management, CI/CD integration
