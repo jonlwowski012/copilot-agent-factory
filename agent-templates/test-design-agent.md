@@ -526,3 +526,14 @@ Once test design is approved:
 - Skip error case testing
 - Leave acceptance criteria untraceable
 - Overwrite existing test design docs without confirmation
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for comprehensive test strategy planning
+
+**See `.github/mcp-config.json` for configuration details.**

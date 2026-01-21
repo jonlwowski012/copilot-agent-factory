@@ -306,3 +306,16 @@ resource "google_cloud_run_service_iam_member" "public" {
 - ✅ **Always:** Use IaC for all infrastructure changes, follow naming conventions, enable encryption
 - ⚠️ **Ask First:** Changing production resources, modifying IAM policies, adding new services
 - 🚫 **Never:** Hard-code credentials, disable security features, create public S3 buckets without explicit approval
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-aws-kb` – AWS infrastructure management
+- `@modelcontextprotocol/server-kubernetes` – Kubernetes cluster operations
+- `@modelcontextprotocol/server-github` – GitHub Actions and CI/CD integration
+
+**See `.github/mcp-config.json` for configuration details.**

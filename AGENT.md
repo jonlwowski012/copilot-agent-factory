@@ -150,13 +150,49 @@ For specific tasks, invoke these specialized agents:
 
 ## MCP Servers
 
-The following MCP servers enhance agent capabilities:
+The following MCP servers enhance agent capabilities. All generated agents now include MCP server recommendations based on project detection.
 
-**Essential:**
-- `@modelcontextprotocol/server-git` – Repository operations, template history, version control
-- `@modelcontextprotocol/server-filesystem` – File operations, template comparison, directory browsing
+### Essential (Always Included)
 
-**See `.github/mcp-config.json` for setup instructions.**
+These servers are included in every generated agent:
+
+- `@modelcontextprotocol/server-git` – Repository operations, template history, version control, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, template comparison, directory browsing, content search
+
+### Conditionally Recommended
+
+Based on project detection, agents may recommend these additional servers:
+
+**Development & Code Quality:**
+- `@modelcontextprotocol/server-github` – Issues, PRs, CI/CD integration, discussions
+- `@modelcontextprotocol/server-gitlab` – GitLab issues, MRs, CI/CD integration
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex problems (planning agents)
+
+**Database & Data:**
+- `@modelcontextprotocol/server-postgres` – PostgreSQL operations, schema inspection
+- `@modelcontextprotocol/server-mongodb` – MongoDB queries, aggregations
+- `@modelcontextprotocol/server-mysql` – MySQL database operations
+- `@modelcontextprotocol/server-sqlite` – Local database operations
+- `@modelcontextprotocol/server-supabase` – Real-time Postgres, auth, storage
+
+**Web & Testing:**
+- `@playwright/mcp` – Browser automation, E2E testing, web scraping
+- `@modelcontextprotocol/server-fetch` – HTTP requests, API calls, web content
+- `@modelcontextprotocol/server-puppeteer` – Headless Chrome automation
+
+**Cloud & Infrastructure:**
+- `@modelcontextprotocol/server-docker` – Container management, image operations
+- `@modelcontextprotocol/server-kubernetes` – K8s cluster management, deployments
+- `@modelcontextprotocol/server-aws-kb` – AWS service docs, billing, resources
+
+**ML & Data Science:**
+- `@modelcontextprotocol/server-memory` – Persistent context across training sessions
+
+### Auto-Detection
+
+The agent-generator automatically detects project characteristics and includes appropriate MCP server recommendations in the generated agents. See [agent-generator.md Step 5.5](/home/runner/work/copilot-agent-factory/copilot-agent-factory/agent-generator.md#step-55-detect-and-recommend-mcp-servers) for detection logic.
+
+**See `.github/mcp-config.json` for configuration details and setup instructions.**
 
 ## Workflow Integration
 

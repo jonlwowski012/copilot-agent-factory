@@ -888,3 +888,14 @@ robot_control/
 - ✅ **Always:** Use standard message types when possible, implement proper error handling, document topics and parameters, use appropriate QoS settings
 - ⚠️ **Ask First:** Creating custom message types, changing node structure, modifying communication patterns, adding new dependencies
 - 🚫 **Never:** Ignore transform errors, use hardcoded frame IDs, skip parameter validation, create circular dependencies, block in callbacks
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for ROS projects
+
+**See `.github/mcp-config.json` for configuration details.**

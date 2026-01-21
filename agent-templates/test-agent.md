@@ -229,3 +229,16 @@ describe('functionToTest', () => {
 - Leave flaky tests in the codebase
 - Commit tests that don't pass
 - Skip testing error conditions
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, test history, diff analysis
+- `@modelcontextprotocol/server-filesystem` – Test file operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – CI/CD integration, test failure tracking in PRs
+- `@playwright/mcp` – Browser automation and E2E testing (if web project)
+- `@modelcontextprotocol/server-sequential-thinking` – Complex test strategy reasoning
+
+**See `.github/mcp-config.json` for configuration details.**

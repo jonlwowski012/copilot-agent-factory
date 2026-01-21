@@ -571,3 +571,14 @@ struct ParticlesSoA {
 - ✅ **Always:** Use RAII, prefer smart pointers, write tests, handle errors explicitly, use const correctness
 - ⚠️ **Ask First:** Major architecture changes, adding dependencies, changing threading model, modifying real-time guarantees
 - 🚫 **Never:** Use raw new/delete without RAII, ignore compiler warnings, write blocking code in real-time loops, use global mutable state
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for robotics projects
+
+**See `.github/mcp-config.json` for configuration details.**

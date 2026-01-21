@@ -452,3 +452,14 @@ What would you like to do?
 - Skip security considerations
 - Over-engineer for hypothetical future needs
 - Overwrite existing architecture docs without confirmation
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex system architecture design
+
+**See `.github/mcp-config.json` for configuration details.**

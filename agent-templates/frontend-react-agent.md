@@ -792,3 +792,15 @@ export const InteractiveEdit: Story = {
 - ✅ **Always:** Use TypeScript, implement proper error boundaries, optimize re-renders, test components thoroughly, validate props
 - ⚠️ **Ask First:** Major state management changes, new dependencies, performance optimizations that affect API
 - 🚫 **Never:** Mutate props directly, use index as key for dynamic lists, skip accessibility attributes, use `any` types
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
+- `@playwright/mcp` – Browser automation for component testing
+
+**See `.github/mcp-config.json` for configuration details.**

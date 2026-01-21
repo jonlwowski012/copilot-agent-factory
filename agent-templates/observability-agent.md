@@ -396,3 +396,16 @@ groups:
 - ✅ **Always:** Use structured logging, include correlation IDs, set up alerts for critical paths
 - ⚠️ **Ask First:** Adding new metrics dimensions, changing retention policies, modifying alerting thresholds
 - 🚫 **Never:** Log sensitive data (PII, secrets), create alert storms, skip error tracking
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-docker` – Docker container monitoring
+- `@modelcontextprotocol/server-kubernetes` – Kubernetes cluster monitoring
+- `@modelcontextprotocol/server-github` – GitHub Actions and workflow monitoring
+
+**See `.github/mcp-config.json` for configuration details.**

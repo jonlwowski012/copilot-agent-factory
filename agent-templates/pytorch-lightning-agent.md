@@ -574,3 +574,15 @@ def configure_optimizers(self):
 - Log gradient norms for debugging
 - Handle checkpoint loading failures gracefully
 - Use try/except for file I/O operations
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-memory` – Persistent memory for experiment tracking and model metadata
+- `@modelcontextprotocol/server-postgres` – Database for storing training metrics and results
+
+**See `.github/mcp-config.json` for configuration details.**

@@ -260,3 +260,15 @@ if is_best:
 - Log errors with full context before failing
 - Save checkpoint on graceful shutdown
 - Implement proper cleanup (close files, release GPU memory)
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-memory` – Persistent memory for experiment tracking and model metadata
+- `@modelcontextprotocol/server-postgres` – Database for storing training metrics and results
+
+**See `.github/mcp-config.json` for configuration details.**

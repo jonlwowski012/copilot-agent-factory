@@ -519,3 +519,15 @@ dataset_reprojected = RasterDataset(
 - Handle edge cases in grid sampling (partial tiles)
 - Log spatial metadata for debugging
 - Validate multispectral band counts
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-memory` – Persistent memory for geospatial dataset metadata
+- `@modelcontextprotocol/server-postgres` – Database for storing geospatial indices and metadata
+
+**See `.github/mcp-config.json` for configuration details.**

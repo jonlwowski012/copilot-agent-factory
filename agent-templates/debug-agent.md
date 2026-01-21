@@ -311,3 +311,15 @@ git bisect reset
 - Leave debug print statements in production code
 - Ignore intermittent failures ("works on my machine")
 - Swallow exceptions without logging
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for issue tracking
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex debugging scenarios
+
+**See `.github/mcp-config.json` for configuration details.**

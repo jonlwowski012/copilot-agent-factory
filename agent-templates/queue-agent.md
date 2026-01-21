@@ -437,3 +437,15 @@ module.exports = { emailQueue, queueWelcomeEmail };
 - ✅ **Always:** Make jobs idempotent, configure retries, handle failures gracefully
 - ⚠️ **Ask First:** Adding new queues, changing retry policies, modifying serialization
 - 🚫 **Never:** Process messages without acknowledgment, ignore dead letter queues, skip logging
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-aws-kb` – AWS SQS/SNS queue management
+- `@modelcontextprotocol/server-github` – GitHub integration for queue monitoring
+
+**See `.github/mcp-config.json` for configuration details.**

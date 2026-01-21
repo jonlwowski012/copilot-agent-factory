@@ -368,3 +368,16 @@ settings = get_settings()
 - ✅ **Always:** Follow existing patterns, write testable code, handle errors explicitly
 - ⚠️ **Ask First:** Adding new dependencies, changing architecture patterns, modifying shared services
 - 🚫 **Never:** Put business logic in controllers, skip validation, hard-code configuration
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
+- `@modelcontextprotocol/server-postgres` – PostgreSQL database operations
+- `@modelcontextprotocol/server-fetch` – HTTP requests for API testing and integration
+
+**See `.github/mcp-config.json` for configuration details.**

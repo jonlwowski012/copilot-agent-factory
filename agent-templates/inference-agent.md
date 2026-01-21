@@ -338,3 +338,15 @@ def benchmark_inference(pipeline, num_runs: int = 100, warmup: int = 10):
 - Modify model weights during inference
 - Swallow exceptions without logging
 - Use mutable defaults for inference configs
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-memory` – Persistent memory for model metadata and serving configuration
+- `@modelcontextprotocol/server-postgres` – Database for storing inference metrics
+
+**See `.github/mcp-config.json` for configuration details.**

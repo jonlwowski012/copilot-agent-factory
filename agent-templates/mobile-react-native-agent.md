@@ -544,3 +544,15 @@ const trackScreenTime = (screenName) => {
 - ✅ **Always:** Follow platform design guidelines, optimize for performance, handle platform differences gracefully, add TypeScript types
 - ⚠️ **Ask First:** Major navigation structure changes, new native module additions, breaking dependency updates
 - 🚫 **Never:** Ignore platform-specific behaviors, skip performance testing, hardcode platform assumptions, use `any` types
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
+- `@playwright/mcp` – Browser automation for UI testing
+
+**See `.github/mcp-config.json` for configuration details.**

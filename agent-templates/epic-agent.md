@@ -222,3 +222,14 @@ What would you like to do?
 - Skip acceptance criteria
 - Create epics with unclear scope
 - Overwrite existing epic documents without confirmation
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for breaking down complex features into epics
+
+**See `.github/mcp-config.json` for configuration details.**

@@ -421,3 +421,16 @@ async def call_external_service(data):
 - ✅ **Always:** Define clear service boundaries, use health checks, implement retries with backoff
 - ⚠️ **Ask First:** Adding new services, changing communication patterns, modifying shared schemas
 - 🚫 **Never:** Create circular dependencies, skip service contracts, bypass API gateway for external traffic
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-docker` – Docker container management
+- `@modelcontextprotocol/server-kubernetes` – Kubernetes cluster operations
+- `@modelcontextprotocol/server-github` – GitHub API integration
+
+**See `.github/mcp-config.json` for configuration details.**

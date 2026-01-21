@@ -640,3 +640,17 @@ ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 - ✅ **Always:** Design normalized schemas, create proper indexes, use transactions for data integrity, validate constraints, use parameterized queries, add type annotations
 - ⚠️ **Ask First:** Major schema changes, adding/dropping indexes on large tables, changing primary keys
 - 🚫 **Never:** Store passwords in plaintext, ignore foreign key constraints, skip migrations, delete data without backups, use string formatting for SQL queries
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-postgres` – PostgreSQL database operations and queries
+- `@modelcontextprotocol/server-mysql` – MySQL database operations and queries
+- `@modelcontextprotocol/server-mongodb` – MongoDB database operations
+- `@modelcontextprotocol/server-sqlite` – SQLite database operations
+
+**See `.github/mcp-config.json` for configuration details.**

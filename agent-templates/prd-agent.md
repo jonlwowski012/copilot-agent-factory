@@ -205,3 +205,14 @@ What would you like to do?
 - Skip the approval prompt
 - Overwrite existing PRDs without confirmation
 - Make up requirements not discussed with user
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex product planning and requirement analysis
+
+**See `.github/mcp-config.json` for configuration details.**

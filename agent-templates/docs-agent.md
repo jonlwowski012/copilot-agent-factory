@@ -197,3 +197,15 @@ function functionName(param1, param2) {
 - Write documentation that contradicts the code
 - Leave placeholder text in final documentation
 - Skip documenting error conditions
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for documentation PRs
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for clear technical writing
+
+**See `.github/mcp-config.json` for configuration details.**

@@ -19,6 +19,7 @@ Instead of manually writing agent files for each project, Copilot Agent Factory:
 - 🔍 **Scans your repository** to detect languages, frameworks, and tools
 - 🎯 **Selects relevant agents** based on detected patterns (API, ML, testing, etc.)
 - 🛠️ **Customizes templates** with your repo-specific commands and structure
+- 🔌 **Recommends MCP servers** to extend agent capabilities with external tools and data
 - ⚡ **Outputs ready-to-use agents** in the format for your preferred IDE
 - 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
 
@@ -332,6 +333,118 @@ docs/
     └── test-design/
         └── {feature-name}-test-design-{YYYYMMDD}.md  # Test strategy (TDD)
 ```
+
+---
+
+## MCP Server Integration
+
+All generated agents include **Model Context Protocol (MCP) server recommendations** to extend their capabilities with external tools, databases, and services.
+
+### What are MCP Servers?
+
+MCP servers provide standardized connections between AI agents and external systems, enabling agents to:
+- Access live data from databases and APIs
+- Perform browser automation and web scraping
+- Manage cloud infrastructure and containers
+- Interact with version control and project management tools
+- Maintain persistent context across long sessions
+
+### Auto-Detection and Recommendations
+
+The agent generator **automatically detects** your project characteristics and recommends appropriate MCP servers:
+
+| Project Type | Detected MCP Servers |
+|-------------|---------------------|
+| **Python + FastAPI + PostgreSQL** | Git, Filesystem, GitHub, Postgres, Fetch, Python LSP |
+| **Node.js + React + MongoDB** | Git, Filesystem, GitHub, MongoDB, Playwright, Docker, TypeScript LSP |
+| **ML/AI (PyTorch/TensorFlow)** | Git, Filesystem, GitHub, Postgres, Memory (context persistence) |
+| **DevOps (Docker + Kubernetes)** | Git, Filesystem, GitHub, Docker, Kubernetes, AWS |
+| **Mobile (React Native)** | Git, Filesystem, GitHub, Playwright (for testing) |
+
+### Essential MCP Servers (Always Included)
+
+Every generated agent includes these core servers:
+
+- **`@modelcontextprotocol/server-git`** – Repository operations, commit history, diff analysis
+- **`@modelcontextprotocol/server-filesystem`** – File operations, directory browsing, content search
+
+### Conditionally Recommended MCP Servers
+
+Based on detection, agents may recommend:
+
+**Database & Data:**
+- `@modelcontextprotocol/server-postgres` – PostgreSQL operations
+- `@modelcontextprotocol/server-mongodb` – MongoDB queries
+- `@modelcontextprotocol/server-mysql` – MySQL database access
+- `@modelcontextprotocol/server-sqlite` – Local database operations
+- `@modelcontextprotocol/server-supabase` – Real-time Postgres, auth, storage
+
+**Development & Code Quality:**
+- `@modelcontextprotocol/server-github` – Issues, PRs, CI/CD integration
+- `@modelcontextprotocol/server-gitlab` – GitLab issues and MRs
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex problems
+
+**Web & Testing:**
+- `@playwright/mcp` – Browser automation, E2E testing
+- `@modelcontextprotocol/server-fetch` – HTTP requests, API calls
+- `@modelcontextprotocol/server-puppeteer` – Headless Chrome automation
+
+**Cloud & Infrastructure:**
+- `@modelcontextprotocol/server-docker` – Container management
+- `@modelcontextprotocol/server-kubernetes` – K8s cluster operations
+- `@modelcontextprotocol/server-aws-kb` – AWS services and billing
+
+**ML & Data Science:**
+- `@modelcontextprotocol/server-memory` – Persistent context across training sessions
+
+### Configuration
+
+MCP servers are configured in `.github/mcp-config.json` (or `.claude/mcp-config.json` for Claude Code). The agent generator creates this file with detected server recommendations.
+
+Example configuration:
+
+```json
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "your-github-token"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:pass@localhost:5432/db"
+      }
+    }
+  }
+}
+```
+
+### Agent-Specific MCP Recommendations
+
+Different agent types receive tailored MCP server recommendations:
+
+| Agent Type | MCP Servers |
+|-----------|------------|
+| **Planning agents** (prd, architecture, design) | Git, Filesystem, GitHub, Sequential Thinking |
+| **Test agents** | Git, Filesystem, GitHub, Playwright (web projects) |
+| **API agents** | Git, Filesystem, GitHub, Postgres/MongoDB, Fetch |
+| **Database agents** | Git, Filesystem, all detected database servers |
+| **ML/AI agents** | Git, Filesystem, GitHub, Memory, Postgres |
+| **DevOps agents** | Git, Filesystem, GitHub, Docker, Kubernetes, AWS |
+| **Frontend agents** | Git, Filesystem, GitHub, Playwright |
 
 ---
 
