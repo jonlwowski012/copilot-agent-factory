@@ -45,7 +45,7 @@ This repository contains:
     ├── 11-operations/ (2 agents)
     └── 12-testing-quality/ (4 agents)
 
-.github/skills/skill-templates/
+skill-templates/
 ├── 1-testing-quality/ (3 skills)
 ├── 2-development-workflows/ (3 skills)
 └── 3-devops-deployment/ (1 skill)
@@ -236,6 +236,59 @@ This project uses a structured Feature Development Workflow:
 - ✅ Ensure detection rules are specific
 - ✅ Confirm boundaries section exists
 - 🚫 Never approve templates with generic instructions
+
+## Skills Guidelines
+
+### Skills vs Agents
+
+**Agents** (role-based experts):
+- Invoked explicitly: `@agent-name`
+- Provide domain expertise and judgment
+- Platform-specific formats
+- 60+ project-specific placeholders
+
+**Skills** (procedural workflows):
+- Auto-activate on keywords
+- Provide step-by-step instructions
+- Single cross-platform format (`.claude/skills/`)
+- 10 core placeholders with fallback logic
+
+### Creating Skills
+
+**When to create a skill:**
+- Task is repetitive and procedural
+- Can be broken into clear steps
+- Needs fallback instructions for unconfigured environments
+- Benefits from auto-activation
+
+**Skill template structure:**
+1. YAML frontmatter (name, description, auto-activates)
+2. "When to Use This Skill" section
+3. Prerequisites check
+4. Step-by-Step Workflow
+5. Common Issues and Solutions
+6. Success Criteria
+
+**See `SKILL-TEMPLATE-STANDARD.md` for complete guidelines.**
+
+### Skill Placeholders
+
+Use only 10 core placeholders in skills:
+- {{test_dirs}}, {{test_command}}, {{lint_command}}
+- {{build_command}}, {{dev_command}}
+- {{source_dirs}}, {{doc_dirs}}, {{config_files}}
+- {{package_manager}}, {{tech_stack}}
+
+**Always provide fallback logic:**
+```markdown
+**If {{test_command}} is configured:**
+- Run: `{{test_command}}`
+
+**If not configured:**
+- For Python: `pytest -v`
+- For JavaScript: `npm test`
+- For Go: `go test ./...`
+```
 
 ## Repository Conventions
 
