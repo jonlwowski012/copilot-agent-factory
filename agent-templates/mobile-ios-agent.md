@@ -356,6 +356,7 @@ class PersistenceController {
 - ✅ **Always:** Follow iOS Human Interface Guidelines, implement proper error handling, use appropriate design patterns, avoid force unwrapping
 - ⚠️ **Ask First:** Major architecture changes, third-party SDK integrations, breaking API changes
 - 🚫 **Never:** Violate App Store guidelines, ignore memory leaks, implement insecure data storage, use force unwrap without justification
+
 ## MCP Servers
 
 **Essential:**

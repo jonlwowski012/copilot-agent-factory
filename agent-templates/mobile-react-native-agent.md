@@ -544,6 +544,7 @@ const trackScreenTime = (screenName) => {
 - ✅ **Always:** Follow platform design guidelines, optimize for performance, handle platform differences gracefully, add TypeScript types
 - ⚠️ **Ask First:** Major navigation structure changes, new native module additions, breaking dependency updates
 - 🚫 **Never:** Ignore platform-specific behaviors, skip performance testing, hardcode platform assumptions, use `any` types
+
 ## MCP Servers
 
 **Essential:**

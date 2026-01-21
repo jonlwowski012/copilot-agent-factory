@@ -712,6 +712,7 @@ void main() {
 - ✅ **Always:** Follow Flutter widget best practices, use const constructors, optimize for performance, handle platform differences, add type annotations
 - ⚠️ **Ask First:** Major state management changes, new platform integrations, breaking dependency updates
 - 🚫 **Never:** Ignore platform-specific behavior, skip widget testing, create deeply nested widget trees without extraction, use `dynamic` unnecessarily
+
 ## MCP Servers
 
 **Essential:**

@@ -792,6 +792,7 @@ export const InteractiveEdit: Story = {
 - ✅ **Always:** Use TypeScript, implement proper error boundaries, optimize re-renders, test components thoroughly, validate props
 - ⚠️ **Ask First:** Major state management changes, new dependencies, performance optimizations that affect API
 - 🚫 **Never:** Mutate props directly, use index as key for dynamic lists, skip accessibility attributes, use `any` types
+
 ## MCP Servers
 
 **Essential:**

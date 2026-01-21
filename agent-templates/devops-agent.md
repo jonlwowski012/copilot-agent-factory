@@ -334,7 +334,7 @@ on:
 **Recommended for this project:**
 - `@modelcontextprotocol/server-docker` – Docker container management
 - `@modelcontextprotocol/server-kubernetes` – Kubernetes cluster operations
-- `@modelcontextprotocol/server-aws` – AWS infrastructure management
+- `@modelcontextprotocol/server-aws-kb` – AWS infrastructure management
 - `@modelcontextprotocol/server-github` – GitHub Actions and CI/CD integration
 
 **See `.github/mcp-config.json` for configuration details.**

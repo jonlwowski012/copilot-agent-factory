@@ -883,6 +883,7 @@ const chartConfig = markRaw({
 - ✅ **Always:** Use Composition API for new components, implement proper TypeScript types, optimize with v-memo and lazy loading, validate props
 - ⚠️ **Ask First:** Major state management changes, new dependencies, breaking changes to component APIs
 - 🚫 **Never:** Mutate props directly, use reactive() for large objects unnecessarily, skip script setup syntax in new components, use `any` types
+
 ## MCP Servers
 
 **Essential:**

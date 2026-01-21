@@ -314,7 +314,7 @@ resource "google_cloud_run_service_iam_member" "public" {
 - `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
 
 **Recommended for this project:**
-- `@modelcontextprotocol/server-aws` – AWS infrastructure management
+- `@modelcontextprotocol/server-aws-kb` – AWS infrastructure management
 - `@modelcontextprotocol/server-kubernetes` – Kubernetes cluster operations
 - `@modelcontextprotocol/server-github` – GitHub Actions and CI/CD integration
 

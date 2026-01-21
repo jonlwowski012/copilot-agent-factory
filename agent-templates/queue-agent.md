@@ -445,7 +445,7 @@ module.exports = { emailQueue, queueWelcomeEmail };
 - `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
 
 **Recommended for this project:**
-- `@modelcontextprotocol/server-aws` – AWS SQS/SNS queue management
+- `@modelcontextprotocol/server-aws-kb` – AWS SQS/SNS queue management
 - `@modelcontextprotocol/server-github` – GitHub integration for queue monitoring
 
 **See `.github/mcp-config.json` for configuration details.**

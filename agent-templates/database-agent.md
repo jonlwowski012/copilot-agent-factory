@@ -640,6 +640,7 @@ ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 - ✅ **Always:** Design normalized schemas, create proper indexes, use transactions for data integrity, validate constraints, use parameterized queries, add type annotations
 - ⚠️ **Ask First:** Major schema changes, adding/dropping indexes on large tables, changing primary keys
 - 🚫 **Never:** Store passwords in plaintext, ignore foreign key constraints, skip migrations, delete data without backups, use string formatting for SQL queries
+
 ## MCP Servers
 
 **Essential:**
