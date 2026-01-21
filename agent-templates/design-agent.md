@@ -483,3 +483,14 @@ What would you like to do?
 - Skip error handling specification
 - Leave API contracts incomplete
 - Overwrite existing design docs without confirmation
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for detailed technical design specifications
+
+**See `.github/mcp-config.json` for configuration details.**

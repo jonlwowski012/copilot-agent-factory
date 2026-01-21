@@ -883,3 +883,14 @@ const chartConfig = markRaw({
 - ✅ **Always:** Use Composition API for new components, implement proper TypeScript types, optimize with v-memo and lazy loading, validate props
 - ⚠️ **Ask First:** Major state management changes, new dependencies, breaking changes to component APIs
 - 🚫 **Never:** Mutate props directly, use reactive() for large objects unnecessarily, skip script setup syntax in new components, use `any` types
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
+- `@modelcontextprotocol/server-playwright` – Browser automation for component testing
+
+**See `.github/mcp-config.json` for configuration details.**

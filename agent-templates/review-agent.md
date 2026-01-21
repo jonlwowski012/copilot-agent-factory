@@ -231,3 +231,15 @@ Check these files for additional project-specific standards:
 - Block PRs for personal preferences
 - Ignore security or correctness issues
 - Approve code with known security vulnerabilities
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub PR integration for code review
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex code analysis
+
+**See `.github/mcp-config.json` for configuration details.**

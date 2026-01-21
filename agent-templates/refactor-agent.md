@@ -362,3 +362,15 @@ After (good):
 - Over-engineer with unnecessary abstractions
 - Leave mutable default arguments unfixed
 - Ignore error handling improvements
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for refactoring PRs
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex refactoring decisions
+
+**See `.github/mcp-config.json` for configuration details.**

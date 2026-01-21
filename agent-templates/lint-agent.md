@@ -205,3 +205,15 @@ import { helper } from './utils';
 - Override style rules without team consensus
 - Approve code with bare exception catches
 - Ignore missing type annotations in new code
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for PR checks
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex linting rule analysis
+
+**See `.github/mcp-config.json` for configuration details.**

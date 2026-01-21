@@ -389,3 +389,15 @@ def benchmark_compare():
 - Remove optimizations without benchmarking
 - Ignore memory leaks or resource exhaustion
 - Use inefficient patterns in hot paths (string concat in loops)
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for performance monitoring
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex performance optimization
+
+**See `.github/mcp-config.json` for configuration details.**

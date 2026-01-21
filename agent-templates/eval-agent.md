@@ -256,3 +256,15 @@ def compare_models(results: list[dict]) -> dict:
 - Log failed samples with identifiers
 - Continue evaluation on recoverable errors (with logging)
 - Save partial results on failure
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-memory` – Persistent memory for evaluation results and comparisons
+- `@modelcontextprotocol/server-postgres` – Database for storing evaluation metrics
+
+**See `.github/mcp-config.json` for configuration details.**

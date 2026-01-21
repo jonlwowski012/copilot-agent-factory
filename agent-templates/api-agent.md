@@ -279,3 +279,16 @@ router.get('/:id', async (req, res, next) => {
 - Break backwards compatibility without versioning
 - Use mutable default arguments
 - Catch generic exceptions without logging
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
+- `@modelcontextprotocol/server-postgres` – PostgreSQL database operations
+- `@modelcontextprotocol/server-fetch` – HTTP requests for API testing and integration
+
+**See `.github/mcp-config.json` for configuration details.**

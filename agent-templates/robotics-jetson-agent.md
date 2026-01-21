@@ -797,3 +797,14 @@ class JetsonMonitor:
 - ✅ **Always:** Profile GPU/CPU usage, use FP16 when possible, manage power modes, handle thermal throttling, test on target hardware
 - ⚠️ **Ask First:** Major model architecture changes, switching deep learning frameworks, changing power constraints, deploying new CUDA versions
 - 🚫 **Never:** Ignore memory limits, skip thermal testing, use FP32 without profiling, ignore power consumption, deploy without real hardware testing
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub integration for robotics projects
+
+**See `.github/mcp-config.json` for configuration details.**

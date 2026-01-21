@@ -272,3 +272,15 @@ def create_splits(data: list, test_size: float = 0.15, val_size: float = 0.15):
 - Log corrupted/missing files with paths
 - Raise specific exceptions for data issues
 - Never silently skip bad data without logging
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-memory` – Persistent memory for data pipeline metadata
+- `@modelcontextprotocol/server-postgres` – Database for storing data quality metrics
+
+**See `.github/mcp-config.json` for configuration details.**

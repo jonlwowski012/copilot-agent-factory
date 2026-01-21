@@ -274,3 +274,14 @@ What would you like to do?
 - Create stories larger than 13 points
 - Write vague or untestable criteria
 - Overwrite existing story documents without confirmation
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for creating detailed user stories with acceptance criteria
+
+**See `.github/mcp-config.json` for configuration details.**

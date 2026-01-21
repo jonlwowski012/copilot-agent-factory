@@ -361,3 +361,15 @@ trivy image myimage:latest
 - Store or log sensitive data in plain text
 - Accept string concatenation for queries
 - Allow bare exception catches in security-critical code
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub security alerts and vulnerability scanning
+- `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex security analysis
+
+**See `.github/mcp-config.json` for configuration details.**

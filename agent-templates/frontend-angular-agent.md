@@ -983,3 +983,14 @@ describe('UserService', () => {
 - ✅ **Always:** Use standalone components for new features, implement proper RxJS patterns with takeUntil, use Angular CLI for generation, add type annotations
 - ⚠️ **Ask First:** Major architecture changes, new state management patterns, breaking changes to public APIs
 - 🚫 **Never:** Subscribe without unsubscribing, mutate state directly, skip OnPush change detection strategy for performance-critical components, use `any` types
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
+- `@modelcontextprotocol/server-playwright` – Browser automation for component testing
+
+**See `.github/mcp-config.json` for configuration details.**

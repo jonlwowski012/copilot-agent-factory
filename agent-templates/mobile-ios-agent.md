@@ -356,3 +356,14 @@ class PersistenceController {
 - ✅ **Always:** Follow iOS Human Interface Guidelines, implement proper error handling, use appropriate design patterns, avoid force unwrapping
 - ⚠️ **Ask First:** Major architecture changes, third-party SDK integrations, breaking API changes
 - 🚫 **Never:** Violate App Store guidelines, ignore memory leaks, implement insecure data storage, use force unwrap without justification
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, commit analysis
+- `@modelcontextprotocol/server-filesystem` – File operations, directory browsing
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
+- `@modelcontextprotocol/server-playwright` – Browser automation for UI testing
+
+**See `.github/mcp-config.json` for configuration details.**
