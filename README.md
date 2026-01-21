@@ -385,7 +385,7 @@ Based on detection, agents may recommend:
 - `@modelcontextprotocol/server-sequential-thinking` – Enhanced reasoning for complex problems
 
 **Web & Testing:**
-- `@modelcontextprotocol/server-playwright` – Browser automation, E2E testing
+- `@playwright/mcp` – Browser automation, E2E testing
 - `@modelcontextprotocol/server-fetch` – HTTP requests, API calls
 - `@modelcontextprotocol/server-puppeteer` – Headless Chrome automation
 

@@ -892,6 +892,6 @@ const chartConfig = markRaw({
 
 **Recommended for this project:**
 - `@modelcontextprotocol/server-github` – GitHub API integration for repository operations
-- `@modelcontextprotocol/server-playwright` – Browser automation for component testing
+- `@playwright/mcp` – Browser automation for component testing
 
 **See `.github/mcp-config.json` for configuration details.**

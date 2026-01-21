@@ -176,7 +176,7 @@ Based on project detection, agents may recommend these additional servers:
 - `@modelcontextprotocol/server-supabase` – Real-time Postgres, auth, storage
 
 **Web & Testing:**
-- `@modelcontextprotocol/server-playwright` – Browser automation, E2E testing, web scraping
+- `@playwright/mcp` – Browser automation, E2E testing, web scraping
 - `@modelcontextprotocol/server-fetch` – HTTP requests, API calls, web content
 - `@modelcontextprotocol/server-puppeteer` – Headless Chrome automation
 

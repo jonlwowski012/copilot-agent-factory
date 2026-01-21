@@ -238,7 +238,7 @@ describe('functionToTest', () => {
 
 **Recommended for this project:**
 - `@modelcontextprotocol/server-github` – CI/CD integration, test failure tracking in PRs
-- `@modelcontextprotocol/server-playwright` – Browser automation and E2E testing (if web project)
+- `@playwright/mcp` – Browser automation and E2E testing (if web project)
 - `@modelcontextprotocol/server-sequential-thinking` – Complex test strategy reasoning
 
 **See `.github/mcp-config.json` for configuration details.**

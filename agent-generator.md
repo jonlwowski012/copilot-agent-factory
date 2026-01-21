@@ -593,7 +593,7 @@ Detect project characteristics and recommend these servers when relevant:
 
 | MCP Server | Recommend When | Package Name | Purpose |
 |------------|---------------|--------------|---------|
-| **Browser/Playwright** | E2E tests OR `playwright`, `puppeteer`, `selenium` in deps | `@modelcontextprotocol/server-playwright` | Browser automation, web scraping, testing |
+| **Browser/Playwright** | E2E tests OR `playwright`, `puppeteer`, `selenium` in deps | `@playwright/mcp` | Browser automation, web scraping, testing |
 | **Fetch** | API integration OR web scraping detected | `@modelcontextprotocol/server-fetch` | HTTP requests, API calls, web content |
 | **Puppeteer** | Browser automation OR `puppeteer` in deps | `@modelcontextprotocol/server-puppeteer` | Headless Chrome automation |
 
@@ -701,7 +701,7 @@ Apply this logic when analyzing the repository:
 **Recommended for this project:**
 - `@modelcontextprotocol/server-github` – PR reviews, issue management, CI/CD integration
 - `@modelcontextprotocol/server-postgres` – Database schema and query management
-- `@modelcontextprotocol/server-playwright` – E2E testing and browser automation
+- `@playwright/mcp` – E2E testing and browser automation
 - `@modelcontextprotocol/server-docker` – Container management and deployment
 - TypeScript LSP server – TypeScript code intelligence and refactoring
 
