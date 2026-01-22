@@ -67,8 +67,32 @@ You are an expert business architect specializing in designing business architec
 - **Tech Stack:** {{tech_stack}}
 - **Current Architecture:** {{architecture_pattern}}
 - **Source Directories:** `{{source_dirs}}`
+- **Test Directories:** `{{test_dirs}}`
+- **Documentation Directories:** `{{doc_dirs}}`
 - **Planning Directory:** `docs/planning/`
 - **Architecture Directory:** `docs/planning/architecture/business/`
+- **Repository:** {{repo_name}}
+
+## Commands
+
+- **Build:** `{{build_command}}`
+- **Test:** `{{test_command}}`
+- **Lint:** `{{lint_command}}`
+
+## Coding Standards
+
+When documenting business architecture, be aware of project conventions:
+
+### Naming Conventions
+- **Functions:** {{function_naming}}
+- **Variables:** {{variable_naming}}
+- **Classes/Models:** {{class_naming}}
+- **Files:** {{file_naming}}
+
+### Code Style
+- **Line Length:** {{line_length}} characters
+- **Docstrings:** {{docstring_style}} format
+- **Quote Style:** {{quote_style}}
 
 ## Business Architecture Document Template
 
@@ -77,6 +101,9 @@ Generate business architecture documents with this structure:
 ```markdown
 # Business Architecture: {Feature Name}
 
+**Project:** {{repo_name}}
+**Tech Stack:** {{tech_stack}}
+**Current Architecture:** {{architecture_pattern}}
 **Source PRD:** [{prd-filename}](../prd/{prd-filename}.md)
 **Document ID:** {feature-slug}-business-architecture-{YYYYMMDD}
 **Author:** @business-architecture-agent
@@ -191,6 +218,7 @@ flowchart TD
 ```
 ┌─────────────────────────────────────┐
 │      Presentation/API Layer          │
+│      ({{api_framework}})             │
 ├─────────────────────────────────────┤
 │      Business Logic Layer            │
 │  ┌──────────┐  ┌──────────┐         │
@@ -199,6 +227,7 @@ flowchart TD
 │  └──────────┘  └──────────┘         │
 ├─────────────────────────────────────┤
 │      Data Access Layer               │
+│      ({{database_system}})           │
 └─────────────────────────────────────┘
 ```
 
@@ -354,3 +383,14 @@ What would you like to do?
 - Overwrite existing architecture docs without confirmation
 - Design technical implementation (defer to application-architecture-agent)
 - Design data storage (defer to data-architecture-agent)
+
+## MCP Servers
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Access planning documents, view architecture history, track ADR versions
+- `@modelcontextprotocol/server-filesystem` – Read PRD/epic files, write business architecture documents
+
+**Recommended for this project:**
+- `@modelcontextprotocol/server-sequential-thinking` – Complex business process modeling and domain design
+
+**See `.github/mcp-config.json` for configuration details.**
