@@ -24,7 +24,10 @@ This repository uses GitHub Copilot's custom instructions feature to provide con
     ├── prd-agent.md                     # Product requirements
     ├── epic-agent.md                    # Epic breakdown
     ├── story-agent.md                   # User stories
-    ├── architecture-agent.md            # Architecture design
+    ├── application-architecture-agent.md    # Application architecture
+    ├── business-architecture-agent.md       # Business architecture
+    ├── data-architecture-agent.md           # Data architecture
+    ├── infrastructure-architecture-agent.md # Infrastructure architecture
     ├── design-agent.md                  # Technical design
     ├── test-design-agent.md             # Test strategy (TDD)
     ├── docs-agent.md                    # Documentation
@@ -113,7 +116,10 @@ These are specialized AI agents that can be invoked with `@agent-name` syntax. E
 | `@prd-agent` | Create product requirements documents | claude-4-5-opus |
 | `@epic-agent` | Break down features into epics | claude-4-5-opus |
 | `@story-agent` | Write user stories with Gherkin scenarios | claude-4-5-opus |
-| `@architecture-agent` | Design system architecture and ADRs | claude-4-5-opus |
+| `@application-architecture-agent` | Design application architecture and component design | claude-4-5-opus |
+| `@business-architecture-agent` | Design business architecture and domain models | claude-4-5-opus |
+| `@data-architecture-agent` | Design data architecture and data flows | claude-4-5-opus |
+| `@infrastructure-architecture-agent` | Design infrastructure and deployment architecture | claude-4-5-opus |
 | `@design-agent` | Create technical design specifications | claude-4-5-opus |
 | `@test-design-agent` | Develop test strategies (TDD approach) | claude-4-5-opus |
 | `@docs-agent` | Write and maintain documentation | claude-4-5-sonnet |

@@ -256,7 +256,7 @@ Follow agent template structures:
 - PRD: prd-agent template
 - Epics: epic-agent template
 - Stories: story-agent template
-- Architecture: architecture-agent template
+- Architecture: application-architecture-agent, business-architecture-agent, data-architecture-agent, infrastructure-architecture-agent templates
 - Design: design-agent template
 - Test Design: test-design-agent template
 

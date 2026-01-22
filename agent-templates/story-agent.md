@@ -7,9 +7,9 @@ triggers:
   - User invokes /story or @story-agent
   - Orchestrator routes user story generation task
 handoffs:
-  - target: architecture-agent
-    label: "Design Architecture"
-    prompt: "Please design the system architecture to implement these user stories."
+  - target: application-architecture-agent
+    label: "Design Application Architecture"
+    prompt: "Please design the application architecture to implement these user stories."
     send: false
   - target: test-design-agent
     label: "Design Tests"

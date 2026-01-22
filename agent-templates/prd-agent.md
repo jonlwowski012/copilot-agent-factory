@@ -11,9 +11,9 @@ handoffs:
     label: "Break into Epics"
     prompt: "Please break down this PRD into actionable epics with clear scope and acceptance criteria."
     send: false
-  - target: architecture-agent
-    label: "Design Architecture"
-    prompt: "Please design the system architecture based on this PRD."
+  - target: application-architecture-agent
+    label: "Design Application Architecture"
+    prompt: "Please design the application architecture based on this PRD."
     send: false
   - target: orchestrator
     label: "Continue Workflow"

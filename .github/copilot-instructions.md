@@ -100,7 +100,10 @@ Phase 1: Planning
 └── @story-agent → User stories → /approve
 
 Phase 2: Architecture & Design
-├── @architecture-agent → Architecture doc → /approve
+├── @application-architecture-agent → Application architecture → /approve
+├── @business-architecture-agent → Business architecture → /approve (if needed)
+├── @data-architecture-agent → Data architecture → /approve (if needed)
+├── @infrastructure-architecture-agent → Infrastructure architecture → /approve (if needed)
 └── @design-agent → Technical spec → /approve
 
 Phase 3: Test Strategy
@@ -221,7 +224,10 @@ Before submitting changes:
 | Review template | @review-agent | "Review {template}" |
 | Refactor templates | @refactor-agent | "Optimize {aspect}" |
 | Create PRD | @prd-agent | "Create PRD for {feature}" |
-| Design architecture | @architecture-agent | "Design {system}" |
+| Design application architecture | @application-architecture-agent | "Design application architecture for {system}" |
+| Design business architecture | @business-architecture-agent | "Design domain model for {system}" |
+| Design data architecture | @data-architecture-agent | "Design data architecture for {system}" |
+| Design infrastructure | @infrastructure-architecture-agent | "Design deployment for {system}" |
 
 ## Error Prevention
 

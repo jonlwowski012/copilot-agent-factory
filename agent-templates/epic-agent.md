@@ -11,9 +11,9 @@ handoffs:
     label: "Generate User Stories"
     prompt: "Please create detailed user stories with Gherkin acceptance criteria based on these epics."
     send: false
-  - target: architecture-agent
-    label: "Design Architecture"
-    prompt: "Please design the system architecture to support these epics."
+  - target: application-architecture-agent
+    label: "Design Application Architecture"
+    prompt: "Please design the application architecture to support these epics."
     send: false
   - target: orchestrator
     label: "Continue Workflow"
