@@ -121,7 +121,10 @@ Use **claude-4-5-opus** (deep reasoning) for agents requiring complex analysis:
 | `prd-agent` | Product strategy and requirements analysis |
 | `epic-agent` | Breaking down requirements into actionable epics |
 | `story-agent` | User story writing with acceptance criteria |
-| `architecture-agent` | System design and architectural decisions |
+| `application-architecture-agent` | Application-level architecture and component design |
+| `business-architecture-agent` | Business architecture and domain models |
+| `data-architecture-agent` | Data architecture and data flows |
+| `infrastructure-architecture-agent` | Infrastructure and deployment architecture |
 | `design-agent` | Technical specifications and API contracts |
 | `test-design-agent` | Test strategy and TDD planning |
 | `review-agent` | Deep code quality analysis and best practices |
@@ -153,7 +156,10 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | `prd-agent.md` | Product Requirements Documents from feature requests |
 | `epic-agent.md` | Break PRDs into epics with acceptance criteria |
 | `story-agent.md` | User stories with Gherkin scenarios |
-| `architecture-agent.md` | System architecture, ADRs, component design |
+| `application-architecture-agent.md` | Application-level architecture, component interactions, API contracts |
+| `business-architecture-agent.md` | Business architecture, domain models, business processes |
+| `data-architecture-agent.md` | Data architecture, data models, data flows, storage patterns |
+| `infrastructure-architecture-agent.md` | Infrastructure architecture, deployment, scaling, observability |
 | `design-agent.md` | Technical specifications, API contracts, data models |
 | `test-design-agent.md` | Test strategy and test case specifications (TDD) |
 
@@ -513,7 +519,10 @@ Generate agents based on detection:
 | **prd-agent** | Always generate (supports feature workflows) |
 | **epic-agent** | Always generate (supports feature workflows) |
 | **story-agent** | Always generate (supports feature workflows) |
-| **architecture-agent** | Always generate (supports feature workflows) |
+| **application-architecture-agent** | Always generate (supports feature workflows) |
+| **business-architecture-agent** | Always generate (supports feature workflows) |
+| **data-architecture-agent** | Always generate (supports feature workflows) |
+| **infrastructure-architecture-agent** | Always generate (supports feature workflows) |
 | **design-agent** | Always generate (supports feature workflows) |
 | **test-design-agent** | Always generate (supports TDD workflows) |
 
@@ -776,7 +785,7 @@ You are an expert [role] for this project.
 
 Generate agents in this order to handle dependencies:
 
-1. **Planning agents** – prd-agent, epic-agent, story-agent, architecture-agent, design-agent, test-design-agent
+1. **Planning agents** – prd-agent, epic-agent, story-agent, application-architecture-agent, business-architecture-agent, data-architecture-agent, infrastructure-architecture-agent, design-agent, test-design-agent
 2. **orchestrator.md** – Central coordinator that references all other agents
 3. **Core agents** – docs, test, lint, review, security, devops, debug, refactor, performance
 4. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
@@ -830,7 +839,7 @@ Analyze this repository and:
 **Phase 2: Planning Agents**
 ```
 @agent-generator --platform vscode --output .github/agents/
-Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent, architecture-agent, design-agent, test-design-agent
+Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent, application-architecture-agent, business-architecture-agent, data-architecture-agent, infrastructure-architecture-agent, design-agent, test-design-agent
 ```
 
 **Phase 3: Core Development Agents**
@@ -1089,7 +1098,10 @@ For the orchestrator's `{{active_agents_table}}` placeholder:
 | @prd-agent | ✅ Active | Product Requirements Documents |
 | @epic-agent | ✅ Active | Epic breakdown from PRDs |
 | @story-agent | ✅ Active | User stories with Gherkin |
-| @architecture-agent | ✅ Active | System architecture, ADRs |
+| @application-architecture-agent | ✅ Active | Application architecture, component design |
+| @business-architecture-agent | ✅ Active | Business architecture, domain models |
+| @data-architecture-agent | ✅ Active | Data architecture, data flows |
+| @infrastructure-architecture-agent | ✅ Active | Infrastructure, deployment architecture |
 | @design-agent | ✅ Active | Technical specifications |
 | @test-design-agent | ✅ Active | Test strategy (TDD) |
 | @docs-agent | ✅ Active | Documentation, READMEs, docstrings |
