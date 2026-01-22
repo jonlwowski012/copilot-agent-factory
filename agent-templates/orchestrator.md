@@ -3,7 +3,7 @@ name: orchestrator
 model: claude-4-5-opus
 description: Master coordinator for Copilot Agent Factory - routes tasks to specialized agents and manages 6-phase workflows with strict enforcement
 handoffs:
-  - target: architecture-agent
+  - target: application-architecture-agent
     label: "Phase 0: Verify State Diagram"
     prompt: "Check if docs/system-state-diagram.md exists and is up to date. If not, create or update a state machine diagram showing the current system states and transitions."
     send: false
@@ -19,9 +19,21 @@ handoffs:
     label: "Phase 1.3: Create Stories"
     prompt: "Convert these epics into detailed user stories with Gherkin scenarios: {{epics_path}}"
     send: false
-  - target: architecture-agent
-    label: "Phase 2.1: Design Architecture"
-    prompt: "Design system architecture based on these requirements: {{planning_artifacts}}"
+  - target: application-architecture-agent
+    label: "Phase 2.1: Design Application Architecture"
+    prompt: "Design application architecture based on these requirements: {{planning_artifacts}}"
+    send: false
+  - target: business-architecture-agent
+    label: "Phase 2.1: Design Business Architecture"
+    prompt: "Design business architecture and domain models based on these requirements: {{planning_artifacts}}"
+    send: false
+  - target: data-architecture-agent
+    label: "Phase 2.1: Design Data Architecture"
+    prompt: "Design data architecture and data models based on these requirements: {{planning_artifacts}}"
+    send: false
+  - target: infrastructure-architecture-agent
+    label: "Phase 2.1: Design Infrastructure Architecture"
+    prompt: "Design infrastructure and deployment architecture based on these requirements: {{planning_artifacts}}"
     send: false
   - target: design-agent
     label: "Phase 2.2: Technical Design"
@@ -112,7 +124,10 @@ As the orchestrator, you are responsible for ensuring all agents follow the mini
 | **prd-agent** | `@prd-agent` | Product Requirements Documents for new agent types or features |
 | **epic-agent** | `@epic-agent` | Breaking PRDs into epics for template improvements |
 | **story-agent** | `@story-agent` | User stories with Gherkin acceptance criteria |
-| **architecture-agent** | `@architecture-agent` | Template architecture, placeholder design |
+| **application-architecture-agent** | `@application-architecture-agent` | Application architecture, component design, API contracts |
+| **business-architecture-agent** | `@business-architecture-agent` | Business architecture, domain models, business processes |
+| **data-architecture-agent** | `@data-architecture-agent` | Data architecture, data models, data flows |
+| **infrastructure-architecture-agent** | `@infrastructure-architecture-agent` | Infrastructure, deployment, scaling, observability |
 | **design-agent** | `@design-agent` | Technical specs for new agents, detection rules |
 | **test-design-agent** | `@test-design-agent` | Test strategy for template generation logic |
 
@@ -132,7 +147,10 @@ As the orchestrator, you are responsible for ensuring all agents follow the mini
 | @prd-agent | ✅ Active | Product Requirements Documents for new features |
 | @epic-agent | ✅ Active | Epic breakdown from PRDs |
 | @story-agent | ✅ Active | User stories with Gherkin scenarios |
-| @architecture-agent | ✅ Active | Template architecture, system design |
+| @application-architecture-agent | ✅ Active | Application architecture, component design |
+| @business-architecture-agent | ✅ Active | Business architecture, domain models |
+| @data-architecture-agent | ✅ Active | Data architecture, data flows |
+| @infrastructure-architecture-agent | ✅ Active | Infrastructure, deployment, scaling |
 | @design-agent | ✅ Active | Technical specifications for new agents |
 | @test-design-agent | ✅ Active | Test strategy for generation logic |
 | @docs-agent | ✅ Active | Documentation, README updates, examples |
@@ -151,8 +169,14 @@ Request Analysis:
 │   └── Route to @epic-agent
 ├── Contains "user story", "stories", "acceptance criteria", "gherkin"
 │   └── Route to @story-agent
-├── Contains "architecture", "template design", "placeholder design"
-│   └── Route to @architecture-agent
+├── Contains "application architecture", "component design", "API contracts", "state diagram"
+│   └── Route to @application-architecture-agent
+├── Contains "business architecture", "domain model", "business process"
+│   └── Route to @business-architecture-agent
+├── Contains "data architecture", "data model", "data flow", "storage pattern"
+│   └── Route to @data-architecture-agent
+├── Contains "infrastructure architecture", "deployment", "scaling", "observability"
+│   └── Route to @infrastructure-architecture-agent
 ├── Contains "technical design", "agent spec", "detection rules"
 │   └── Route to @design-agent
 ├── Contains "test design", "test strategy", "test plan", "TDD"
@@ -186,7 +210,7 @@ Request Analysis:
 
 **Phase 0.1: System State Diagram Check**
 ```yaml
-agent: @architecture-agent
+agent: @application-architecture-agent
 trigger: Start of any new feature workflow
 input: Current system codebase and documentation
 output: docs/system-state-diagram.md
@@ -199,11 +223,11 @@ handoff_prompt: "Create a Product Requirements Document for this feature"
 **Phase 0 Tasks:**
 1. Check if `docs/system-state-diagram.md` exists
 2. If it doesn't exist:
-   - Invoke @architecture-agent to analyze the system
+   - Invoke @application-architecture-agent to analyze the system
    - Generate state machine diagram showing system states and transitions
    - Save to `docs/system-state-diagram.md`
 3. If it exists:
-   - Invoke @architecture-agent to review current codebase
+   - Invoke @application-architecture-agent to review current codebase
    - Compare with existing diagram
    - Update if system has changed
 4. Present diagram to user for approval
@@ -251,8 +275,8 @@ input: docs/planning/epics/{feature}-epics-{YYYYMMDD}.md
 output: docs/planning/stories/{feature}-stories-{YYYYMMDD}.md
 validation: Stories file must exist before proceeding
 gate: MUST wait for `/approve` or `/skip`
-handoff_to: @architecture-agent
-handoff_prompt: "Design system architecture based on these requirements and stories"
+handoff_to: @application-architecture-agent
+handoff_prompt: "Design application architecture based on these requirements and stories"
 ```
 
 **Phase 1 Completion Checklist:**
@@ -270,17 +294,25 @@ handoff_prompt: "Design system architecture based on these requirements and stor
 
 **Phase 2.1: Architecture Design**
 ```yaml
-agent: @architecture-agent
+agents: 
+  - @application-architecture-agent (primary - component design, API contracts, state diagrams)
+  - @business-architecture-agent (domain models, business processes)
+  - @data-architecture-agent (data models, data flows)
+  - @infrastructure-architecture-agent (deployment, scaling, observability)
 prerequisite: Phase 1 completed (all planning artifacts exist)
 input: 
   - docs/planning/prd/{feature}-{YYYYMMDD}.md
   - docs/planning/epics/{feature}-epics-{YYYYMMDD}.md
   - docs/planning/stories/{feature}-stories-{YYYYMMDD}.md
-output: docs/planning/architecture/{feature}-architecture-{YYYYMMDD}.md
-validation: Architecture file with ADRs must exist before proceeding
+output: 
+  - docs/planning/architecture/{feature}-application-architecture-{YYYYMMDD}.md
+  - docs/planning/architecture/{feature}-business-architecture-{YYYYMMDD}.md (if needed)
+  - docs/planning/architecture/{feature}-data-architecture-{YYYYMMDD}.md (if needed)
+  - docs/planning/architecture/{feature}-infrastructure-architecture-{YYYYMMDD}.md (if needed)
+validation: Architecture files with ADRs must exist before proceeding
 gate: MUST wait for `/approve` or `/skip`
 handoff_to: @design-agent
-handoff_prompt: "Create detailed technical specifications based on this architecture"
+handoff_prompt: "Create detailed technical specifications based on these architecture documents"
 ```
 
 **Phase 2.2: Technical Design**
@@ -697,7 +729,7 @@ Checking for existing state diagram...
 
 Orchestrator:
 📋 Phase 0.1 - Checking system state diagram
-Invoking @architecture-agent to verify/create state diagram...
+Invoking @application-architecture-agent to verify/create state diagram...
 
 [State diagram is created or updated]
 
@@ -759,9 +791,9 @@ User: /approve
 Orchestrator:
 ✓ Phase 1.3 approved. Phase 1 Complete! ✓
 Starting Phase 2.1 - Architecture Design
-Invoking @architecture-agent...
+Invoking architecture agents (@application-architecture-agent, @business-architecture-agent, @data-architecture-agent, @infrastructure-architecture-agent)...
 
-[Architecture is created]
+[Architecture documents are created]
 
 Orchestrator:
 ✅ Phase 2.1 Complete: Architecture Design

@@ -202,9 +202,12 @@ The agent factory includes a comprehensive **Feature Development Workflow** with
 ┌─────────────────────────────────────────────────────────────────────────┐
 │  PHASE 0: STATE      →   PHASE 1: PRODUCT    →   PHASE 2: ARCHITECTURE │
 │  ─────────────────       ─────────────────       ─────────────────────  │
-│  @architecture-agent     @prd-agent              @architecture-agent    │
-│  (State Diagram)         @epic-agent             @design-agent          │
-│                          @story-agent                                   │
+│  @application-           @prd-agent              @application-          │
+│  architecture-agent      @epic-agent             architecture-agent     │
+│  (State Diagram)         @story-agent            @business-, @data-,    │
+│                                                   @infrastructure-       │
+│                                                   architecture-agents    │
+│                                                   @design-agent          │
 │         ↓                        ↓                        ↓             │
 │    [/approve]               [/approve]               [/approve]         │
 │    [/skip]                  [/skip]                  [/skip]            │
@@ -239,7 +242,7 @@ The orchestrator coordinates a 6-phase workflow with approval gates, ensuring qu
 **Steps:**
 1. Orchestrator checks if `docs/system-state-diagram.md` exists
 2. If missing or outdated:
-   - Invokes `@architecture-agent` to analyze current system
+   - Invokes `@application-architecture-agent` to analyze current system
    - Generates state machine diagram showing system states and transitions
    - Saves to `docs/system-state-diagram.md`
 3. Presents diagram to user for review
@@ -282,10 +285,14 @@ The orchestrator coordinates a 6-phase workflow with approval gates, ensuring qu
 **Goal:** Design system architecture and create detailed technical specifications.
 
 ##### **Phase 2.1: Architecture Design**
-- **Agent:** `@architecture-agent`
+- **Agents:** `@application-architecture-agent`, `@business-architecture-agent`, `@data-architecture-agent`, `@infrastructure-architecture-agent`
 - **Input:** All Phase 1 planning artifacts (PRD, epics, stories)
-- **Action:** Designs system architecture, creates ADRs, defines components and data flow
-- **Output:** `docs/planning/architecture/{feature-name}-architecture-{YYYYMMDD}.md`
+- **Action:** Designs multi-layered system architecture:
+  - Application architecture: component interactions, API contracts, state diagrams
+  - Business architecture: domain models, business processes
+  - Data architecture: data models, data flows, storage patterns
+  - Infrastructure architecture: deployment, scaling, observability
+- **Output:** `docs/planning/architecture/{feature-name}-{type}-architecture-{YYYYMMDD}.md`
 - **Approval Gate:** `/approve` to continue to Phase 2.2
 
 ##### **Phase 2.2: Technical Design**
@@ -429,7 +436,10 @@ automatic_agent_gen/
 │   │   ├── prd-agent.md           # Product Requirements Documents
 │   │   ├── epic-agent.md          # Epic breakdown from PRDs
 │   │   ├── story-agent.md         # User stories with Gherkin
-│   │   ├── architecture-agent.md  # System architecture & ADRs
+│   │   ├── application-architecture-agent.md  # Application architecture & component design
+│   │   ├── business-architecture-agent.md     # Business architecture & domain models
+│   │   ├── data-architecture-agent.md         # Data architecture & data flows
+│   │   ├── infrastructure-architecture-agent.md # Infrastructure & deployment
 │   │   ├── design-agent.md        # Technical design specifications
 │   │   └── test-design-agent.md   # Test strategy (TDD)
 │   ├── Core Development Agents
@@ -511,7 +521,10 @@ The generator creates agents based on detected patterns:
 | **prd-agent** | Always created (supports feature workflows) |
 | **epic-agent** | Always created (supports feature workflows) |
 | **story-agent** | Always created (supports feature workflows) |
-| **architecture-agent** | Always created (supports feature workflows) |
+| **application-architecture-agent** | Always created (supports feature workflows) |
+| **business-architecture-agent** | Always created (supports feature workflows) |
+| **data-architecture-agent** | Always created (supports feature workflows) |
+| **infrastructure-architecture-agent** | Always created (supports feature workflows) |
 | **design-agent** | Always created (supports feature workflows) |
 | **test-design-agent** | Always created (supports TDD workflows) |
 
@@ -775,13 +788,13 @@ When an agent completes its task, it can present handoff buttons that:
 
 ```
 1. @prd-agent creates PRD
-   → Handoff options: "Break into Epics" (@epic-agent), "Design Architecture" (@architecture-agent)
+   → Handoff options: "Break into Epics" (@epic-agent), "Design Architecture" (@application-architecture-agent)
 
 2. @epic-agent breaks down PRD
-   → Handoff options: "Generate User Stories" (@story-agent), "Design Architecture" (@architecture-agent)
+   → Handoff options: "Generate User Stories" (@story-agent), "Design Architecture" (@application-architecture-agent)
 
-3. @architecture-agent designs system
-   → Handoff options: "Create Technical Design" (@design-agent), "Security Review" (@security-agent)
+3. @application-architecture-agent designs application architecture
+   → Handoff options: "Design Business Architecture" (@business-architecture-agent), "Design Data Architecture" (@data-architecture-agent), "Design Infrastructure" (@infrastructure-architecture-agent), "Create Technical Design" (@design-agent), "Security Review" (@security-agent)
 
 4. @test-design-agent creates test strategy
    → Handoff options: "Implement Tests" (@test-agent), "Start Implementation" (@api-agent)
@@ -828,7 +841,10 @@ The `send: false` setting means handoffs require user approval before transition
 - **prd-agent**: Generate PRDs from feature requests, define goals and requirements
 - **epic-agent**: Break PRDs into epics with acceptance criteria and dependencies
 - **story-agent**: Create user stories with Gherkin scenarios and story points
-- **architecture-agent**: Design system architecture, create ADRs, component diagrams
+- **application-architecture-agent**: Application architecture, component interactions, API contracts, state diagrams
+- **business-architecture-agent**: Business architecture, domain models, business processes
+- **data-architecture-agent**: Data architecture, data models, data flows, storage patterns
+- **infrastructure-architecture-agent**: Infrastructure architecture, deployment, scaling, observability
 - **design-agent**: Technical specs, API contracts, data models, implementation details
 - **test-design-agent**: Test strategy, test case specifications (TDD pre-implementation)
 
