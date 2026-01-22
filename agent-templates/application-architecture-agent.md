@@ -95,7 +95,7 @@ When creating or updating the system state diagram, use this structure:
 ```markdown
 # System State Diagram
 
-**Last Updated:** {YYYYMMDD}
+**Last Updated:** {{current_date}}
 **Author:** @application-architecture-agent
 **Status:** Current
 
@@ -120,13 +120,13 @@ stateDiagram-v2
 
 ## State Descriptions
 
-### State 1: {State Name}
+### State 1: {{state_name_1}}
 - **Description:** What this state represents
 - **Entry Conditions:** How the system enters this state
 - **Exit Conditions:** How the system leaves this state
 - **Valid Operations:** What can be done in this state
 
-### State 2: {State Name}
+### State 2: {{state_name_2}}
 [Repeat for each state]
 
 ## State Transitions
@@ -173,13 +173,13 @@ When invoked to check/update the state diagram:
 Generate application architecture documents with this structure:
 
 ```markdown
-# Application Architecture: {Feature Name}
+# Application Architecture: {{feature_name}}
 
-**Source PRD:** [{prd-filename}](../prd/{prd-filename}.md)
-**Document ID:** {feature-slug}-application-architecture-{YYYYMMDD}
+**Source PRD:** [{{prd_filename}}](../prd/{{prd_filename}}.md)
+**Document ID:** {{feature_slug}}-application-architecture-{{current_date}}
 **Author:** @application-architecture-agent
 **Status:** Draft | In Review | Approved
-**Created:** {date}
+**Created:** {{current_date}}
 
 ## 1. Executive Summary
 
@@ -193,15 +193,15 @@ Generate application architecture documents with this structure:
 ### 2.2 Application Requirements
 | Requirement | Specification |
 |-------------|---------------|
-| Performance | [e.g., <200ms response time] |
-| Scalability | [e.g., 10K concurrent users] |
-| Availability | [e.g., 99.9% uptime] |
-| API Versioning | [e.g., semantic versioning] |
+| Performance | {{performance_requirements}} |
+| Scalability | {{scalability_requirements}} |
+| Availability | {{availability_requirements}} |
+| API Versioning | {{api_versioning_strategy}} |
 
 ### 2.3 Constraints
-- [Technical constraints]
-- [Business constraints]
-- [Timeline constraints]
+- {{technical_constraints}}
+- {{business_constraints}}
+- {{timeline_constraints}}
 
 ## 3. Application Architecture Overview
 
@@ -232,30 +232,30 @@ Generate application architecture documents with this structure:
 
 | Component | Responsibility | Technology | Interfaces |
 |-----------|---------------|------------|------------|
-| [Component] | [What it does] | [Tech choice] | [API/Protocol] |
+| {{component_name}} | {{component_responsibility}} | {{component_technology}} | {{component_interface}} |
 
 ## 4. Component Design
 
-### 4.1 Component: {Component Name}
+### 4.1 Component: {{component_name}}
 
 #### Responsibilities
-- [Primary responsibility]
-- [Secondary responsibilities]
+- {{component_primary_responsibility}}
+- {{component_secondary_responsibilities}}
 
 #### Interfaces
 ```
-Input:  [data format/API]
-Output: [data format/API]
+Input:  {{component_input_format}}
+Output: {{component_output_format}}
 ```
 
 #### Communication Patterns
-- [Synchronous/Asynchronous]
-- [Protocol: REST/gRPC/GraphQL/Message Queue]
-- [Error handling approach]
+- {{communication_type}} (Synchronous/Asynchronous)
+- {{communication_protocol}} (REST/gRPC/GraphQL/Message Queue)
+- {{error_handling_approach}}
 
 #### Dependencies
-- [Other components this depends on]
-- [External services]
+- {{component_dependencies}}
+- {{external_services}}
 
 [Repeat for each major component]
 
@@ -270,115 +270,108 @@ User Action → API Gateway → Auth Service → Business Logic Service
 ### 4.3 API Design
 
 #### API Versioning Strategy
-[Semantic versioning, URL versioning, header-based, etc.]
+{{api_versioning_strategy}}
 
 #### Endpoints
 | Method | Endpoint | Description | Request Body | Response |
 |--------|----------|-------------|--------------|----------|
-| POST | /api/v1/resource | Create resource | {schema} | {schema} |
-| GET | /api/v1/resource/:id | Get resource | - | {schema} |
+| {{http_method}} | {{api_endpoint}} | {{endpoint_description}} | {{request_schema}} | {{response_schema}} |
 
 #### Request/Response Examples
 ```json
-// POST /api/v1/resource
-{
-  "field": "value"
-}
+// {{http_method}} {{api_endpoint}}
+{{request_example}}
 
 // Response
-{
-  "id": "uuid",
-  "field": "value",
-  "createdAt": "timestamp"
-}
+{{response_example}}
 ```
 
 #### Error Handling
 | Status Code | Meaning | Response Format |
 |-------------|---------|-----------------|
-| 400 | Bad Request | {error schema} |
-| 404 | Not Found | {error schema} |
-| 500 | Internal Error | {error schema} |
+| 400 | Bad Request | {{error_schema_400}} |
+| 404 | Not Found | {{error_schema_404}} |
+| 500 | Internal Error | {{error_schema_500}} |
 
 ### 4.4 Service Communication
 
 #### Inter-Service Communication
-- [Protocol choices: REST, gRPC, message queues]
-- [Service discovery approach]
-- [Circuit breaker patterns]
-- [Retry strategies]
+- {{service_communication_protocol}}
+- {{service_discovery_approach}}
+- {{circuit_breaker_pattern}}
+- {{retry_strategy}}
 
 ## 5. Architecture Decision Records
 
-### ADR-1: {Decision Title}
+### ADR-1: {{adr_title_1}}
 
-**Status:** Proposed | Accepted | Deprecated | Superseded
+**Status:** {{adr_status_1}}
 
 **Context:**
-[What is the issue that we're seeing that motivates this decision?]
+{{adr_context_1}}
 
 **Decision:**
-[What is the change that we're proposing and/or doing?]
+{{adr_decision_1}}
 
 **Consequences:**
-- [Positive consequences]
-- [Negative consequences]
-- [Risks]
+- {{adr_positive_consequences_1}}
+- {{adr_negative_consequences_1}}
+- {{adr_risks_1}}
 
 **Alternatives Considered:**
-1. [Alternative 1] - [Why rejected]
-2. [Alternative 2] - [Why rejected]
+1. {{adr_alternative_1_1}} - {{adr_alternative_1_1_rejection_reason}}
+2. {{adr_alternative_1_2}} - {{adr_alternative_1_2_rejection_reason}}
 
 ---
 
-### ADR-2: {Decision Title}
+### ADR-2: {{adr_title_2}}
 
 [Repeat structure]
 
 ## 6. Application Security
 
 ### 6.1 Authentication & Authorization
-[Auth approach, token handling, permission model at application level]
+{{auth_approach}}
 
 ### 6.2 API Security
-[Input validation, rate limiting, API keys, OAuth flows]
+{{api_security_approach}}
 
 ### 6.3 Security Controls
 | Control | Implementation |
 |---------|---------------|
-| Input Validation | [approach] |
-| Rate Limiting | [approach] |
-| Audit Logging | [approach] |
+| Input Validation | {{input_validation_approach}} |
+| Rate Limiting | {{rate_limiting_approach}} |
+| Audit Logging | {{audit_logging_approach}} |
 
 ## 7. Integration Points
 
 ### 7.1 External Integrations
 | Integration | Purpose | Protocol | Authentication |
 |-------------|---------|----------|----------------|
-| [Service] | [Purpose] | [Protocol] | [Auth method] |
+| {{external_service_name}} | {{external_service_purpose}} | {{external_service_protocol}} | {{external_service_auth}} |
 
 ### 7.2 Internal Integrations
-[How components integrate with each other]
+{{internal_integration_description}}
 
 ## 8. Open Questions & Risks
 
 ### Open Questions
-- [ ] [Question needing resolution]
+- [ ] {{open_question}}
 
 ### Risks
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| [risk] | [impact] | [mitigation] |
+| {{risk_description}} | {{risk_impact}} | {{risk_mitigation}} |
 ```
 
 ## Output Location
 
 Save application architecture documents to:
 ```
-docs/planning/architecture/application/{feature-name}-application-architecture-{YYYYMMDD}.md
+docs/planning/architecture/application/{{feature_slug}}-application-architecture-{{current_date}}.md
 ```
 
-Example: `docs/planning/architecture/application/user-authentication-application-architecture-20251229.md`
+Example: `docs/planning/architecture/application/{{example_feature_slug}}-application-architecture-{{example_date}}.md`
 
 ## Workflow Integration
 
@@ -388,13 +381,13 @@ After generating application architecture:
 2. Prompt with approval options:
 
 ```
-📋 **Application Architecture Generated:** `docs/planning/architecture/application/{filename}.md`
+📋 **Application Architecture Generated:** `docs/planning/architecture/application/{{architecture_filename}}.md`
 
 **Summary:**
-- Components: {count}
-- APIs: {count}
-- ADRs: {count}
-- Key Technologies: {list}
+- Components: {{component_count}}
+- APIs: {{api_count}}
+- ADRs: {{adr_count}}
+- Key Technologies: {{key_technologies}}
 
 Please review the application architecture document above.
 
