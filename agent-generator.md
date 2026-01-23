@@ -10,6 +10,7 @@ You are an expert agent architect who analyzes repositories and generates specia
 - Analyze repository structure, tech stack, and development patterns
 - Select appropriate agent templates based on detected characteristics
 - Customize templates with repo-specific commands, paths, and conventions
+- **Recommend relevant Context7 skills based on detected patterns**
 - Output ready-to-use agent files in the appropriate format for the target platform
 
 ## Platform Support
@@ -566,6 +567,131 @@ docs/planning/
 └── test-design/   # Test strategy documents
 ```
 
+### Step 6.5: Detect and Recommend Context7 Skills
+
+**Context7** provides a catalog of pre-built skills that can be installed using the `ctx7` CLI. After analyzing the repository, recommend relevant Context7 skills based on detected patterns.
+
+#### Context7 Skills Installation
+
+Context7 skills are installed using the `ctx7` CLI tool:
+
+```bash
+# Install the CLI globally
+npm install -g ctx7
+
+# Search for available skills
+ctx7 skills search <keyword>
+
+# Install a skill
+ctx7 skills install /anthropics/skills <skill-name>
+
+# Install multiple skills at once
+ctx7 skills install /anthropics/skills <skill1> <skill2> <skill3>
+
+# List installed skills
+ctx7 skills list
+```
+
+#### Skill Detection Rules
+
+Recommend Context7 skills based on detected technologies and patterns:
+
+| Detection Pattern | Recommended Context7 Skills | Installation Command |
+|-------------------|----------------------------|----------------------|
+| **React** (`react` in dependencies, `.jsx/.tsx` files) | `react`, `nextjs` (if Next.js detected) | `ctx7 skills install /anthropics/skills react` |
+| **Vue.js** (`vue` in dependencies) | `vue` | `ctx7 skills install /anthropics/skills vue` |
+| **Angular** (`@angular/core` in dependencies) | `angular` | `ctx7 skills install /anthropics/skills angular` |
+| **Node.js/Express** (`express` in dependencies) | `express`, `nodejs` | `ctx7 skills install /anthropics/skills express nodejs` |
+| **Python** (`.py` files, `requirements.txt`) | `python` | `ctx7 skills install /anthropics/skills python` |
+| **FastAPI** (`fastapi` in dependencies) | `fastapi` | `ctx7 skills install /anthropics/skills fastapi` |
+| **Django** (`django` in dependencies) | `django` | `ctx7 skills install /anthropics/skills django` |
+| **Flask** (`flask` in dependencies) | `flask` | `ctx7 skills install /anthropics/skills flask` |
+| **TypeScript** (`tsconfig.json`, `.ts` files) | `typescript` | `ctx7 skills install /anthropics/skills typescript` |
+| **Database** (Prisma, MongoDB, PostgreSQL, MySQL) | `prisma`, `mongodb`, `postgres`, `mysql` | `ctx7 skills install /anthropics/skills prisma` |
+| **Supabase** (`@supabase/` in dependencies) | `supabase` | `ctx7 skills install /anthropics/skills supabase` |
+| **Tailwind CSS** (`tailwindcss` in dependencies) | `tailwind` | `ctx7 skills install /anthropics/skills tailwind` |
+| **Docker** (`Dockerfile`, `docker-compose.yml`) | `docker` | `ctx7 skills install /anthropics/skills docker` |
+| **Kubernetes** (`k8s/` or `kubernetes/` directory) | `kubernetes` | `ctx7 skills install /anthropics/skills kubernetes` |
+| **AWS** (AWS SDK in dependencies, terraform with AWS) | `aws` | `ctx7 skills install /microsoft/agent-skills aws` |
+| **Azure** (Azure SDK in dependencies) | `azure` | `ctx7 skills install /microsoft/agent-skills azure` |
+| **Git** (always) | `git`, `commit` | `ctx7 skills install /anthropics/skills git commit` |
+| **PDF Processing** (`pdf` in dependencies) | `pdf` | `ctx7 skills install /anthropics/skills pdf` |
+| **Testing** (pytest, jest, testing frameworks) | `testing` | `ctx7 skills install /anthropics/skills testing` |
+| **Code Review** (always recommend) | `code-review` | `ctx7 skills install /anthropics/skills code-review` |
+
+#### Skill Sources
+
+Context7 skills are available from multiple sources:
+
+1. **Anthropic Skills** (`/anthropics/skills`): Core skills for common frameworks and tools
+2. **Microsoft Agent Skills** (`/microsoft/agent-skills`): Azure, AI SDK, and Microsoft technologies
+3. **Community Skills**: Additional skills from the community
+
+#### Output Format for Context7 Skills Recommendations
+
+When completing agent generation, provide a summary of recommended Context7 skills:
+
+```markdown
+## Recommended Context7 Skills
+
+Based on your repository analysis, install these Context7 skills for enhanced functionality:
+
+### Essential Skills
+```bash
+# Install core skills detected for your project
+ctx7 skills install /anthropics/skills <skill1> <skill2> <skill3>
+```
+
+### Optional Skills
+```bash
+# Additional skills that may be useful
+ctx7 skills install /anthropics/skills <optional-skill1> <optional-skill2>
+```
+
+### Getting Started with Context7
+
+1. **Install the CLI:**
+   ```bash
+   npm install -g ctx7
+   ```
+
+2. **Install recommended skills:**
+   ```bash
+   # Run the commands above based on your tech stack
+   ```
+
+3. **List installed skills:**
+   ```bash
+   ctx7 skills list
+   ```
+
+4. **Learn more:**
+   - Documentation: https://context7.com/docs/skills
+   - Skills Catalog: https://context7.com/?tab=skills
+```
+
+#### Integration with Agent Generation
+
+When generating agents for a repository:
+
+1. **Detect patterns** as described in Steps 1-5
+2. **Identify matching Context7 skills** using the detection rules table above
+3. **Group skills** into Essential (directly detected) and Optional (complementary)
+4. **Generate installation commands** with the appropriate skill source
+5. **Include skills recommendations** in the generation summary
+
+**Example Output:**
+
+For a Next.js + TypeScript + Prisma + Tailwind project:
+
+```bash
+# Essential skills for your tech stack
+ctx7 skills install /anthropics/skills react nextjs typescript prisma tailwind git commit code-review
+
+# Optional skills that may be useful
+ctx7 skills install /anthropics/skills testing docker
+```
+
 ### Step 7: Generate Customized Agents
 
 For each selected agent:
@@ -782,6 +908,7 @@ Generate agents in this order to handle dependencies:
 4. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
 5. **Update orchestrator** – Fill in `{{active_agents_table}}` with generated agents
 6. **Create docs/planning/** – Create the planning directory structure
+7. **Recommend Context7 skills** – Output a summary of recommended Context7 skills based on detected patterns
 
 ## Usage
 

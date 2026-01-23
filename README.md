@@ -22,6 +22,7 @@ Instead of manually writing agent files for each project, Copilot Agent Factory:
 - ⚡ **Outputs ready-to-use agents and skills** in the format for your preferred IDE
 - 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
 - 🤖 **Auto-activating skills** provide step-by-step guidance for common tasks
+- 🌐 **Recommends Context7 skills** from the catalog based on your tech stack
 
 **Result:** Your agents become domain experts and skills provide procedural automation for your specific project, not generic assistants.
 
@@ -87,8 +88,23 @@ The generator will:
 6. 🛠️ Customize templates with repo-specific values
 7. 🚀 Output ready-to-use agents in the appropriate format
 8. 🤖 Output auto-activating skills to `.claude/skills/`
+9. 🌐 Recommend Context7 skills from the catalog based on your tech stack
 
-### 3. Start Using Your Agents and Skills
+### 3. Install Context7 Skills (Optional)
+
+The generator will recommend Context7 skills based on your tech stack. Install them for enhanced functionality:
+
+```bash
+# Install the Context7 CLI
+npm install -g ctx7
+
+# Install recommended skills (example for a React + TypeScript project)
+ctx7 skills install /anthropics/skills react typescript git commit code-review
+```
+
+Learn more: [Context7 Skills Catalog](https://context7.com/?tab=skills)
+
+### 4. Start Using Your Agents and Skills
 
 **VS Code (GitHub Copilot):**
 
@@ -597,6 +613,100 @@ The generator also creates skills based on project needs. Skills auto-activate b
 | **ci-pipeline** | `.github/workflows/` or CI/CD configs exist | "CI pipeline", "GitHub Actions", "CI failing" |
 
 **Skills output location:** `.claude/skills/` (works across GitHub Copilot, Claude Code, and Cursor IDE)
+
+## Context7 Skills Integration
+
+In addition to generating custom agent templates and skills, the agent-generator **automatically recommends relevant Context7 skills** based on your repository's tech stack. Context7 provides a catalog of pre-built, production-ready skills maintained by Anthropic, Microsoft, and the community.
+
+### What are Context7 Skills?
+
+Context7 skills are reusable prompt templates that provide:
+- 📚 **Up-to-date documentation** for frameworks and libraries (React, Next.js, FastAPI, etc.)
+- 🔍 **Code review workflows** with best practices
+- 📝 **Commit message generation** following conventional commits
+- 🔧 **Framework-specific helpers** for common tasks
+- 🌐 **API integrations** and external services
+
+### How It Works
+
+When you run the agent-generator, it will:
+
+1. **Analyze your tech stack** (languages, frameworks, tools)
+2. **Detect relevant Context7 skills** based on detection patterns
+3. **Generate installation commands** customized for your project
+4. **Group skills** into Essential (directly detected) and Optional (complementary)
+
+### Installation
+
+```bash
+# 1. Install the Context7 CLI globally
+npm install -g ctx7
+
+# 2. Install recommended skills (generated based on your project)
+ctx7 skills install /anthropics/skills react typescript git commit code-review
+
+# 3. List installed skills
+ctx7 skills list
+
+# 4. Search for additional skills
+ctx7 skills search <keyword>
+```
+
+### Skill Detection Mapping
+
+| Your Tech Stack | Recommended Context7 Skills |
+|----------------|----------------------------|
+| **React** | `react`, `nextjs` (if Next.js) |
+| **Vue.js** | `vue` |
+| **Angular** | `angular` |
+| **TypeScript** | `typescript` |
+| **Python** | `python` |
+| **FastAPI** | `fastapi` |
+| **Django** | `django` |
+| **Flask** | `flask` |
+| **Express.js** | `express`, `nodejs` |
+| **Prisma** | `prisma` |
+| **MongoDB** | `mongodb` |
+| **PostgreSQL** | `postgres` |
+| **Supabase** | `supabase` |
+| **Tailwind CSS** | `tailwind` |
+| **Docker** | `docker` |
+| **Kubernetes** | `kubernetes` |
+| **AWS** | `aws` (from microsoft/agent-skills) |
+| **Azure** | `azure` (from microsoft/agent-skills) |
+| **Git** (always) | `git`, `commit` |
+| **Code Review** (always) | `code-review` |
+
+### Example Output
+
+For a **Next.js + TypeScript + Prisma + Tailwind** project:
+
+```bash
+## Recommended Context7 Skills
+
+Based on your repository analysis, install these Context7 skills:
+
+### Essential Skills
+# Core skills detected for your tech stack
+ctx7 skills install /anthropics/skills react nextjs typescript prisma tailwind git commit code-review
+
+### Optional Skills
+# Additional skills that may be useful
+ctx7 skills install /anthropics/skills docker testing
+```
+
+### Skill Sources
+
+- **`/anthropics/skills`**: Core skills for frameworks, languages, and tools
+- **`/microsoft/agent-skills`**: Azure, AI SDKs, and Microsoft technologies
+- **Community**: Additional community-contributed skills
+
+### Learn More
+
+- **Context7 Documentation**: https://context7.com/docs/skills
+- **Skills Catalog**: https://context7.com/?tab=skills
+- **Anthropic Skills Repository**: https://github.com/anthropics/skills
+- **Microsoft Agent Skills**: https://github.com/microsoft/agent-skills
 
 ## Template Placeholders
 
