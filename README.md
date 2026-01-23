@@ -1084,6 +1084,61 @@ You are an expert test engineer for this project.
 - 🚫 **Never:** Skip tests, commit failing tests
 ```
 
+### Context7 Skills Recommendations
+
+After generating agents, the agent-generator provides Context7 skills recommendations:
+
+```markdown
+## Recommended Context7 Skills
+
+Based on your repository analysis, install these Context7 skills for enhanced functionality:
+
+### Essential Skills
+```bash
+# Core skills detected for your tech stack
+ctx7 skills install /anthropics/skills python pytorch testing git commit code-review
+```
+
+**Detected:**
+- `python` - Python 3.10 detected in pyproject.toml
+- `pytorch` - PyTorch 2.0 in dependencies
+- `testing` - pytest configuration found
+- `git` - Git repository
+- `commit` - For conventional commit messages
+- `code-review` - Always recommended for quality
+
+### Optional Skills
+```bash
+# Additional skills that may be useful
+ctx7 skills install /anthropics/skills docker
+```
+
+**May be useful for:**
+- `docker` - Container deployment (Dockerfile detected)
+
+### Getting Started with Context7
+
+1. **Install the CLI:**
+   ```bash
+   npm install -g ctx7
+   ```
+
+2. **Install recommended skills:**
+   ```bash
+   # Run the commands above based on your tech stack
+   ctx7 skills install /anthropics/skills python pytorch testing git commit code-review
+   ```
+
+3. **Verify installation:**
+   ```bash
+   ctx7 skills list
+   ```
+
+4. **Learn more:**
+   - Documentation: https://context7.com/docs/skills
+   - Skills Catalog: https://context7.com/?tab=skills
+```
+
 ## Copilot Instructions Setup
 
 This repository uses GitHub Copilot's custom instructions feature to provide context-aware guidance. The setup includes:
@@ -1104,7 +1159,8 @@ To improve the templates or add new agents:
 2. Ensure templates work with multiple tech stacks
 3. Keep placeholders consistent across templates
 4. Update detection rules in agent-generator.md
-5. Follow the guidelines in [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)
+5. **Update Context7 skills detection mapping** if adding support for new frameworks
+6. Follow the guidelines in [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)
 
 ## References
 
@@ -1113,4 +1169,8 @@ To improve the templates or add new agents:
 - [Cursor IDE Documentation - Rules](https://cursor.com/docs/context/rules)
 - [Cursor IDE Documentation - Subagents](https://cursor.com/docs/context/subagents)
 - [Adding Repository Custom Instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)
+- [Context7 Skills Documentation](https://context7.com/docs/skills)
+- [Context7 Skills Catalog](https://context7.com/?tab=skills)
+- [Anthropic Skills Repository](https://github.com/anthropics/skills)
+- [Microsoft Agent Skills Repository](https://github.com/microsoft/agent-skills)
 - [Best Practices for Copilot Coding Agent](https://docs.github.com/en/copilot/tutorials/coding-agent/get-the-best-results)
