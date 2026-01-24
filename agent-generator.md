@@ -573,7 +573,36 @@ docs/planning/
 
 #### Context7 Skills Installation
 
-Context7 skills are installed using the `ctx7` CLI tool:
+There are two approaches to obtain Context7 skills:
+
+**Approach 1: Direct Download (Recommended - No Dependencies)**
+
+Download skill files directly from GitHub repositories without installing the Context7 CLI:
+
+```bash
+# Download skills directly from GitHub
+# Anthropic Skills: https://github.com/anthropics/skills
+# Microsoft Agent Skills: https://github.com/microsoft/agent-skills
+
+# Example: Download a specific skill to .claude/skills/
+mkdir -p .claude/skills/pdf
+curl -o .claude/skills/pdf/SKILL.md https://raw.githubusercontent.com/anthropics/skills/main/skills/pdf/SKILL.md
+
+# Download multiple skill files
+curl -o .claude/skills/commit/SKILL.md https://raw.githubusercontent.com/anthropics/skills/main/skills/commit/SKILL.md
+curl -o .claude/skills/code-review/SKILL.md https://raw.githubusercontent.com/anthropics/skills/main/skills/code-review/SKILL.md
+```
+
+**Benefits:**
+- ✅ No npm dependency required
+- ✅ Works offline after initial download
+- ✅ Direct control over skill files
+- ✅ Easy to version control
+- ✅ No CLI installation needed
+
+**Approach 2: Context7 CLI (Optional)**
+
+Use the Context7 CLI tool for managed installation:
 
 ```bash
 # Install the CLI globally
@@ -592,32 +621,38 @@ ctx7 skills install /anthropics/skills <skill1> <skill2> <skill3>
 ctx7 skills list
 ```
 
+**For most users, Approach 1 (Direct Download) is recommended** as it avoids the npm dependency and gives you direct control over the skill files.
+
 #### Skill Detection Rules
 
 Recommend Context7 skills based on detected technologies and patterns:
 
-| Detection Pattern | Recommended Context7 Skills | Installation Command |
-|-------------------|----------------------------|----------------------|
-| **React** (`react` in dependencies, `.jsx/.tsx` files) | `react`, `nextjs` (if Next.js detected) | `ctx7 skills install /anthropics/skills react` |
-| **Vue.js** (`vue` in dependencies) | `vue` | `ctx7 skills install /anthropics/skills vue` |
-| **Angular** (`@angular/core` in dependencies) | `angular` | `ctx7 skills install /anthropics/skills angular` |
-| **Node.js/Express** (`express` in dependencies) | `express`, `nodejs` | `ctx7 skills install /anthropics/skills express nodejs` |
-| **Python** (`.py` files, `requirements.txt`) | `python` | `ctx7 skills install /anthropics/skills python` |
-| **FastAPI** (`fastapi` in dependencies) | `fastapi` | `ctx7 skills install /anthropics/skills fastapi` |
-| **Django** (`django` in dependencies) | `django` | `ctx7 skills install /anthropics/skills django` |
-| **Flask** (`flask` in dependencies) | `flask` | `ctx7 skills install /anthropics/skills flask` |
-| **TypeScript** (`tsconfig.json`, `.ts` files) | `typescript` | `ctx7 skills install /anthropics/skills typescript` |
-| **Database** (Prisma, MongoDB, PostgreSQL, MySQL) | `prisma`, `mongodb`, `postgres`, `mysql` | `ctx7 skills install /anthropics/skills prisma` |
-| **Supabase** (`@supabase/` in dependencies) | `supabase` | `ctx7 skills install /anthropics/skills supabase` |
-| **Tailwind CSS** (`tailwindcss` in dependencies) | `tailwind` | `ctx7 skills install /anthropics/skills tailwind` |
-| **Docker** (`Dockerfile`, `docker-compose.yml`) | `docker` | `ctx7 skills install /anthropics/skills docker` |
-| **Kubernetes** (`k8s/` or `kubernetes/` directory) | `kubernetes` | `ctx7 skills install /anthropics/skills kubernetes` |
-| **AWS** (AWS SDK in dependencies, terraform with AWS) | `aws` | `ctx7 skills install /microsoft/agent-skills aws` |
-| **Azure** (Azure SDK in dependencies) | `azure` | `ctx7 skills install /microsoft/agent-skills azure` |
-| **Git** (always) | `git`, `commit` | `ctx7 skills install /anthropics/skills git commit` |
-| **PDF Processing** (`pdf` in dependencies) | `pdf` | `ctx7 skills install /anthropics/skills pdf` |
-| **Testing** (pytest, jest, testing frameworks) | `testing` | `ctx7 skills install /anthropics/skills testing` |
-| **Code Review** (always recommend) | `code-review` | `ctx7 skills install /anthropics/skills code-review` |
+| Detection Pattern | Recommended Skills | GitHub Repository |
+|-------------------|-------------------|-------------------|
+| **React** (`react` in dependencies, `.jsx/.tsx` files) | `react`, `nextjs` (if Next.js) | `anthropics/skills` |
+| **Vue.js** (`vue` in dependencies) | `vue` | `anthropics/skills` |
+| **Angular** (`@angular/core` in dependencies) | `angular` | `anthropics/skills` |
+| **Node.js/Express** (`express` in dependencies) | `express`, `nodejs` | `anthropics/skills` |
+| **Python** (`.py` files, `requirements.txt`) | `python` | `anthropics/skills` |
+| **FastAPI** (`fastapi` in dependencies) | `fastapi` | `anthropics/skills` |
+| **Django** (`django` in dependencies) | `django` | `anthropics/skills` |
+| **Flask** (`flask` in dependencies) | `flask` | `anthropics/skills` |
+| **TypeScript** (`tsconfig.json`, `.ts` files) | `typescript` | `anthropics/skills` |
+| **Database** (Prisma, MongoDB, PostgreSQL, MySQL) | `prisma`, `mongodb`, `postgres`, `mysql` | `anthropics/skills` |
+| **Supabase** (`@supabase/` in dependencies) | `supabase` | `anthropics/skills` |
+| **Tailwind CSS** (`tailwindcss` in dependencies) | `tailwind` | `anthropics/skills` |
+| **Docker** (`Dockerfile`, `docker-compose.yml`) | `docker` | `anthropics/skills` |
+| **Kubernetes** (`k8s/` or `kubernetes/` directory) | `kubernetes` | `anthropics/skills` |
+| **AWS** (AWS SDK in dependencies, terraform with AWS) | `aws` | `microsoft/agent-skills` |
+| **Azure** (Azure SDK in dependencies) | `azure` | `microsoft/agent-skills` |
+| **Git** (always) | `git`, `commit` | `anthropics/skills` |
+| **PDF Processing** (`pdf` in dependencies) | `pdf` | `anthropics/skills` |
+| **Testing** (pytest, jest, testing frameworks) | `testing` | `anthropics/skills` |
+| **Code Review** (always recommend) | `code-review` | `anthropics/skills` |
+
+**Skill Download URLs:**
+- Anthropic Skills: `https://raw.githubusercontent.com/anthropics/skills/main/skills/{skill-name}/SKILL.md`
+- Microsoft Agent Skills: `https://raw.githubusercontent.com/microsoft/agent-skills/main/skills/{skill-name}/SKILL.md`
 
 #### Skill Sources
 
@@ -695,21 +730,192 @@ ctx7 skills install /anthropics/skills testing docker
 
 #### Generate Installation Script
 
-**IMPORTANT**: Create a `scripts/install-context7-skills.sh` file in the repository that other developers can use to install the same Context7 skills.
+**IMPORTANT**: Create a `scripts/install-context7-skills.sh` file in the repository that other developers can use to download the same Context7 skills.
 
-**Script Template:**
+**Script Template (Direct Download - Recommended):**
 
 ```bash
 #!/bin/bash
 # Context7 Skills Installation Script
 # Auto-generated by Copilot Agent Factory
 # 
-# This script installs Context7 skills detected for this project.
+# This script downloads Context7 skills detected for this project directly from GitHub.
 # Other developers can run this script to get the same skills setup.
 
 set -e  # Exit on error
 
-echo "🔧 Installing Context7 CLI..."
+SKILLS_DIR=".claude/skills"
+
+echo "📦 Setting up Context7 Skills..."
+echo ""
+
+# Create skills directory
+mkdir -p "$SKILLS_DIR"
+
+echo "📥 Downloading Essential Skills..."
+echo "These skills were detected based on your project's tech stack:"
+echo ""
+
+# Essential skills - detected from project analysis
+# Download each skill's SKILL.md file from GitHub
+<essential-skills-downloads>
+
+echo ""
+echo "✅ Essential skills downloaded successfully!"
+echo ""
+echo "📦 Optional Skills (commented out by default):"
+echo "Uncomment the lines below to download optional skills:"
+echo ""
+
+# Optional skills - may be useful for this project
+<optional-skills-downloads>
+
+echo ""
+echo "✨ Done! Skills are available in $SKILLS_DIR/"
+echo ""
+echo "📚 Skill Sources:"
+echo "  - Anthropic Skills: https://github.com/anthropics/skills"
+echo "  - Microsoft Agent Skills: https://github.com/microsoft/agent-skills"
+```
+
+**Example with actual skills (Next.js + TypeScript + Prisma):**
+
+```bash
+#!/bin/bash
+# Context7 Skills Installation Script
+# Auto-generated by Copilot Agent Factory
+
+set -e
+
+SKILLS_DIR=".claude/skills"
+ANTHROPIC_BASE="https://raw.githubusercontent.com/anthropics/skills/main/skills"
+
+echo "📦 Setting up Context7 Skills..."
+mkdir -p "$SKILLS_DIR"
+
+echo "📥 Downloading Essential Skills..."
+
+# React
+mkdir -p "$SKILLS_DIR/react"
+curl -fsSL "$ANTHROPIC_BASE/react/SKILL.md" -o "$SKILLS_DIR/react/SKILL.md"
+echo "  ✓ react"
+
+# TypeScript
+mkdir -p "$SKILLS_DIR/typescript"
+curl -fsSL "$ANTHROPIC_BASE/typescript/SKILL.md" -o "$SKILLS_DIR/typescript/SKILL.md"
+echo "  ✓ typescript"
+
+# Prisma
+mkdir -p "$SKILLS_DIR/prisma"
+curl -fsSL "$ANTHROPIC_BASE/prisma/SKILL.md" -o "$SKILLS_DIR/prisma/SKILL.md"
+echo "  ✓ prisma"
+
+# Git (always recommended)
+mkdir -p "$SKILLS_DIR/git"
+curl -fsSL "$ANTHROPIC_BASE/git/SKILL.md" -o "$SKILLS_DIR/git/SKILL.md"
+echo "  ✓ git"
+
+# Commit messages (always recommended)
+mkdir -p "$SKILLS_DIR/commit"
+curl -fsSL "$ANTHROPIC_BASE/commit/SKILL.md" -o "$SKILLS_DIR/commit/SKILL.md"
+echo "  ✓ commit"
+
+# Code review (always recommended)
+mkdir -p "$SKILLS_DIR/code-review"
+curl -fsSL "$ANTHROPIC_BASE/code-review/SKILL.md" -o "$SKILLS_DIR/code-review/SKILL.md"
+echo "  ✓ code-review"
+
+echo ""
+echo "✅ Essential skills downloaded successfully!"
+
+# Optional skills (commented out)
+# mkdir -p "$SKILLS_DIR/docker"
+# curl -fsSL "$ANTHROPIC_BASE/docker/SKILL.md" -o "$SKILLS_DIR/docker/SKILL.md"
+
+echo ""
+echo "✨ Done! Skills are available in $SKILLS_DIR/"
+```
+
+**Windows PowerShell Script Template (scripts/install-context7-skills.ps1):**
+
+```powershell
+# Context7 Skills Installation Script (PowerShell)
+# Auto-generated by Copilot Agent Factory
+# 
+# This script downloads Context7 skills detected for this project directly from GitHub.
+
+$ErrorActionPreference = "Stop"
+
+$SkillsDir = ".claude/skills"
+$AnthropicBase = "https://raw.githubusercontent.com/anthropics/skills/main/skills"
+
+Write-Host "📦 Setting up Context7 Skills..." -ForegroundColor Cyan
+Write-Host ""
+
+# Create skills directory
+New-Item -ItemType Directory -Force -Path $SkillsDir | Out-Null
+
+Write-Host "📥 Downloading Essential Skills..." -ForegroundColor Cyan
+Write-Host ""
+
+# Essential skills - detected from project analysis
+<essential-skills-downloads-ps>
+
+Write-Host ""
+Write-Host "✅ Essential skills downloaded successfully!" -ForegroundColor Green
+Write-Host ""
+
+# Optional skills (commented out by default)
+<optional-skills-downloads-ps>
+
+Write-Host ""
+Write-Host "✨ Done! Skills are available in $SkillsDir/" -ForegroundColor Green
+```
+
+**Example PowerShell with actual skills:**
+
+```powershell
+$ErrorActionPreference = "Stop"
+
+$SkillsDir = ".claude/skills"
+$AnthropicBase = "https://raw.githubusercontent.com/anthropics/skills/main/skills"
+
+Write-Host "📦 Setting up Context7 Skills..." -ForegroundColor Cyan
+New-Item -ItemType Directory -Force -Path $SkillsDir | Out-Null
+
+Write-Host "📥 Downloading Essential Skills..." -ForegroundColor Cyan
+
+# React
+New-Item -ItemType Directory -Force -Path "$SkillsDir/react" | Out-Null
+Invoke-WebRequest -Uri "$AnthropicBase/react/SKILL.md" -OutFile "$SkillsDir/react/SKILL.md"
+Write-Host "  ✓ react" -ForegroundColor Green
+
+# TypeScript
+New-Item -ItemType Directory -Force -Path "$SkillsDir/typescript" | Out-Null
+Invoke-WebRequest -Uri "$AnthropicBase/typescript/SKILL.md" -OutFile "$SkillsDir/typescript/SKILL.md"
+Write-Host "  ✓ typescript" -ForegroundColor Green
+
+# Git (always recommended)
+New-Item -ItemType Directory -Force -Path "$SkillsDir/git" | Out-Null
+Invoke-WebRequest -Uri "$AnthropicBase/git/SKILL.md" -OutFile "$SkillsDir/git/SKILL.md"
+Write-Host "  ✓ git" -ForegroundColor Green
+
+Write-Host ""
+Write-Host "✅ Essential skills downloaded successfully!" -ForegroundColor Green
+```
+
+**Alternative: CLI-Based Script (if Context7 CLI is preferred):**
+
+If users prefer using the Context7 CLI, also provide a CLI-based script as `scripts/install-context7-skills-cli.sh`:
+
+```bash
+#!/bin/bash
+# Context7 Skills Installation Script (CLI-based)
+# Requires: npm install -g ctx7
+
+set -e
+
+echo "🔧 Checking Context7 CLI..."
 if ! command -v ctx7 &> /dev/null; then
     echo "Installing ctx7 globally..."
     npm install -g ctx7
@@ -719,102 +925,51 @@ fi
 
 echo ""
 echo "📦 Installing Essential Context7 Skills..."
-echo "These skills were detected based on your project's tech stack:"
-echo ""
-
-# Essential skills - detected from project analysis
 ctx7 skills install /anthropics/skills <essential-skills-list>
 
 echo ""
 echo "✅ Essential skills installed successfully!"
-echo ""
-echo "📦 Optional Context7 Skills (commented out by default):"
-echo "Uncomment the following line to install optional skills:"
-echo ""
 
-# Optional skills - may be useful for this project
-# Uncomment the next line to install optional skills
+# Optional skills (commented out)
 # ctx7 skills install /anthropics/skills <optional-skills-list>
-
-echo ""
-echo "✨ Done! Run 'ctx7 skills list' to see installed skills."
-echo ""
-echo "📚 Learn more:"
-echo "  - Documentation: https://context7.com/docs/skills"
-echo "  - Skills Catalog: https://context7.com/?tab=skills"
-```
-
-**Windows PowerShell Script Template (scripts/install-context7-skills.ps1):**
-
-```powershell
-# Context7 Skills Installation Script (PowerShell)
-# Auto-generated by Copilot Agent Factory
-# 
-# This script installs Context7 skills detected for this project.
-# Other developers can run this script to get the same skills setup.
-
-$ErrorActionPreference = "Stop"
-
-Write-Host "🔧 Installing Context7 CLI..." -ForegroundColor Cyan
-if (!(Get-Command ctx7 -ErrorAction SilentlyContinue)) {
-    Write-Host "Installing ctx7 globally..." -ForegroundColor Yellow
-    npm install -g ctx7
-} else {
-    Write-Host "ctx7 is already installed" -ForegroundColor Green
-}
-
-Write-Host ""
-Write-Host "📦 Installing Essential Context7 Skills..." -ForegroundColor Cyan
-Write-Host "These skills were detected based on your project's tech stack:" -ForegroundColor White
-Write-Host ""
-
-# Essential skills - detected from project analysis
-ctx7 skills install /anthropics/skills <essential-skills-list>
-
-Write-Host ""
-Write-Host "✅ Essential skills installed successfully!" -ForegroundColor Green
-Write-Host ""
-Write-Host "📦 Optional Context7 Skills (commented out by default):" -ForegroundColor Cyan
-Write-Host "Uncomment the following line to install optional skills:" -ForegroundColor White
-Write-Host ""
-
-# Optional skills - may be useful for this project
-# Uncomment the next line to install optional skills
-# ctx7 skills install /anthropics/skills <optional-skills-list>
-
-Write-Host ""
-Write-Host "✨ Done! Run 'ctx7 skills list' to see installed skills." -ForegroundColor Green
-Write-Host ""
-Write-Host "📚 Learn more:" -ForegroundColor Cyan
-Write-Host "  - Documentation: https://context7.com/docs/skills"
-Write-Host "  - Skills Catalog: https://context7.com/?tab=skills"
 ```
 
 **Script Generation Steps:**
 
 1. Create `scripts/` directory if it doesn't exist
-2. Generate both `install-context7-skills.sh` (Unix/Linux/macOS) and `install-context7-skills.ps1` (Windows)
-3. Replace `<essential-skills-list>` with detected essential skills (space-separated)
-4. Replace `<optional-skills-list>` with detected optional skills (space-separated)
-5. Make the `.sh` script executable: `chmod +x scripts/install-context7-skills.sh`
-6. Commit both scripts to the repository
+2. Generate `install-context7-skills.sh` (Unix/Linux/macOS) using **direct download approach**
+3. Generate `install-context7-skills.ps1` (Windows) using **direct download approach**
+4. For each detected essential skill:
+   - Add curl/Invoke-WebRequest command to download `SKILL.md` from GitHub
+   - Use URL pattern: `https://raw.githubusercontent.com/{repo}/main/skills/{skill}/SKILL.md`
+   - Create directory and download to `.claude/skills/{skill}/SKILL.md`
+5. For each detected optional skill:
+   - Add commented-out download commands
+6. **Optional**: Also generate CLI-based scripts (`install-context7-skills-cli.sh` and `-cli.ps1`) for users who prefer the Context7 CLI
+7. Make the `.sh` scripts executable: `chmod +x scripts/*.sh`
+8. Commit scripts to the repository
 
 **Benefits:**
 
+- ✅ **No Dependencies**: No npm or Context7 CLI required
 - ✅ **Team Consistency**: All developers use the same Context7 skills
 - ✅ **Easy Onboarding**: New team members can run one script to get set up
 - ✅ **Version Control**: Skills configuration is tracked in git
+- ✅ **Offline-Friendly**: Skills work without CLI after initial download
 - ✅ **CI/CD Ready**: Scripts can be used in CI/CD pipelines
 - ✅ **Cross-Platform**: Both Unix and Windows scripts provided
 
 **Usage for Developers:**
 
 ```bash
-# Unix/Linux/macOS
+# Direct Download (Recommended - No dependencies)
 ./scripts/install-context7-skills.sh
 
 # Windows PowerShell
 .\scripts\install-context7-skills.ps1
+
+# Alternative: CLI-based (if Context7 CLI is installed)
+./scripts/install-context7-skills-cli.sh
 ```
 
 ### Step 7: Generate Customized Agents
