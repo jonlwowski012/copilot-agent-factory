@@ -197,6 +197,33 @@ Use **claude-4-5-sonnet** (fast, capable) for other agents:
 | `robotics-ros-agent.md` | ROS 1 and ROS 2 development, nodes, topics, services, launch files |
 | `robotics-jetson-agent.md` | NVIDIA Jetson edge AI, CUDA, TensorRT, JetPack SDK optimization |
 
+## Available Skills
+
+Skills are cross-platform procedural workflows that auto-activate based on keywords. Unlike agents, skills:
+- Use the **same format** for all platforms (VS Code, Claude Code, Cursor IDE)
+- Are **always output to `.claude/skills/`** regardless of platform
+- Auto-activate based on natural language keywords in user prompts
+- Provide step-by-step procedural guidance
+
+### Testing & Quality Skills
+| Skill | Auto-Activates On | When to Include |
+|-------|------------------|-----------------|
+| `pytest-setup` | "set up pytest", "configure pytest", "install pytest" | Python project with testing needs |
+| `run-tests` | "run tests", "execute tests", "test command" | Any project with tests |
+| `debug-test-failures` | "debug test", "test failing", "fix failing test" | Any project with tests |
+
+### Development Workflows Skills
+| Skill | Auto-Activates On | When to Include |
+|-------|------------------|-----------------|
+| `local-dev-setup` | "dev setup", "local environment", "install dependencies" | All projects |
+| `code-formatting` | "format code", "fix formatting", "run formatter" | Projects with linter/formatter |
+| `git-workflow` | "git workflow", "commit message", "branch strategy" | All projects |
+
+### DevOps & Deployment Skills
+| Skill | Auto-Activates On | When to Include |
+|-------|------------------|-----------------|
+| `ci-pipeline` | "CI pipeline", "GitHub Actions", "CI failing" | Projects with `.github/workflows/` or CI/CD configs |
+
 ## Analysis Process
 
 ### Step 1: Scan Repository Structure
@@ -774,43 +801,112 @@ You are an expert [role] for this project.
 
 ## Generation Order
 
-Generate agents in this order to handle dependencies:
+Generate agents and skills in this order to handle dependencies:
 
 1. **Planning agents** – prd-agent, epic-agent, story-agent, architecture-agent, design-agent, test-design-agent
 2. **orchestrator.md** – Central coordinator that references all other agents
 3. **Core agents** – docs, test, lint, review, security, devops, debug, refactor, performance
 4. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
-5. **Update orchestrator** – Fill in `{{active_agents_table}}` with generated agents
-6. **Create docs/planning/** – Create the planning directory structure
+5. **Skills** – Copy all relevant skills from `skill-templates/` to `.claude/skills/`
+6. **Update orchestrator** – Fill in `{{active_agents_table}}` with generated agents
+7. **Create docs/planning/** – Create the planning directory structure
+
+### Skills Output Instructions
+
+**CRITICAL: Skills must ALWAYS be output to `.claude/skills/` regardless of the platform.**
+
+When generating skills:
+
+1. **Create the skills directory:**
+   ```bash
+   mkdir -p .claude/skills
+   ```
+
+2. **Copy relevant skills from skill-templates:**
+   - Copy the entire directory structure from `skill-templates/` to `.claude/skills/`
+   - Include subdirectories (e.g., `1-testing-quality/`, `2-development-workflows/`)
+   - Copy all `SKILL.md` files and any supporting files (e.g., `README.md`, scripts)
+
+3. **Skills to always include:**
+   - `run-tests` – Universal, works for any project with tests
+   - `debug-test-failures` – Universal, works for any project with tests
+   - `local-dev-setup` – Universal, helps with onboarding
+   - `code-formatting` – Include if linter/formatter detected
+   - `git-workflow` – Universal, helps with git conventions
+
+4. **Conditional skills:**
+   - `pytest-setup` – Only if Python project detected
+   - `ci-pipeline` – Only if `.github/workflows/` or CI/CD configs exist
+
+5. **Customize skill placeholders (if needed):**
+   - Skills use the same placeholders as agents (e.g., `{{test_command}}`, `{{lint_command}}`)
+   - Replace placeholders with detected values if the skill template contains them
+   - Most skills are generic and don't require customization
+
+### Skills Directory Structure
+
+Output skills to `.claude/skills/` with this structure:
+
+```
+.claude/
+└── skills/
+    ├── 1-testing-quality/
+    │   ├── pytest-setup/
+    │   │   ├── SKILL.md
+    │   │   └── README.md
+    │   ├── run-tests/
+    │   │   └── SKILL.md
+    │   └── debug-test-failures/
+    │       └── SKILL.md
+    ├── 2-development-workflows/
+    │   ├── local-dev-setup/
+    │   │   └── SKILL.md
+    │   ├── code-formatting/
+    │   │   └── SKILL.md
+    │   └── git-workflow/
+    │       └── SKILL.md
+    └── 3-devops-deployment/
+        └── ci-pipeline/
+            └── SKILL.md
+```
+
+**Key points:**
+- Skills location is **cross-platform** – same location for VS Code, Claude Code, and Cursor IDE
+- Skills use `.claude/skills/` format which works natively across all platforms
+- Do NOT generate different skill files for different platforms
+- Do NOT change skill file locations based on `--platform` parameter
 
 ## Usage
 
-To generate agents for a repository:
+To generate agents and skills for a repository:
 
-1. Copy this file and the `agent-templates/` folder to the target repo
+1. Copy this file, the `agent-templates/` folder, and the `skill-templates/` folder to the target repo
 2. Invoke this agent with the required parameters (platform and output)
 3. Review generated agents and customize as needed
-4. Optionally delete `agent-templates/` folder after generation
+4. Verify skills are in `.claude/skills/` directory
+5. Optionally delete `agent-templates/` and `skill-templates/` folders after generation
 
 ### Example Invocations
 
 **Generate for VS Code:**
 ```
 @agent-generator --platform vscode --output .github/agents/
-Analyze this repository and generate agents
+Analyze this repository and generate agents and skills
 ```
 
 **Generate for Claude Code:**
 ```
 @agent-generator --platform claude-code --output .claude/agents/
-Analyze this repository and generate agents
+Analyze this repository and generate agents and skills
 ```
 
 **Generate for Both Platforms:**
 ```
 @agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
-Analyze this repository and generate agents
+Analyze this repository and generate agents and skills
 ```
+
+**Note:** Skills are always output to `.claude/skills/` regardless of the platform parameter.
 
 ## IMPORTANT: Batch Generation Strategy
 
@@ -824,7 +920,8 @@ Analyze this repository and generate agents
 Analyze this repository and:
 1. Detect tech stack, commands, and patterns
 2. Create the planning directory structure (docs/planning/)
-3. List which agents should be generated (but don't generate them yet)
+3. Copy skills to .claude/skills/
+4. List which agents should be generated (but don't generate them yet)
 ```
 
 **Phase 2: Planning Agents**
@@ -859,7 +956,8 @@ For Claude Code, follow the same phased approach:
 @agent-generator --platform claude-code --output .claude/agents/
 Analyze this repository and:
 1. Detect tech stack, commands, and patterns
-2. List which agents should be generated (but don't generate them yet)
+2. Copy skills to .claude/skills/
+3. List which agents should be generated (but don't generate them yet)
 
 @agent-generator --platform claude-code --output .claude/agents/
 Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent
@@ -872,7 +970,7 @@ Generate core agents: test-agent, docs-agent, lint-agent, review-agent
 
 | Batch | Max Items | Why |
 |-------|-----------|-----|
-| Analysis + Setup | N/A | Creates config files, no agents |
+| Analysis + Setup | N/A | Creates config files, copies skills, no agents |
 | Planning Agents | 7 agents | Related, similar size |
 | Core Agents | 6 agents | Most commonly needed |
 | Quality/DevOps | 3 agents | Less frequently changed |
@@ -880,13 +978,15 @@ Generate core agents: test-agent, docs-agent, lint-agent, review-agent
 
 **Never try to generate more than 7 agents in a single request.**
 
+**Skills are copied during the Analysis & Setup phase and don't count toward agent limits.**
+
 ## Example Invocations
 
 ### VS Code Examples
 
 ```
 @agent-generator --platform vscode --output .github/agents/
-Analyze this repository and report recommended agents
+Analyze this repository, copy skills, and report recommended agents
 
 @agent-generator --platform vscode --output .github/agents/
 Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent
@@ -899,7 +999,7 @@ Generate core agents: test-agent, docs-agent, lint-agent, review-agent
 
 ```
 @agent-generator --platform claude-code --output .claude/agents/
-Analyze this repository and report recommended agents
+Analyze this repository, copy skills, and report recommended agents
 
 @agent-generator --platform claude-code --output .claude/agents/
 Generate planning agents: orchestrator, prd-agent, epic-agent, story-agent
@@ -912,17 +1012,17 @@ Generate core agents: test-agent, docs-agent, lint-agent, review-agent
 
 ```
 @agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
-Analyze this repository and generate agents for both VS Code and Claude Code
+Analyze this repository, copy skills, and generate agents for both VS Code and Claude Code
 ```
 
 ### Single Agent Generation
 
 ```
 @agent-generator --platform vscode --output .github/agents/
-Generate only api-agent for this FastAPI project
+Generate only api-agent for this FastAPI project (skills already copied)
 
 @agent-generator --platform claude-code --output .claude/agents/
-Generate only test-agent using pytest conventions
+Generate only test-agent using pytest conventions (skills already copied)
 ```
 
 ## Example: Coding Standards Detection
