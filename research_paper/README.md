@@ -8,10 +8,12 @@ This directory contains the research paper submission for **ICLR 2026 "Agents in
 ## Files
 
 - `iclr2026_copilot_agent_factory.tex` - Main paper LaTeX source
+- `iclr2026_conference.sty` - ICLR 2026 conference style file
 - `references.bib` - Bibliography in BibTeX format
 - `math_commands.tex` - Mathematical notation commands
 - `Makefile` - Build automation
 - `README.md` - This file
+- `.gitignore` - Excludes LaTeX auxiliary files
 
 ## Building the Paper
 
