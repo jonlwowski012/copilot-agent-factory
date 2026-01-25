@@ -1,0 +1,28 @@
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+
+# Build directory
+build/
+
+# Editor files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Keep the PDF for convenience
+# Uncomment the line below if you don't want to track the PDF
+# *.pdf
