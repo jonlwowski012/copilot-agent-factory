@@ -15,14 +15,28 @@ This directory contains the research paper submission for **ICLR 2026 "Agents in
 
 ## Building the Paper
 
-### Prerequisites
+### Automatic Build (CI/CD)
+
+The PDF is automatically built by GitHub Actions on every push to the repository. You can:
+
+1. **Download the PDF**: Go to the Actions tab → Select the latest "Build Research Paper" workflow run → Download the "research-paper-pdf" artifact
+2. **Trigger manual build**: Go to Actions tab → "Build Research Paper" workflow → "Run workflow" button
+
+The workflow runs automatically when:
+- Changes are pushed to `research_paper/` directory
+- Pull requests are opened that modify the paper
+- A new tag is created (PDF is attached to the release)
+
+### Local Build
+
+#### Prerequisites
 
 You need a LaTeX distribution installed:
 - **Linux**: `sudo apt-get install texlive-full`
 - **macOS**: Install MacTeX from https://www.tug.org/mactex/
 - **Windows**: Install MiKTeX from https://miktex.org/
 
-### Compilation
+#### Compilation
 
 #### Using Make (recommended)
 ```bash

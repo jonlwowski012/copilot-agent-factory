@@ -1,0 +1,61 @@
+name: Build Research Paper
+
+on:
+  push:
+    branches:
+      - main
+      - 'copilot/**'
+    paths:
+      - 'research_paper/**'
+      - '.github/workflows/build-paper.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'research_paper/**'
+      - '.github/workflows/build-paper.yml'
+  workflow_dispatch:
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install LaTeX dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-bibtex-extra biber
+      
+      - name: Build PDF
+        working-directory: research_paper
+        run: |
+          echo "Building research paper PDF..."
+          make
+      
+      - name: Check PDF was created
+        run: |
+          if [ -f research_paper/iclr2026_copilot_agent_factory.pdf ]; then
+            echo "✓ PDF successfully created"
+            ls -lh research_paper/iclr2026_copilot_agent_factory.pdf
+          else
+            echo "✗ PDF was not created"
+            exit 1
+          fi
+      
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-paper-pdf
+          path: research_paper/iclr2026_copilot_agent_factory.pdf
+          retention-days: 90
+      
+      - name: Upload to release (if tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: research_paper/iclr2026_copilot_agent_factory.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
