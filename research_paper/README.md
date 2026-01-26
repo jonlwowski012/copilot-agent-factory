@@ -19,14 +19,15 @@ This directory contains the research paper submission for **ICLR 2026 "Agents in
 
 ### Automatic Build (CI/CD)
 
-The PDF is automatically built by GitHub Actions on every push to the repository. You can:
+The PDF is automatically built by GitHub Actions on every push to the repository:
 
-1. **Download the PDF**: Go to the Actions tab → Select the latest "Build Research Paper" workflow run → Download the "research-paper-pdf" artifact
-2. **Trigger manual build**: Go to Actions tab → "Build Research Paper" workflow → "Run workflow" button
+1. **View the PDF in the repository**: The PDF is automatically committed to `research_paper/iclr2026_copilot_agent_factory.pdf` after each successful build
+2. **Download from Actions**: Go to the Actions tab → Select the latest "Build Research Paper" workflow run → Download the "research-paper-pdf" artifact
+3. **Trigger manual build**: Go to Actions tab → "Build Research Paper" workflow → "Run workflow" button
 
 The workflow runs automatically when:
-- Changes are pushed to `research_paper/` directory
-- Pull requests are opened that modify the paper
+- Changes are pushed to `research_paper/` directory (PDF is committed back to the repo)
+- Pull requests are opened that modify the paper (PDF available as artifact only)
 - A new tag is created (PDF is attached to the release)
 
 ### Local Build

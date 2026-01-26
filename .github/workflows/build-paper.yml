@@ -53,6 +53,19 @@ jobs:
             exit 1
           fi
       
+      - name: Commit PDF to repository
+        if: github.event_name == 'push'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add research_paper/iclr2026_copilot_agent_factory.pdf
+          if git diff --staged --quiet; then
+            echo "No changes to PDF, skipping commit"
+          else
+            git commit -m "Update research paper PDF [skip ci]"
+            git push
+          fi
+      
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
