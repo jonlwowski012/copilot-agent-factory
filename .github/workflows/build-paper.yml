@@ -33,7 +33,15 @@ jobs:
         working-directory: research_paper
         run: |
           echo "Building research paper PDF..."
-          make
+          echo "Current directory: $(pwd)"
+          echo "Files in directory:"
+          ls -la
+          echo ""
+          echo "Starting LaTeX compilation..."
+          make 2>&1 | tee build.log
+          echo ""
+          echo "Build completed. Checking for PDF..."
+        continue-on-error: false
       
       - name: Check PDF was created
         run: |
@@ -51,6 +59,16 @@ jobs:
           name: research-paper-pdf
           path: research_paper/iclr2026_copilot_agent_factory.pdf
           retention-days: 90
+      
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            research_paper/*.log
+            research_paper/build.log
+          retention-days: 30
       
       - name: Upload to release (if tag)
         if: startsWith(github.ref, 'refs/tags/')
