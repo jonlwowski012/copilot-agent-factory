@@ -157,7 +157,7 @@ Cargo.toml -> Rust project
 \textbf{Dependency analysis} extracts libraries and frameworks from package manifests (package.json, requirements.txt, pom.xml, etc.), enabling framework-specific agent selection.
 
 \textbf{Configuration parsing} extracts commands from project configurations:
-\begin{lstlisting}[language=json]
+\begin{lstlisting}
 {
   "scripts": {
     "test": "jest --coverage",
@@ -185,7 +185,7 @@ Our template system consists of two complementary types:
 
 Agents are \textit{role-based experts} that provide domain-specific guidance. Each agent template follows a standardized structure:
 
-\begin{lstlisting}[language=yaml]
+\begin{lstlisting}
 ---
 name: test-agent
 model: claude-4-5-sonnet
@@ -226,7 +226,7 @@ We provide 41 specialized agent templates across 12 categories (detailed in Sect
 
 Skills are \textit{procedural workflows} that auto-activate based on user queries. Unlike agents, skills provide step-by-step instructions with fallback logic:
 
-\begin{lstlisting}[language=yaml]
+\begin{lstlisting}
 ---
 name: run-tests-with-coverage
 description: Run project tests with coverage
@@ -759,7 +759,7 @@ We thank the open-source community for inspiration and the developers who tested
 
 \subsection{Test Agent Template}
 
-\begin{lstlisting}[language=yaml]
+\begin{lstlisting}
 ---
 name: test-agent
 model: claude-4-5-sonnet
@@ -825,7 +825,7 @@ You are an expert testing engineer for this project.
 
 \subsection{PyTorch Agent Template}
 
-\begin{lstlisting}[language=yaml]
+\begin{lstlisting}
 ---
 name: pytorch-agent
 model: claude-4-5-sonnet
