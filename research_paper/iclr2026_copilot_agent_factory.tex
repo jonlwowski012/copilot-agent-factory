@@ -98,7 +98,7 @@ We present \textbf{Copilot Agent Factory}, the first automated system for genera
     
     \item \textbf{Multi-platform support}: Output formats for VS Code (GitHub Copilot), Claude Code, and Cursor IDE, enabling broad adoption.
     
-    \item \textbf{Structured workflows}: An orchestrator agent and approval-gate system for controlled development processes (PRD → Architecture → Design → Implementation → Review).
+    \item \textbf{Structured workflows}: An orchestrator agent and approval-gate system for controlled development processes (PRD $\rightarrow$ Architecture $\rightarrow$ Design $\rightarrow$ Implementation $\rightarrow$ Review).
     
     \item \textbf{Empirical validation}: Evaluation across diverse repositories demonstrating 95\%+ detection precision and successful agent generation.
 \end{enumerate}
@@ -149,9 +149,9 @@ The Detection Engine performs multi-level repository analysis to identify releva
 
 \textbf{File-based detection} identifies technology stacks through characteristic files:
 \begin{lstlisting}[language=bash]
-package.json + "react" → React framework
-requirements.txt + "torch" → PyTorch ML project
-Cargo.toml → Rust project
+package.json + "react" -> React framework
+requirements.txt + "torch" -> PyTorch ML project
+Cargo.toml -> Rust project
 \end{lstlisting}
 
 \textbf{Dependency analysis} extracts libraries and frameworks from package manifests (package.json, requirements.txt, pom.xml, etc.), enabling framework-specific agent selection.
