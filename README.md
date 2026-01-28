@@ -22,6 +22,7 @@ Instead of manually writing agent files for each project, Copilot Agent Factory:
 - ⚡ **Outputs ready-to-use agents and skills** in the format for your preferred IDE
 - 🔄 **Manages dev workflows** with approval gates for PRD → Architecture → TDD → Development → Review
 - 🤖 **Auto-activating skills** provide step-by-step guidance for common tasks
+- 🌐 **Recommends Context7 skills** from the catalog based on your tech stack
 
 **Result:** Your agents become domain experts and skills provide procedural automation for your specific project, not generic assistants.
 
@@ -87,8 +88,23 @@ The generator will:
 6. 🛠️ Customize templates with repo-specific values
 7. 🚀 Output ready-to-use agents in the appropriate format
 8. 🤖 Output auto-activating skills to `.claude/skills/`
+9. 🌐 Recommend Context7 skills from the catalog based on your tech stack
 
-### 3. Start Using Your Agents and Skills
+### 3. Install Context7 Skills (Optional)
+
+The generator will recommend Context7 skills based on your tech stack. Install them for enhanced functionality:
+
+```bash
+# Install the Context7 CLI
+npm install -g ctx7
+
+# Install recommended skills (example for a React + TypeScript project)
+ctx7 skills install /anthropics/skills react typescript git commit code-review
+```
+
+Learn more: [Context7 Skills Catalog](https://context7.com/?tab=skills)
+
+### 4. Start Using Your Agents and Skills
 
 **VS Code (GitHub Copilot):**
 
@@ -598,6 +614,214 @@ The generator also creates skills based on project needs. Skills auto-activate b
 
 **Skills output location:** `.claude/skills/` (works across GitHub Copilot, Claude Code, and Cursor IDE)
 
+## Context7 Skills Integration
+
+In addition to generating custom agent templates and skills, the agent-generator **automatically recommends relevant Context7 skills** based on your repository's tech stack. Context7 provides a catalog of pre-built, production-ready skills maintained by Anthropic, Microsoft, and the community.
+
+### What are Context7 Skills?
+
+Context7 skills are reusable prompt templates that provide:
+- 📚 **Up-to-date documentation** for frameworks and libraries (React, Next.js, FastAPI, etc.)
+- 🔍 **Code review workflows** with best practices
+- 📝 **Commit message generation** following conventional commits
+- 🔧 **Framework-specific helpers** for common tasks
+- 🌐 **API integrations** and external services
+
+### How It Works
+
+When you run the agent-generator, it will:
+
+1. **Analyze your tech stack** (languages, frameworks, tools)
+2. **Detect relevant Context7 skills** based on detection patterns
+3. **Generate installation scripts** (`scripts/install-context7-skills.sh` and `.ps1`) that download skills directly from GitHub
+4. **No npm dependencies required** - skills are downloaded directly as markdown files
+5. **Group skills** into Essential (directly detected) and Optional (complementary)
+
+### Installation Scripts (Recommended - No Dependencies)
+
+The agent-generator creates installation scripts that download skills directly from GitHub without requiring the Context7 CLI:
+
+```bash
+# Unix/Linux/macOS - Downloads skill files directly
+./scripts/install-context7-skills.sh
+
+# Windows PowerShell - Downloads skill files directly
+.\scripts\install-context7-skills.ps1
+```
+
+**Benefits:**
+- ✅ **No Dependencies**: No npm or Context7 CLI required
+- ✅ **Direct Download**: Skills downloaded as `.md` files from GitHub
+- ✅ **Team Consistency**: All developers use the same Context7 skills
+- ✅ **Easy Onboarding**: New team members run one script to get set up
+- ✅ **Version Control**: Skills configuration is tracked in git
+- ✅ **Offline-Friendly**: Works without CLI after initial download
+- ✅ **CI/CD Ready**: Scripts can be used in CI/CD pipelines
+
+### Manual Installation
+
+**Option 1: Direct Download (No Dependencies)**
+
+Download skill files directly from GitHub:
+
+```bash
+# Create skills directory
+mkdir -p .claude/skills/pdf
+
+# Download a specific skill
+curl -o .claude/skills/pdf/SKILL.md \
+  https://raw.githubusercontent.com/anthropics/skills/main/skills/pdf/SKILL.md
+
+# Download multiple skills
+for skill in git commit code-review; do
+  mkdir -p ".claude/skills/$skill"
+  curl -o ".claude/skills/$skill/SKILL.md" \
+    "https://raw.githubusercontent.com/anthropics/skills/main/skills/$skill/SKILL.md"
+done
+```
+
+**Option 2: Context7 CLI (Optional)**
+
+If you prefer using the Context7 CLI:
+
+```bash
+# 1. Install the Context7 CLI globally
+npm install -g ctx7
+
+# 2. Install recommended skills (generated based on your project)
+ctx7 skills install /anthropics/skills react typescript git commit code-review
+
+# 3. List installed skills
+ctx7 skills list
+
+# 4. Search for additional skills
+ctx7 skills search <keyword>
+```
+
+### Skill Detection Mapping
+
+| Your Tech Stack | Recommended Context7 Skills |
+|----------------|----------------------------|
+| **React** | `react`, `nextjs` (if Next.js) |
+| **Vue.js** | `vue` |
+| **Angular** | `angular` |
+| **TypeScript** | `typescript` |
+| **Python** | `python` |
+| **FastAPI** | `fastapi` |
+| **Django** | `django` |
+| **Flask** | `flask` |
+| **Express.js** | `express`, `nodejs` |
+| **Prisma** | `prisma` |
+| **MongoDB** | `mongodb` |
+| **PostgreSQL** | `postgres` |
+| **Supabase** | `supabase` |
+| **Tailwind CSS** | `tailwind` |
+| **Docker** | `docker` |
+| **Kubernetes** | `kubernetes` |
+| **AWS** | `aws` (from microsoft/agent-skills) |
+| **Azure** | `azure` (from microsoft/agent-skills) |
+| **Git** (always) | `git`, `commit` |
+| **Code Review** (always) | `code-review` |
+
+### Example Output
+
+For a **Next.js + TypeScript + Prisma + Tailwind** project:
+
+```markdown
+## Recommended Context7 Skills
+
+Based on your repository analysis, these Context7 skills will be downloaded:
+
+### Essential Skills (Direct Download)
+The installation script will download these skills as `.md` files from GitHub:
+- react
+- nextjs  
+- typescript
+- prisma
+- tailwind
+- git
+- commit
+- code-review
+
+### Optional Skills
+Commented out in the script (uncomment to download):
+- docker
+- testing
+```
+
+**Generated Installation Script** (`scripts/install-context7-skills.sh`):
+
+```bash
+#!/bin/bash
+# Context7 Skills Installation Script
+# Auto-generated by Copilot Agent Factory
+
+set -e
+
+SKILLS_DIR=".claude/skills"
+ANTHROPIC_BASE="https://raw.githubusercontent.com/anthropics/skills/main/skills"
+
+echo "📦 Setting up Context7 Skills..."
+mkdir -p "$SKILLS_DIR"
+
+echo "📥 Downloading Essential Skills..."
+
+# React
+mkdir -p "$SKILLS_DIR/react"
+curl -fsSL "$ANTHROPIC_BASE/react/SKILL.md" -o "$SKILLS_DIR/react/SKILL.md"
+echo "  ✓ react"
+
+# TypeScript
+mkdir -p "$SKILLS_DIR/typescript"
+curl -fsSL "$ANTHROPIC_BASE/typescript/SKILL.md" -o "$SKILLS_DIR/typescript/SKILL.md"
+echo "  ✓ typescript"
+
+# Prisma
+mkdir -p "$SKILLS_DIR/prisma"
+curl -fsSL "$ANTHROPIC_BASE/prisma/SKILL.md" -o "$SKILLS_DIR/prisma/SKILL.md"
+echo "  ✓ prisma"
+
+# Git (always recommended)
+mkdir -p "$SKILLS_DIR/git"
+curl -fsSL "$ANTHROPIC_BASE/git/SKILL.md" -o "$SKILLS_DIR/git/SKILL.md"
+echo "  ✓ git"
+
+# Commit messages (always recommended)
+mkdir -p "$SKILLS_DIR/commit"
+curl -fsSL "$ANTHROPIC_BASE/commit/SKILL.md" -o "$SKILLS_DIR/commit/SKILL.md"
+echo "  ✓ commit"
+
+# Code review (always recommended)
+mkdir -p "$SKILLS_DIR/code-review"
+curl -fsSL "$ANTHROPIC_BASE/code-review/SKILL.md" -o "$SKILLS_DIR/code-review/SKILL.md"
+echo "  ✓ code-review"
+
+echo ""
+echo "✅ Essential skills downloaded to .claude/skills/"
+
+# Optional skills (commented out - uncomment to download)
+# mkdir -p "$SKILLS_DIR/docker"
+# curl -fsSL "$ANTHROPIC_BASE/docker/SKILL.md" -o "$SKILLS_DIR/docker/SKILL.md"
+
+echo ""
+echo "✨ Done! Skills are available in $SKILLS_DIR/"
+```
+
+**No npm or Context7 CLI required!** Skills are downloaded directly as markdown files.
+
+### Skill Sources
+
+- **`/anthropics/skills`**: Core skills for frameworks, languages, and tools
+- **`/microsoft/agent-skills`**: Azure, AI SDKs, and Microsoft technologies
+- **Community**: Additional community-contributed skills
+
+### Learn More
+
+- **Context7 Documentation**: https://context7.com/docs/skills
+- **Skills Catalog**: https://context7.com/?tab=skills
+- **Anthropic Skills Repository**: https://github.com/anthropics/skills
+- **Microsoft Agent Skills**: https://github.com/microsoft/agent-skills
+
 ## Template Placeholders
 
 Templates use `{{placeholder}}` markers that get replaced with detected values:
@@ -974,6 +1198,81 @@ You are an expert test engineer for this project.
 - 🚫 **Never:** Skip tests, commit failing tests
 ```
 
+### Context7 Skills Recommendations
+
+After generating agents, the agent-generator provides Context7 skills recommendations and creates installation scripts:
+
+**Generated Files:**
+- `scripts/install-context7-skills.sh` (Unix/Linux/macOS) - Downloads skills directly from GitHub
+- `scripts/install-context7-skills.ps1` (Windows PowerShell) - Downloads skills directly from GitHub
+
+**Console Output:**
+
+```markdown
+## Recommended Context7 Skills
+
+Based on your repository analysis, these Context7 skills will be downloaded:
+
+### Essential Skills (Direct Download)
+Skills will be downloaded as `.md` files from GitHub:
+- `python` - Python 3.10 detected in pyproject.toml
+- `pytorch` - PyTorch 2.0 in dependencies
+- `testing` - pytest configuration found
+- `git` - Git repository (always recommended)
+- `commit` - For conventional commit messages (always recommended)
+- `code-review` - Always recommended for quality
+
+### Optional Skills (Commented Out)
+Uncomment in the script to download:
+- `docker` - Container deployment (Dockerfile detected)
+
+### Installation Scripts Generated
+
+Two installation scripts have been created in your repository:
+
+📄 **scripts/install-context7-skills.sh** (Direct download, no dependencies)
+📄 **scripts/install-context7-skills.ps1** (Direct download, no dependencies)
+
+**Team Usage:**
+
+```bash
+# Unix/Linux/macOS developers (no npm required)
+./scripts/install-context7-skills.sh
+
+# Windows PowerShell developers (no npm required)
+.\scripts\install-context7-skills.ps1
+```
+
+These scripts ensure all team members use the same Context7 skills configuration.
+
+### Getting Started with Context7
+
+1. **Use the installation script (Recommended - No dependencies):**
+   ```bash
+   ./scripts/install-context7-skills.sh
+   ```
+   This downloads skills directly as `.md` files from GitHub.
+
+2. **Or download skills manually:**
+   ```bash
+   mkdir -p .claude/skills/python
+   curl -o .claude/skills/python/SKILL.md \
+     https://raw.githubusercontent.com/anthropics/skills/main/skills/python/SKILL.md
+   ```
+
+3. **Or use the Context7 CLI (optional):**
+   ```bash
+   npm install -g ctx7
+   ctx7 skills install /anthropics/skills python pytorch testing git commit code-review
+   ctx7 skills list
+   ```
+
+4. **Learn more:**
+   - Skills Repository: https://github.com/anthropics/skills
+   - Documentation: https://context7.com/docs/skills
+   - Skills Catalog: https://context7.com/?tab=skills
+```
+
 ## Copilot Instructions Setup
 
 This repository uses GitHub Copilot's custom instructions feature to provide context-aware guidance. The setup includes:
@@ -994,7 +1293,8 @@ To improve the templates or add new agents:
 2. Ensure templates work with multiple tech stacks
 3. Keep placeholders consistent across templates
 4. Update detection rules in agent-generator.md
-5. Follow the guidelines in [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)
+5. **Update Context7 skills detection mapping** if adding support for new frameworks
+6. Follow the guidelines in [Copilot Instructions Setup Guide](.github/COPILOT-SETUP.md)
 
 ## References
 
@@ -1003,4 +1303,8 @@ To improve the templates or add new agents:
 - [Cursor IDE Documentation - Rules](https://cursor.com/docs/context/rules)
 - [Cursor IDE Documentation - Subagents](https://cursor.com/docs/context/subagents)
 - [Adding Repository Custom Instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)
+- [Context7 Skills Documentation](https://context7.com/docs/skills)
+- [Context7 Skills Catalog](https://context7.com/?tab=skills)
+- [Anthropic Skills Repository](https://github.com/anthropics/skills)
+- [Microsoft Agent Skills Repository](https://github.com/microsoft/agent-skills)
 - [Best Practices for Copilot Coding Agent](https://docs.github.com/en/copilot/tutorials/coding-agent/get-the-best-results)
