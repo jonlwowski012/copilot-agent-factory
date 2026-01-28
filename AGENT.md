@@ -140,7 +140,10 @@ For specific tasks, invoke these specialized agents:
 | **@prd-agent** | `@prd-agent` | Product Requirements Documents for new features |
 | **@epic-agent** | `@epic-agent` | Breaking PRDs into deliverable epics |
 | **@story-agent** | `@story-agent` | User stories with Gherkin acceptance criteria |
-| **@architecture-agent** | `@architecture-agent` | Template architecture, placeholder design, ADRs |
+| **@application-architecture-agent** | `@application-architecture-agent` | Application architecture, component design, APIs, state diagrams |
+| **@business-architecture-agent** | `@business-architecture-agent` | Business architecture, domain models, business processes |
+| **@data-architecture-agent** | `@data-architecture-agent` | Data architecture, data models, data flows, storage patterns |
+| **@infrastructure-architecture-agent** | `@infrastructure-architecture-agent` | Infrastructure architecture, deployment, scaling, observability |
 | **@design-agent** | `@design-agent` | Technical specifications, detection algorithms |
 | **@test-design-agent** | `@test-design-agent` | Test strategy, validation criteria (TDD) |
 | **@docs-agent** | `@docs-agent` | README updates, documentation, examples |
@@ -310,4 +313,4 @@ For specific domains:
 - Template quality → `@review-agent`
 - Refactoring → `@refactor-agent`
 - Feature planning → `@prd-agent`
-- Technical design → `@architecture-agent`
+- Technical design → `@application-architecture-agent`, `@business-architecture-agent`, `@data-architecture-agent`, `@infrastructure-architecture-agent`
