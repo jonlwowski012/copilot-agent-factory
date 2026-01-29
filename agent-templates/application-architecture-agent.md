@@ -1,6 +1,6 @@
 ---
 name: application-architecture-agent
-model: {{model}}
+model: claude-4-5-opus
 description: Designs application-level architecture, component interactions, API contracts, and maintains system state diagrams
 triggers:
   - Orchestrator Phase 0: State machine diagram validation

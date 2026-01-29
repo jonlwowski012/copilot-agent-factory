@@ -1,6 +1,6 @@
 ---
 name: data-architecture-agent
-model: {{model}}
+model: claude-4-5-opus
 description: Designs data architecture, data models, data flows, storage patterns, and data management strategies
 triggers:
   - Application architecture approved and ready for data architecture

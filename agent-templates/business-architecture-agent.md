@@ -1,6 +1,6 @@
 ---
 name: business-architecture-agent
-model: {{model}}
+model: claude-4-5-opus
 description: Designs business architecture, domain models, business processes, and business logic organization
 triggers:
   - Product phase approved and ready for business architecture
