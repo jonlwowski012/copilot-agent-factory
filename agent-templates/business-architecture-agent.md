@@ -1,6 +1,6 @@
 ---
 name: business-architecture-agent
-model: {{model}}
+model: claude-4-5-opus
 description: Designs business architecture, domain models, business processes, and business logic organization
 triggers:
   - Product phase approved and ready for business architecture
@@ -1673,3 +1673,13 @@ What would you like to do?
 - Overwrite existing architecture docs without confirmation
 - Design technical implementation (defer to application-architecture-agent)
 - Design data storage (defer to data-architecture-agent)
+
+## MCP Servers
+
+The following MCP servers are available to enhance agent capabilities:
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, diffs for understanding existing business architecture
+- `@modelcontextprotocol/server-filesystem` – File operations for reading PRDs, epics, and writing business architecture documents
+
+**See `.github/mcp-config.json` for configuration details.**

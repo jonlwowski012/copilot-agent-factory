@@ -1,6 +1,6 @@
 ---
 name: data-architecture-agent
-model: {{model}}
+model: claude-4-5-opus
 description: Designs data architecture, data models, data flows, storage patterns, and data management strategies
 triggers:
   - Application architecture approved and ready for data architecture
@@ -2241,3 +2241,13 @@ What would you like to do?
 - Overwrite existing architecture docs without confirmation
 - Design application components (defer to application-architecture-agent)
 - Design infrastructure (defer to infrastructure-architecture-agent)
+
+## MCP Servers
+
+The following MCP servers are available to enhance agent capabilities:
+
+**Essential:**
+- `@modelcontextprotocol/server-git` – Repository operations, history, diffs for understanding existing data architecture
+- `@modelcontextprotocol/server-filesystem` – File operations for reading PRDs, epics, architecture docs, and writing data architecture documents
+
+**See `.github/mcp-config.json` for configuration details.**
