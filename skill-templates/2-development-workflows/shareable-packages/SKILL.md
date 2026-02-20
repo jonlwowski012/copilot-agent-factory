@@ -1,6 +1,6 @@
 ---
-name: shareable-packages-template
-description: "Portable skill template for making Python or TypeScript packages shareable (pip/npm). Use when the user asks to make packages shareable, prepare for publish, or automate packaging in any Python or TS project."
+name: shareable-packages
+description: "Making Python or TypeScript packages shareable (pip/npm)"
 auto-activates:
   - "make packages shareable"
   - "shareable package"
