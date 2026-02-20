@@ -170,7 +170,7 @@ The factory now generates both **agents** and **skills** to provide comprehensiv
 
 **They work together:** Agents can invoke skills for procedural tasks, and skills can reference agents for expert guidance.
 
-### Available Skills (7)
+### Available Skills (8)
 
 The factory includes skill templates that auto-activate based on keywords:
 
@@ -182,13 +182,15 @@ The factory includes skill templates that auto-activate based on keywords:
 - **debug-test-failures** - Debug and fix failing tests  
   *Keywords:* "debug test", "test failing", "fix failing test"
 
-#### Development Workflows (3)
+#### Development Workflows (4)
 - **local-dev-setup** - Setup development environment  
   *Keywords:* "dev setup", "local environment", "install dependencies"
 - **code-formatting** - Format code and fix linting  
   *Keywords:* "format code", "fix formatting", "run formatter"
 - **git-workflow** - Git branching and commit conventions  
   *Keywords:* "git workflow", "commit message", "branch strategy"
+- **shareable-packages-template** - Make Python/TypeScript packages shareable and publishable  
+  *Keywords:* "make packages shareable", "prepare for pip publish", "prepare for npm publish", "publish to PyPI", "publish to npm"
 
 #### DevOps & Deployment (1)
 - **ci-pipeline** - Debug CI/CD pipelines  
