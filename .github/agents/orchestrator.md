@@ -11,48 +11,76 @@ handoffs:
     label: "Start Phase 1: PRD"
     prompt: "Create a Product Requirements Document for this feature: {{feature_description}}"
     send: false
+  - target: epic-agent
+    label: "PRD Expert Review: Epic Breakdown Feasibility"
+    prompt: "Review the PRD at {{prd_path}} from an epic-breakdown perspective: Is the scope clear enough to break into epics? Are requirements concrete enough to estimate? Flag any requirements that are too vague or contradictory for epic planning. Use 🔴/🟡/🟢 format."
+    send: false
   - target: review-agent
-    label: "Phase 1.1 Review: Verify PRD"
+    label: "PRD Quality Review: Completeness and Clarity"
     prompt: "Review the PRD at {{prd_path}} for completeness, clarity, and measurable success criteria. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @prd-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: epic-agent
     label: "Phase 1.2: Break into Epics"
     prompt: "Break this PRD into implementable epics with acceptance criteria: {{prd_path}}"
     send: false
+  - target: story-agent
+    label: "Epics Expert Review: Story Breakdown Feasibility"
+    prompt: "Review the epics at {{epics_path}} from a user-story perspective: Are the epics scoped correctly for story breakdown? Is the acceptance criteria specific enough to write testable stories? Flag any epics that are too large or too vague. Use 🔴/🟡/🟢 format."
+    send: false
   - target: review-agent
-    label: "Phase 1.2 Review: Verify Epics"
+    label: "Epics Quality Review: Testability and Alignment"
     prompt: "Review the epics at {{epics_path}} for completeness, testability, and alignment with the PRD. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @epic-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: story-agent
     label: "Phase 1.3: Create Stories"
     prompt: "Convert these epics into detailed user stories with Gherkin scenarios: {{epics_path}}"
     send: false
+  - target: test-design-agent
+    label: "Stories Expert Review: Acceptance Criteria Testability"
+    prompt: "Review the user stories at {{stories_path}} from a test-design perspective: Are the Gherkin acceptance criteria specific and testable? Are there missing edge cases or error scenarios needed for test coverage? Use 🔴/🟡/🟢 format."
+    send: false
   - target: review-agent
-    label: "Phase 1.3 Review: Verify Stories"
+    label: "Stories Quality Review: Gherkin and Epic Alignment"
     prompt: "Review the user stories at {{stories_path}} for completeness, Gherkin acceptance criteria quality, and alignment with the epics. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @story-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: architecture-agent
     label: "Phase 2.1: Design Architecture"
     prompt: "Design system architecture based on these requirements: {{planning_artifacts}}"
     send: false
+  - target: design-agent
+    label: "Architecture Expert Review: Design Feasibility"
+    prompt: "Review the architecture at {{architecture_path}} from a technical design perspective: Is the architecture specific enough to create detailed designs and API contracts? Are the ADRs clear enough to guide implementation decisions? Flag any components that lack enough detail. Use 🔴/🟡/🟢 format."
+    send: false
   - target: review-agent
-    label: "Phase 2.1 Review: Verify Architecture"
+    label: "Architecture Quality Review: ADRs and Completeness"
     prompt: "Review the architecture at {{architecture_path}} for completeness, ADR clarity, and alignment with requirements. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @architecture-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: design-agent
     label: "Phase 2.2: Technical Design"
     prompt: "Create detailed technical specifications based on this architecture: {{architecture_path}}"
     send: false
+  - target: architecture-agent
+    label: "Design Expert Review: Architecture Alignment"
+    prompt: "Review the technical design at {{design_path}} from an architecture perspective: Does the design stay true to all ADRs? Does it introduce any architectural violations? Flag any deviations from the approved architecture. Use 🔴/🟡/🟢 format."
+    send: false
+  - target: test-design-agent
+    label: "Design Expert Review: Testability"
+    prompt: "Review the technical design at {{design_path}} from a test-design perspective: Are the API contracts specific enough to write integration tests? Are the data models and validation rules testable? Flag any underspecified behavior. Use 🔴/🟡/🟢 format."
+    send: false
   - target: review-agent
-    label: "Phase 2.2 Review: Verify Design"
+    label: "Design Quality Review: Specification Clarity"
     prompt: "Review the technical design at {{design_path}} for completeness, specification clarity, and alignment with the architecture. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @design-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: test-design-agent
     label: "Phase 3: Create Test Strategy"
     prompt: "Create comprehensive test strategy for this design (TDD approach): {{design_path}}"
     send: false
+  - target: architecture-agent
+    label: "Test Design Expert Review: Architectural Boundary Validation"
+    prompt: "Review the test design at {{test_design_path}} from an architecture perspective: Do the test cases align with the architectural boundaries? Are the integration and E2E tests validating the right component interactions? Flag any tests that would violate or misrepresent the architecture. Use 🔴/🟡/🟢 format."
+    send: false
   - target: review-agent
-    label: "Phase 3 Review: Verify Test Design"
+    label: "Test Design Quality Review: Coverage and Traceability"
     prompt: "Review the test design at {{test_design_path}} for coverage, alignment with acceptance criteria, and test quality. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @test-design-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: review-agent
@@ -242,48 +270,57 @@ handoff_prompt: "Create a Product Requirements Document for this feature"
 agent: @prd-agent
 input: Feature description from user
 output: docs/planning/prd/{feature}-{YYYYMMDD}.md
-sub_agent_review: @review-agent  # Reviews PRD before user approval
-gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
+expert_review: @epic-agent   # Checks: is this PRD ready to break into epics?
+quality_review: @review-agent # Checks: completeness, clarity, measurability
+gate: MUST wait for both reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 1.1 Discrete Steps:**
 1. Invoke `@prd-agent` to create the PRD
-2. Invoke `@review-agent` to review the PRD for completeness and clarity
-3. If `@review-agent` finds 🔴 blockers: share feedback with `@prd-agent` → revise → re-review
-4. Once `@review-agent` approves, present reviewed PRD to user with review summary
-5. Wait for user `/approve` or `/skip`
+2. Invoke `@epic-agent` for expert review: "Is the PRD scoped and concrete enough for epic breakdown?"
+3. If `@epic-agent` finds 🔴 blockers: share feedback with `@prd-agent` → revise → re-review
+4. Invoke `@review-agent` for quality review: completeness, measurability, clarity
+5. If `@review-agent` finds 🔴 blockers: share feedback with `@prd-agent` → revise → re-review
+6. Once both approve, present reviewed PRD to user with combined review summary
+7. Wait for user `/approve` or `/skip`
 
 **Phase 1.2: Epic Breakdown**
 ```yaml
 agent: @epic-agent
 input: docs/planning/prd/{feature}-{YYYYMMDD}.md
 output: docs/planning/epics/{feature}-epics-{YYYYMMDD}.md
-sub_agent_review: @review-agent  # Reviews epics before user approval
-gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
+expert_review: @story-agent   # Checks: are these epics ready for story breakdown?
+quality_review: @review-agent  # Checks: testability, scope, PRD alignment
+gate: MUST wait for both reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 1.2 Discrete Steps:**
 1. Invoke `@epic-agent` to create epics from the approved PRD
-2. Invoke `@review-agent` to review epics for testability and PRD alignment
-3. If `@review-agent` finds 🔴 blockers: share feedback with `@epic-agent` → revise → re-review
-4. Once `@review-agent` approves, present reviewed epics to user with review summary
-5. Wait for user `/approve` or `/skip`
+2. Invoke `@story-agent` for expert review: "Are these epics scoped well enough to write user stories?"
+3. If `@story-agent` finds 🔴 blockers: share feedback with `@epic-agent` → revise → re-review
+4. Invoke `@review-agent` for quality review: testability, PRD alignment, dependency clarity
+5. If `@review-agent` finds 🔴 blockers: share feedback with `@epic-agent` → revise → re-review
+6. Once both approve, present reviewed epics to user with combined review summary
+7. Wait for user `/approve` or `/skip`
 
 **Phase 1.3: User Stories**
 ```yaml
 agent: @story-agent
 input: docs/planning/epics/{feature}-epics-{YYYYMMDD}.md
 output: docs/planning/stories/{feature}-stories-{YYYYMMDD}.md
-sub_agent_review: @review-agent  # Reviews stories before user approval
-gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
+expert_review: @test-design-agent  # Checks: are acceptance criteria testable?
+quality_review: @review-agent       # Checks: Gherkin quality, epic alignment
+gate: MUST wait for both reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 1.3 Discrete Steps:**
 1. Invoke `@story-agent` to create stories from the approved epics
-2. Invoke `@review-agent` to review stories for Gherkin quality and epic alignment
-3. If `@review-agent` finds 🔴 blockers: share feedback with `@story-agent` → revise → re-review
-4. Once `@review-agent` approves, present reviewed stories to user with review summary
-5. Wait for user `/approve` or `/skip`
+2. Invoke `@test-design-agent` for expert review: "Are acceptance criteria specific and testable enough for test design?"
+3. If `@test-design-agent` finds 🔴 blockers: share feedback with `@story-agent` → revise → re-review
+4. Invoke `@review-agent` for quality review: Gherkin quality, epic alignment, story independence
+5. If `@review-agent` finds 🔴 blockers: share feedback with `@story-agent` → revise → re-review
+6. Once both approve, present reviewed stories to user with combined review summary
+7. Wait for user `/approve` or `/skip`
 
 ### Phase 2: Architecture & Design (Sequential with Sub-Agent Review and Approval Gates)
 
@@ -292,32 +329,41 @@ gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
 agent: @architecture-agent
 input: All Phase 1 artifacts
 output: docs/planning/architecture/{feature}-architecture-{YYYYMMDD}.md
-sub_agent_review: @review-agent  # Reviews architecture before user approval
-gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
+expert_review: @design-agent  # Checks: is this architecture ready for technical design?
+quality_review: @review-agent  # Checks: ADR quality, security, completeness
+gate: MUST wait for both reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 2.1 Discrete Steps:**
 1. Invoke `@architecture-agent` to design the architecture
-2. Invoke `@review-agent` to review architecture for completeness and ADR quality
-3. If `@review-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
-4. Once `@review-agent` approves, present reviewed architecture to user with review summary
-5. Wait for user `/approve` or `/skip`
+2. Invoke `@design-agent` for expert review: "Is the architecture specific enough to create API contracts and data models?"
+3. If `@design-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
+4. Invoke `@review-agent` for quality review: ADR quality, security considerations, completeness
+5. If `@review-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
+6. Once both approve, present reviewed architecture to user with combined review summary
+7. Wait for user `/approve` or `/skip`
 
 **Phase 2.2: Technical Design**
 ```yaml
 agent: @design-agent
 input: Architecture document + Phase 1 artifacts
 output: docs/planning/design/{feature}-design-{YYYYMMDD}.md
-sub_agent_review: @review-agent  # Reviews design before user approval
-gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
+expert_review:
+  - @architecture-agent  # Stage 1 (parallel): Checks design stays true to ADRs
+  - @test-design-agent   # Stage 1 (parallel): Checks design is testable
+quality_review: @review-agent          # Checks: specification clarity, completeness
+gate: MUST wait for all reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 2.2 Discrete Steps:**
 1. Invoke `@design-agent` to create the technical design
-2. Invoke `@review-agent` to review design for specification clarity and architecture alignment
-3. If `@review-agent` finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review
-4. Once `@review-agent` approves, present reviewed design to user with review summary
-5. Wait for user `/approve` or `/skip`
+2. Invoke `@architecture-agent` for expert review: "Does this design stay true to all ADRs and architectural decisions?"
+3. Invoke `@test-design-agent` for expert review: "Are the API contracts and data models specific enough to write test cases?"
+4. If either expert finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review that expert
+5. Invoke `@review-agent` for quality review: specification clarity, error handling, completeness
+6. If `@review-agent` finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review
+7. Once all three approve, present reviewed design to user with combined review summary
+8. Wait for user `/approve` or `/skip`
 
 ### Phase 3: Test Strategy (TDD Approach with Sub-Agent Review)
 
@@ -325,16 +371,19 @@ gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
 agent: @test-design-agent
 input: Design document + all prior artifacts
 output: docs/planning/test-design/{feature}-test-design-{YYYYMMDD}.md
-sub_agent_review: @review-agent  # Reviews test design before user approval
-gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
+expert_review: @architecture-agent  # Checks: do tests align with architectural boundaries?
+quality_review: @review-agent        # Checks: coverage, acceptance criteria traceability
+gate: MUST wait for both reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 3 Discrete Steps:**
 1. Invoke `@test-design-agent` to create the test design
-2. Invoke `@review-agent` to review test design for coverage and acceptance criteria alignment
-3. If `@review-agent` finds 🔴 blockers: share feedback with `@test-design-agent` → revise → re-review
-4. Once `@review-agent` approves, present reviewed test design to user with review summary
-5. Wait for user `/approve` or `/skip`
+2. Invoke `@architecture-agent` for expert review: "Do the integration and E2E tests validate the correct component interactions and architectural boundaries?"
+3. If `@architecture-agent` finds 🔴 blockers: share feedback with `@test-design-agent` → revise → re-review
+4. Invoke `@review-agent` for quality review: acceptance criteria coverage, test pyramid balance, traceability
+5. If `@review-agent` finds 🔴 blockers: share feedback with `@test-design-agent` → revise → re-review
+6. Once both approve, present reviewed test design to user with combined review summary
+7. Wait for user `/approve` or `/skip`
 
 ### Phase 4: Implementation
 
@@ -371,9 +420,9 @@ output: Updated README, examples, and documentation
    
    📄 Artifact Created: [file path]
    
-   🔍 Sub-Agent Review: @review-agent has reviewed and approved this document.
-   
-   📋 Review Summary: [Key feedback points addressed, or "No blockers found."]
+   🔍 Sub-Agent Reviews:
+   - [Expert Reviewer] has reviewed and approved. [Key expert feedback addressed]
+   - @review-agent has reviewed and approved. [Key quality feedback addressed]
    
    📋 Summary: [Brief summary of what was created]
    
@@ -393,32 +442,51 @@ output: Updated README, examples, and documentation
 
 ## Sub-Agent Review Protocol
 
-**For all planning phases (1.1–3.1), enforce this review cycle before presenting to user:**
+**For all planning phases (1.1–3.1), enforce this two-stage review cycle before presenting to user:**
 
-1. **Invoke @review-agent** with the newly created planning document
-2. **@review-agent analyzes** the document using the planning document review checklist
-3. **If blockers found (🔴):**
-   - Share review feedback with the original creating agent
-   - Creating agent revises the document
-   - Return to step 1 for re-review
-4. **If only suggestions/nits (🟡/🟢):**
-   - Include suggestions in the summary shown to the user
-   - User can decide whether to apply suggestions or proceed
-5. **Once @review-agent approves:**
-   - Show approval summary to user
-   - Present user with standard `/approve` or `/skip` options
+### Stage 1: Domain Expert Review
+
+Each planning document is first reviewed by the **domain expert who will consume it next** in the workflow. This expert validates that the document is ready for their phase:
+
+| Document | Expert Reviewer | Expert Focus |
+|----------|----------------|--------------|
+| PRD | @epic-agent | Scope clear enough for epic breakdown? |
+| Epics | @story-agent | Structured well enough for user stories? |
+| Stories | @test-design-agent | Acceptance criteria testable enough? |
+| Architecture | @design-agent | Detailed enough for API/data model design? |
+| Design | @architecture-agent | Stays true to ADRs? | 
+| Design | @test-design-agent | API contracts testable? |
+| Test Design | @architecture-agent | Tests validate correct architectural boundaries? |
+
+### Stage 2: Quality Review
+
+After domain expert(s) approve, @review-agent performs a quality and consistency check:
+- Completeness (all required sections present)
+- Clarity (specific, unambiguous language)
+- Alignment with prior artifacts
+- No anti-patterns (vague criteria, over-engineering, etc.)
+
+### Review Cycle Rules
+
+1. **Stage 1 runs first:** Invoke domain expert(s) with the new document
+2. **If expert finds 🔴 blockers:** Route feedback to creating agent → revise → re-run Stage 1
+3. **Stage 2 runs after Stage 1 approves:** Invoke @review-agent
+4. **If @review-agent finds 🔴 blockers:** Route feedback to creating agent → revise → re-run Stage 2 (not Stage 1 unless revisions change expert-scope issues)
+5. **If only 🟡 suggestions or 🟢 nits:** Surface to user for awareness, do not block
+6. **Once all reviewers approve:** Present to user with combined review summary
 
 ## Boundaries
 
 - ✅ **Always:** Route to specialized agents, enforce minimal changes, track workflow state
 - ✅ **Always:** Wait for `/approve` or `/skip` at approval gates
-- ✅ **Always:** Invoke @review-agent for sub-agent review before presenting planning docs to user
+- ✅ **Always:** Run Stage 1 domain expert review before Stage 2 quality review for each planning doc
+- ✅ **Always:** Invoke @review-agent for quality review after domain expert approves
 - ✅ **Always:** Provide context when routing between agents
 - ⚠️ **Ask First:** Major template restructuring, changing placeholder conventions
 - 🚫 **Never:** Skip approval gates without user consent
 - 🚫 **Never:** Modify templates without routing to appropriate agent
 - 🚫 **Never:** Proceed to next phase without approval
-- 🚫 **Never:** Present planning docs to user without @review-agent review first
+- 🚫 **Never:** Present planning docs to user without both domain expert and @review-agent reviews
 
 ## MCP Servers
 

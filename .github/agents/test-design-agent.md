@@ -189,7 +189,19 @@ Example: `docs/planning/test-design/new-agent-type-test-design-20260114.md`
 After generating the test design:
 
 1. Save to `docs/planning/test-design/{filename}.md`
-2. Route to `@review-agent` for sub-agent review:
+2. Route to `@architecture-agent` for domain expert review:
+
+```
+@architecture-agent Please review this test design from an architecture perspective:
+- Do the integration and E2E tests validate the correct component interactions per the architecture?
+- Are the test cases respecting the architectural boundaries (not mocking across wrong layers)?
+- Do the performance or load tests match the architectural scalability requirements?
+- Are there any test cases that would give false confidence about architectural compliance?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@architecture-agent` identifies 🔴 blockers, revise the test design and request re-review
+4. Route to `@review-agent` for quality review:
 
 ```
 @review-agent Please review the test design at docs/planning/test-design/{filename}.md for:
@@ -201,13 +213,15 @@ After generating the test design:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@review-agent` identifies 🔴 blockers, revise the test design and request re-review
-4. Once `@review-agent` approves, present the reviewed test design to the user:
+5. If `@review-agent` identifies 🔴 blockers, revise the test design and request re-review
+6. Once both reviewers approve, present the reviewed test design to the user:
 
 ```
 📋 **Test Design Generated:** `docs/planning/test-design/{filename}.md`
 
-🔍 **Sub-Agent Review:** @review-agent has approved this test design.
+🔍 **Sub-Agent Reviews:**
+- @architecture-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]
 
 **Summary:**

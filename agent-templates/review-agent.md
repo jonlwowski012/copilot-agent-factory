@@ -208,11 +208,27 @@ Check these files for additional project-specific standards:
 3. Focus on critical paths first
 4. Schedule follow-up for non-blocking items
 
-### For Planning Documents (Sub-Agent Review)
+### For Planning Documents (Stage 2 Quality Review)
 
-**This is a sub-agent review** that occurs BEFORE the user sees the planning document.
+**This is a Stage 2 quality review** that occurs AFTER domain expert reviews pass. Focus on completeness, clarity, and consistency. Domain-expert concerns (feasibility, designability, testability) are handled by specialist agents in Stage 1.
 
-1. **Read the document** and assess it against the type-specific checklist below
+#### Two-Stage Review Model
+
+- **Stage 1 (Domain Expert):** Specialist agent validates the document is ready for their phase
+- **Stage 2 (Quality - this role):** @review-agent validates completeness, clarity, and consistency
+
+#### Domain Expert Assignments (Stage 1)
+
+- PRD → @epic-agent (epic breakdown feasibility)
+- Epics → @story-agent (story breakdown feasibility)
+- Stories → @test-design-agent (acceptance criteria testability)
+- Architecture → @design-agent (design feasibility)
+- Design → @architecture-agent (ADR alignment) + @test-design-agent (testability) [parallel reviews]
+- Test Design → @architecture-agent (architectural boundary validation)
+
+#### Stage 2 Review Process
+
+1. **Read the document** and assess it against the type-specific quality checklist below
 2. **Provide feedback** using the 🔴/🟡/🟢 format
 3. **If blockers found (🔴):** Route back to the creating agent with specific feedback for revision
 4. **If no blockers:** State approval clearly so the orchestrator can present to the user

@@ -197,7 +197,19 @@ Then it works
 After generating stories:
 
 1. Save to `docs/planning/stories/{filename}.md`
-2. Route to `@review-agent` for sub-agent review:
+2. Route to `@test-design-agent` for domain expert review:
+
+```
+@test-design-agent Please review these user stories from a test-design perspective:
+- Are the Gherkin acceptance criteria specific enough to write concrete test cases?
+- Are there missing edge cases or error scenarios needed for adequate test coverage?
+- Are the Given/When/Then statements unambiguous (no multiple interpretations)?
+- Are the story point estimates realistic given the testing complexity?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@test-design-agent` identifies 🔴 blockers, revise the stories and request re-review
+4. Route to `@review-agent` for quality review:
 
 ```
 @review-agent Please review the user stories at docs/planning/stories/{filename}.md for:
@@ -209,13 +221,15 @@ After generating stories:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@review-agent` identifies 🔴 blockers, revise the stories and request re-review
-4. Once `@review-agent` approves, present the reviewed stories to the user:
+5. If `@review-agent` identifies 🔴 blockers, revise the stories and request re-review
+6. Once both reviewers approve, present the reviewed stories to the user:
 
 ```
 📋 **Stories Generated:** `docs/planning/stories/{filename}.md`
 
-🔍 **Sub-Agent Review:** @review-agent has approved these stories.
+🔍 **Sub-Agent Reviews:**
+- @test-design-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]
 
 **Summary:**

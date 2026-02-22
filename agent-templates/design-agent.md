@@ -443,7 +443,31 @@ Example: `docs/planning/design/user-authentication-design-20251229.md`
 After generating the design:
 
 1. Save to `docs/planning/design/{filename}.md`
-2. Route to `@review-agent` for sub-agent review:
+2. Route to `@architecture-agent` for domain expert review (Stage 1, parallel - alignment):
+
+```
+@architecture-agent Please review this technical design from an architecture alignment perspective:
+- Does the design stay true to all Architecture Decision Records (ADRs)?
+- Are there any architectural violations or deviations from the approved architecture?
+- Do the component interfaces match the architecture's defined boundaries?
+- Are the data flows consistent with the architectural data flow diagrams?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@architecture-agent` identifies 🔴 blockers, revise the design and request re-review
+4. Route to `@test-design-agent` for domain expert review (Stage 1, parallel - testability):
+
+```
+@test-design-agent Please review this technical design from a test-design perspective:
+- Are the API contracts specific enough to write integration test cases?
+- Are the data models and validation rules testable and specific?
+- Is there any underspecified behavior that would make test cases ambiguous?
+- Are error handling scenarios detailed enough to test edge cases?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+5. If `@test-design-agent` identifies 🔴 blockers, revise the design and request re-review
+6. Route to `@review-agent` for quality review (Stage 2):
 
 ```
 @review-agent Please review the technical design at docs/planning/design/{filename}.md for:
@@ -455,13 +479,16 @@ After generating the design:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@review-agent` identifies 🔴 blockers, revise the design and request re-review
-4. Once `@review-agent` approves, present the reviewed design to the user:
+7. If `@review-agent` identifies 🔴 blockers, revise the design and request re-review
+8. Once all reviewers approve, present the reviewed design to the user:
 
 ```
 📋 **Technical Design Generated:** `docs/planning/design/{filename}.md`
 
-🔍 **Sub-Agent Review:** @review-agent has approved this design.
+🔍 **Sub-Agent Reviews:**
+- @architecture-agent (alignment check): Approved ✅ [Key feedback addressed]
+- @test-design-agent (testability check): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]
 
 **Summary:**

@@ -206,7 +206,19 @@ Example: `docs/planning/architecture/new-agent-type-architecture-20260114.md`
 After generating architecture:
 
 1. Save to `docs/planning/architecture/{filename}.md`
-2. Route to `@review-agent` for sub-agent review:
+2. Route to `@design-agent` for domain expert review:
+
+```
+@design-agent Please review this architecture from a technical design perspective:
+- Is the architecture specific enough to create detailed API contracts and data models?
+- Are the component interfaces defined clearly enough for implementation?
+- Are the ADRs specific enough to guide implementation decisions without ambiguity?
+- Are there any components lacking enough detail to begin technical design?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@design-agent` identifies 🔴 blockers, revise the architecture and request re-review
+4. Route to `@review-agent` for quality review:
 
 ```
 @review-agent Please review the architecture at docs/planning/architecture/{filename}.md for:
@@ -218,13 +230,15 @@ After generating architecture:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@review-agent` identifies 🔴 blockers, revise the architecture and request re-review
-4. Once `@review-agent` approves, present the reviewed architecture to the user:
+5. If `@review-agent` identifies 🔴 blockers, revise the architecture and request re-review
+6. Once both reviewers approve, present the reviewed architecture to the user:
 
 ```
 📋 **Architecture Generated:** `docs/planning/architecture/{filename}.md`
 
-🔍 **Sub-Agent Review:** @review-agent has approved this architecture.
+🔍 **Sub-Agent Reviews:**
+- @design-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]
 
 **Summary:**

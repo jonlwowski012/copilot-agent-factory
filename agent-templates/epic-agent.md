@@ -171,7 +171,19 @@ Example: `docs/planning/epics/user-authentication-epics-20251229.md`
 After generating epics:
 
 1. Save to `docs/planning/epics/{filename}.md`
-2. Route to `@review-agent` for sub-agent review:
+2. Route to `@story-agent` for domain expert review (Stage 1):
+
+```
+@story-agent Please review these epics from a user-story perspective:
+- Are the epics scoped correctly for story breakdown (not too large, not too small)?
+- Is the acceptance criteria specific enough to write testable user stories?
+- Are there any epics that should be split or merged for better story granularity?
+- Is the implementation order logical for incremental story delivery?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@story-agent` identifies 🔴 blockers, revise the epics and request re-review
+4. Route to `@review-agent` for quality review (Stage 2):
 
 ```
 @review-agent Please review the epics at docs/planning/epics/{filename}.md for:
@@ -183,13 +195,15 @@ After generating epics:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@review-agent` identifies 🔴 blockers, revise the epics and request re-review
-4. Once `@review-agent` approves, present the reviewed epics to the user:
+5. If `@review-agent` identifies 🔴 blockers, revise the epics and request re-review
+6. Once both reviewers approve, present the reviewed epics to the user:
 
 ```
 📋 **Epics Generated:** `docs/planning/epics/{filename}.md`
 
-🔍 **Sub-Agent Review:** @review-agent has approved these epics.
+🔍 **Sub-Agent Reviews:**
+- @story-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]
 
 **Summary:**

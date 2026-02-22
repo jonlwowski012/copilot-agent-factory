@@ -163,7 +163,19 @@ Example: `docs/planning/prd/user-authentication-20251229.md`
 After generating the PRD:
 
 1. Save to `docs/planning/prd/{filename}.md`
-2. Route to `@review-agent` for sub-agent review:
+2. Route to `@epic-agent` for domain expert review (Stage 1):
+
+```
+@epic-agent Please review this PRD from an epic-breakdown perspective:
+- Is the scope clear enough to break into 3-7 meaningful epics?
+- Are the requirements concrete enough to estimate effort?
+- Are there any requirements too vague or contradictory for epic planning?
+- Are success metrics measurable enough to define acceptance criteria?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@epic-agent` identifies 🔴 blockers, revise the PRD and request re-review
+4. Route to `@review-agent` for quality review (Stage 2):
 
 ```
 @review-agent Please review the PRD at docs/planning/prd/{filename}.md for:
@@ -174,13 +186,15 @@ After generating the PRD:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@review-agent` identifies 🔴 blockers, revise the PRD and request re-review
-4. Once `@review-agent` approves, present the reviewed PRD to the user:
+5. If `@review-agent` identifies 🔴 blockers, revise the PRD and request re-review
+6. Once both reviewers approve, present the reviewed PRD to the user:
 
 ```
 📋 **PRD Generated:** `docs/planning/prd/{filename}.md`
 
-🔍 **Sub-Agent Review:** @review-agent has approved this PRD.
+🔍 **Sub-Agent Reviews:**
+- @epic-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]
 
 Please review the PRD above.
