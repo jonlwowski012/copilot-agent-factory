@@ -7,13 +7,13 @@ triggers:
   - User invokes /design or @design-agent
   - Orchestrator routes technical design task
 handoffs:
+  - target: review-agent
+    label: "Review Design"
+    prompt: "Please review this technical design for completeness, API contract clarity, and alignment with the source architecture. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the design can be revised."
+    send: false
   - target: test-design-agent
     label: "Design Tests"
     prompt: "Please create a comprehensive test design strategy based on this technical design."
-    send: false
-  - target: api-agent
-    label: "Implement API"
-    prompt: "Please implement the API endpoints specified in this design."
     send: false
   - target: database-agent
     label: "Implement Database"
@@ -442,11 +442,27 @@ Example: `docs/planning/design/user-authentication-design-20251229.md`
 
 After generating the design:
 
-1. Present the design to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/design/{filename}.md`
+2. Route to `@review-agent` for sub-agent review:
+
+```
+@review-agent Please review the technical design at docs/planning/design/{filename}.md for:
+- Alignment with the source architecture document
+- Completeness of API specifications (request/response examples)
+- Data model constraints and validation
+- Security implementation (auth, input validation)
+- Error handling strategy
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@review-agent` identifies 🔴 blockers, revise the design and request re-review
+4. Once `@review-agent` approves, present the reviewed design to the user:
 
 ```
 📋 **Technical Design Generated:** `docs/planning/design/{filename}.md`
+
+🔍 **Sub-Agent Review:** @review-agent has approved this design.
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - API Endpoints: {count}

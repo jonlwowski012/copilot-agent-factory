@@ -11,25 +11,49 @@ handoffs:
     label: "Start Phase 1: PRD"
     prompt: "Create a Product Requirements Document for this feature: {{feature_description}}"
     send: false
+  - target: review-agent
+    label: "Phase 1.1 Review: Verify PRD"
+    prompt: "Review the PRD at {{prd_path}} for completeness, clarity, and measurable success criteria. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @prd-agent with your feedback. Only approve once all blockers are resolved."
+    send: false
   - target: epic-agent
     label: "Phase 1.2: Break into Epics"
     prompt: "Break this PRD into implementable epics with acceptance criteria: {{prd_path}}"
+    send: false
+  - target: review-agent
+    label: "Phase 1.2 Review: Verify Epics"
+    prompt: "Review the epics at {{epics_path}} for completeness, testability, and alignment with the PRD. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @epic-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: story-agent
     label: "Phase 1.3: Create Stories"
     prompt: "Convert these epics into detailed user stories with Gherkin scenarios: {{epics_path}}"
     send: false
+  - target: review-agent
+    label: "Phase 1.3 Review: Verify Stories"
+    prompt: "Review the user stories at {{stories_path}} for completeness, Gherkin acceptance criteria quality, and alignment with the epics. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @story-agent with your feedback. Only approve once all blockers are resolved."
+    send: false
   - target: architecture-agent
     label: "Phase 2.1: Design Architecture"
     prompt: "Design system architecture based on these requirements: {{planning_artifacts}}"
+    send: false
+  - target: review-agent
+    label: "Phase 2.1 Review: Verify Architecture"
+    prompt: "Review the architecture at {{architecture_path}} for completeness, ADR clarity, and alignment with requirements. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @architecture-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: design-agent
     label: "Phase 2.2: Technical Design"
     prompt: "Create detailed technical specifications based on this architecture: {{architecture_path}}"
     send: false
+  - target: review-agent
+    label: "Phase 2.2 Review: Verify Design"
+    prompt: "Review the technical design at {{design_path}} for completeness, specification clarity, and alignment with the architecture. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @design-agent with your feedback. Only approve once all blockers are resolved."
+    send: false
   - target: test-design-agent
     label: "Phase 3: Create Test Strategy"
     prompt: "Create comprehensive test strategy for this design (TDD approach): {{design_path}}"
+    send: false
+  - target: review-agent
+    label: "Phase 3 Review: Verify Test Design"
+    prompt: "Review the test design at {{test_design_path}} for coverage, alignment with acceptance criteria, and test quality. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @test-design-agent with your feedback. Only approve once all blockers are resolved."
     send: false
   - target: review-agent
     label: "Phase 5.1: Review Implementation"
@@ -226,10 +250,18 @@ agent: @prd-agent
 input: Feature description from user
 output: docs/planning/prd/{feature}-{YYYYMMDD}.md
 validation: PRD file must exist before proceeding
-gate: MUST wait for `/approve` or `/skip`
+sub_agent_review: @review-agent  # Reviews before user approval
+gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
 handoff_to: @epic-agent
 handoff_prompt: "Break this PRD into implementable epics with acceptance criteria"
 ```
+
+**Phase 1.1 Discrete Steps:**
+1. Invoke `@prd-agent` to create the PRD
+2. Invoke `@review-agent` to review the PRD for completeness, clarity, and measurability
+3. If `@review-agent` finds 🔴 blockers: share feedback with `@prd-agent` → revise → re-review
+4. Once `@review-agent` approves, present reviewed PRD to user with review summary
+5. Wait for user `/approve` or `/skip`
 
 **Phase 1.2: Epic Breakdown**
 ```yaml
@@ -238,10 +270,18 @@ prerequisite: PRD approved (Phase 1.1)
 input: docs/planning/prd/{feature}-{YYYYMMDD}.md
 output: docs/planning/epics/{feature}-epics-{YYYYMMDD}.md
 validation: Epics file must exist before proceeding
-gate: MUST wait for `/approve` or `/skip`
+sub_agent_review: @review-agent  # Reviews before user approval
+gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
 handoff_to: @story-agent
 handoff_prompt: "Convert these epics into detailed user stories with Gherkin scenarios"
 ```
+
+**Phase 1.2 Discrete Steps:**
+1. Invoke `@epic-agent` to create epics from the approved PRD
+2. Invoke `@review-agent` to review epics for testability and PRD alignment
+3. If `@review-agent` finds 🔴 blockers: share feedback with `@epic-agent` → revise → re-review
+4. Once `@review-agent` approves, present reviewed epics to user with review summary
+5. Wait for user `/approve` or `/skip`
 
 **Phase 1.3: User Stories**
 ```yaml
@@ -250,16 +290,27 @@ prerequisite: Epics approved (Phase 1.2)
 input: docs/planning/epics/{feature}-epics-{YYYYMMDD}.md
 output: docs/planning/stories/{feature}-stories-{YYYYMMDD}.md
 validation: Stories file must exist before proceeding
-gate: MUST wait for `/approve` or `/skip`
+sub_agent_review: @review-agent  # Reviews before user approval
+gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
 handoff_to: @architecture-agent
 handoff_prompt: "Design system architecture based on these requirements and stories"
 ```
 
+**Phase 1.3 Discrete Steps:**
+1. Invoke `@story-agent` to create stories from the approved epics
+2. Invoke `@review-agent` to review stories for Gherkin quality and epic alignment
+3. If `@review-agent` finds 🔴 blockers: share feedback with `@story-agent` → revise → re-review
+4. Once `@review-agent` approves, present reviewed stories to user with review summary
+5. Wait for user `/approve` or `/skip`
+
 **Phase 1 Completion Checklist:**
 - [ ] PRD created in docs/planning/prd/
+- [ ] PRD reviewed and approved by @review-agent
 - [ ] Epics created in docs/planning/epics/
+- [ ] Epics reviewed and approved by @review-agent
 - [ ] Stories created in docs/planning/stories/
-- [ ] All artifacts approved or skipped
+- [ ] Stories reviewed and approved by @review-agent
+- [ ] All artifacts approved or skipped by user
 - [ ] Ready to proceed to Phase 2
 
 ---
@@ -278,10 +329,18 @@ input:
   - docs/planning/stories/{feature}-stories-{YYYYMMDD}.md
 output: docs/planning/architecture/{feature}-architecture-{YYYYMMDD}.md
 validation: Architecture file with ADRs must exist before proceeding
-gate: MUST wait for `/approve` or `/skip`
+sub_agent_review: @review-agent  # Reviews before user approval
+gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
 handoff_to: @design-agent
 handoff_prompt: "Create detailed technical specifications based on this architecture"
 ```
+
+**Phase 2.1 Discrete Steps:**
+1. Invoke `@architecture-agent` to design the architecture
+2. Invoke `@review-agent` to review architecture for completeness and ADR quality
+3. If `@review-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
+4. Once `@review-agent` approves, present reviewed architecture to user with review summary
+5. Wait for user `/approve` or `/skip`
 
 **Phase 2.2: Technical Design**
 ```yaml
@@ -292,16 +351,26 @@ input:
   - All Phase 1 artifacts
 output: docs/planning/design/{feature}-design-{YYYYMMDD}.md
 validation: Design file must exist before proceeding
-gate: MUST wait for `/approve` or `/skip`
+sub_agent_review: @review-agent  # Reviews before user approval
+gate: MUST wait for sub-agent review approval, then user `/approve` or `/skip`
 handoff_to: @test-design-agent
 handoff_prompt: "Create comprehensive test strategy for this design (TDD approach)"
 ```
 
+**Phase 2.2 Discrete Steps:**
+1. Invoke `@design-agent` to create the technical design
+2. Invoke `@review-agent` to review design for specification clarity and architecture alignment
+3. If `@review-agent` finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review
+4. Once `@review-agent` approves, present reviewed design to user with review summary
+5. Wait for user `/approve` or `/skip`
+
 **Phase 2 Completion Checklist:**
 - [ ] Architecture document created in docs/planning/architecture/
+- [ ] Architecture reviewed and approved by @review-agent
 - [ ] Technical design created in docs/planning/design/
+- [ ] Technical design reviewed and approved by @review-agent
 - [ ] ADRs documented in architecture
-- [ ] All artifacts approved or skipped
+- [ ] All artifacts approved or skipped by user
 - [ ] Ready to proceed to Phase 3
 
 ---
@@ -330,11 +399,16 @@ handoff_prompt: "Create comprehensive test strategy for this design (TDD approac
    - Coverage requirements
 3. Agent defines tests BEFORE code is written (TDD approach)
 4. Save test design to `docs/planning/test-design/{feature}-test-design-{YYYYMMDD}.md`
-5. Present test design to user for approval
+5. Invoke `@review-agent` to review test design for coverage and acceptance criteria alignment
+6. If `@review-agent` finds 🔴 blockers: share feedback with `@test-design-agent` → revise → re-review
+7. Once `@review-agent` approves, present reviewed test design to user with review summary
+8. Wait for user `/approve` or `/skip`
 
 **Output:** `docs/planning/test-design/{feature}-test-design-{YYYYMMDD}.md`
 
 **Validation:** Test design file must exist before proceeding to implementation
+
+**Sub-Agent Review:** @review-agent reviews before user sees the document
 
 **Approval Gate:** MUST wait for `/approve` or `/skip`
 
@@ -342,9 +416,10 @@ handoff_prompt: "Create comprehensive test strategy for this design (TDD approac
 
 **Phase 3 Completion Checklist:**
 - [ ] Test strategy created in docs/planning/test-design/
+- [ ] Test design reviewed and approved by @review-agent
 - [ ] Test cases defined
 - [ ] Success criteria documented
-- [ ] Artifact approved or skipped
+- [ ] Artifact approved or skipped by user
 - [ ] Ready to proceed to Phase 4
 
 ---
@@ -471,23 +546,29 @@ handoff_prompt: "Create comprehensive test strategy for this design (TDD approac
    - NEVER skip phases unless explicitly commanded with `/skip`
    - NEVER proceed without approval gates
 
-2. **Artifact Validation:**
+2. **Sub-Agent Review Before User Approval (Phases 1-3):**
+   - After each planning document is created, invoke `@review-agent` for review
+   - If `@review-agent` finds 🔴 blockers, route back to creating agent for revision
+   - ONLY present document to user AFTER `@review-agent` approves
+   - Include review summary in the user-facing approval prompt
+
+3. **Artifact Validation:**
    - Verify each artifact file exists before proceeding
    - Check file paths match expected structure
    - Confirm content is complete (not placeholder text)
 
-3. **Approval Gate Protocol:**
-   - Present artifact to user
+4. **Approval Gate Protocol:**
+   - Present artifact to user WITH sub-agent review summary
    - State clearly: "Phase X.Y complete. Type `/approve` to proceed to Phase X.Y+1 or `/skip` to skip."
    - WAIT for user response
    - Do NOT proceed automatically
 
-4. **State Tracking:**
+5. **State Tracking:**
    - Maintain current phase and step
    - Track all artifact paths
    - Display workflow state on `/status` command
 
-5. **Error Handling:**
+6. **Error Handling:**
    - If artifact creation fails, retry with the same agent
    - If agent returns incomplete work, request completion
    - Never proceed with missing prerequisites
@@ -568,18 +649,27 @@ docs/planning/
 
 **When waiting for approval at any phase:**
 
-1. **Present Phase Summary:**
+1. **Run Sub-Agent Review First (Phases 1-3):**
+   - Invoke `@review-agent` with the planning document
+   - Wait for review feedback
+   - If 🔴 blockers found: route to creating agent, revise, re-review
+   - Continue until `@review-agent` approves
+
+2. **Present Phase Summary (after sub-agent review):**
    ```
    ✅ Phase X.Y Complete: [Phase Name]
    
    📄 Artifact Created: [file path]
+   
+   🔍 Sub-Agent Review: @review-agent has approved this document.
+   [Include any 🟡 suggestions for user awareness]
    
    📋 Summary: [Brief summary of what was created]
    
    ⏭️  Next: Phase X.Y+1 - [Next phase name]
    ```
 
-2. **State Approval Options Clearly:**
+3. **State Approval Options Clearly:**
    ```
    To proceed, type:
    - `/approve` - Approve this phase and move to Phase X.Y+1
@@ -588,13 +678,13 @@ docs/planning/
    - `/restart` - Restart workflow from Phase 1.1
    ```
 
-3. **WAIT - Do Not Proceed:**
+4. **WAIT - Do Not Proceed:**
    - **NEVER automatically proceed to next phase**
    - **MUST wait for explicit user command**
    - **Do not assume approval**
    - **Do not interpret other messages as approval**
 
-4. **Process Commands:**
+5. **Process Commands:**
    - **`/approve`:**
      - Mark current phase as completed
      - Update workflow state
@@ -619,7 +709,7 @@ docs/planning/
      - Clear all workflow state
      - Begin with @prd-agent
 
-5. **Validate Artifacts Before Proceeding:**
+6. **Validate Artifacts Before Proceeding:**
    - Verify the artifact file exists
    - Check the file is not empty
    - Confirm content is complete (not placeholder)
@@ -632,6 +722,9 @@ Orchestrator:
 ✅ Phase 1.1 Complete: Product Requirements Document
 
 📄 Artifact Created: docs/planning/prd/user-authentication-20260111.md
+
+🔍 Sub-Agent Review: @review-agent has reviewed and approved this PRD.
+💡 @review-agent notes: Added suggestion to clarify the session timeout requirement.
 
 📋 Summary: Created comprehensive PRD defining OAuth2 authentication system 
 with social login providers, MFA support, and session management.
@@ -649,7 +742,7 @@ Orchestrator: ✓ Phase 1.1 approved. Starting Phase 1.2...
 [Invokes @epic-agent with handoff]
 ```
 
-**Important:** The orchestrator must act as a strict gatekeeper, never bypassing approval gates or making assumptions about user intent.
+**Important:** The orchestrator must act as a strict gatekeeper, ensuring all planning documents are reviewed by `@review-agent` before presenting to the user, and never bypassing approval gates or making assumptions about user intent.
 
 ## Multi-Agent Coordination
 
@@ -830,5 +923,7 @@ Routing directly to @docs-agent...
 ## Boundaries
 
 - ✅ **Always:** Route to specialized agents, coordinate workflows, enforce quality
+- ✅ **Always:** Invoke @review-agent to review planning docs before presenting to user
 - ⚠️ **Ask First:** Major architectural changes, new placeholder conventions
 - 🚫 **Never:** Bypass approval gates, skip specialized agents for their domain
+- 🚫 **Never:** Present planning documents to user without @review-agent review first

@@ -7,6 +7,10 @@ triggers:
   - User invokes /epic or @epic-agent
   - Orchestrator routes epic generation task
 handoffs:
+  - target: review-agent
+    label: "Review Epics"
+    prompt: "Please review these epics for completeness, testable acceptance criteria, and alignment with the source PRD. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the epics can be revised."
+    send: false
   - target: story-agent
     label: "Generate User Stories"
     prompt: "Please create detailed user stories with Gherkin acceptance criteria based on these epics."
@@ -160,11 +164,27 @@ Example: `docs/planning/epics/new-agent-type-epics-20260114.md`
 
 After generating epics:
 
-1. Present the epic breakdown to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/epics/{filename}.md`
+2. Route to `@review-agent` for sub-agent review:
+
+```
+@review-agent Please review the epics at docs/planning/epics/{filename}.md for:
+- Alignment with the source PRD
+- Testable and specific acceptance criteria
+- Clear scope boundaries (in-scope / out-of-scope)
+- Appropriate epic sizing (avoid XL epics that should be split)
+- Meaningful dependency graph
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@review-agent` identifies 🔴 blockers, revise the epics and request re-review
+4. Once `@review-agent` approves, present the reviewed epics to the user:
 
 ```
 📋 **Epics Generated:** `docs/planning/epics/{filename}.md`
+
+🔍 **Sub-Agent Review:** @review-agent has approved these epics.
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - Total Epics: {count}

@@ -7,6 +7,10 @@ triggers:
   - User invokes /design or @design-agent
   - Orchestrator routes technical design task
 handoffs:
+  - target: review-agent
+    label: "Review Design"
+    prompt: "Please review this technical design for completeness, specification clarity, and alignment with the source architecture. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the design can be revised."
+    send: false
   - target: test-design-agent
     label: "Design Tests"
     prompt: "Please create a comprehensive test design strategy based on this technical design."
@@ -202,11 +206,27 @@ Example: `docs/planning/design/new-agent-type-design-20260114.md`
 
 After generating the design:
 
-1. Present the design to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/design/{filename}.md`
+2. Route to `@review-agent` for sub-agent review:
+
+```
+@review-agent Please review the technical design at docs/planning/design/{filename}.md for:
+- Alignment with the source architecture document
+- Completeness of placeholder specifications
+- Concrete examples (not pseudocode)
+- File structure clarity
+- Detection rule accuracy
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@review-agent` identifies 🔴 blockers, revise the design and request re-review
+4. Once `@review-agent` approves, present the reviewed design to the user:
 
 ```
 📋 **Design Generated:** `docs/planning/design/{filename}.md`
+
+🔍 **Sub-Agent Review:** @review-agent has approved this design.
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - New Placeholders: {count}

@@ -9,6 +9,10 @@ triggers:
   - Orchestrator routes architecture design task
   - Request to check or update system state diagram
 handoffs:
+  - target: review-agent
+    label: "Review Architecture"
+    prompt: "Please review this architecture document for completeness, ADR clarity, security considerations, and alignment with the planning artifacts. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the architecture can be revised."
+    send: false
   - target: design-agent
     label: "Create Technical Design"
     prompt: "Please create detailed technical specifications and API contracts based on this architecture."
@@ -201,11 +205,27 @@ Example: `docs/planning/architecture/new-agent-type-architecture-20260114.md`
 
 After generating architecture:
 
-1. Present the architecture to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/architecture/{filename}.md`
+2. Route to `@review-agent` for sub-agent review:
+
+```
+@review-agent Please review the architecture at docs/planning/architecture/{filename}.md for:
+- Alignment with the planning artifacts (PRD, epics, stories)
+- Quality of Architecture Decision Records (ADRs)
+- Security considerations addressed
+- Data flow clarity and completeness
+- No over-engineering for current requirements
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@review-agent` identifies 🔴 blockers, revise the architecture and request re-review
+4. Once `@review-agent` approves, present the reviewed architecture to the user:
 
 ```
 📋 **Architecture Generated:** `docs/planning/architecture/{filename}.md`
+
+🔍 **Sub-Agent Review:** @review-agent has approved this architecture.
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - Components: {list}

@@ -7,6 +7,10 @@ triggers:
   - User invokes /test-design or @test-design-agent
   - Orchestrator routes test design task
 handoffs:
+  - target: review-agent
+    label: "Review Test Design"
+    prompt: "Please review this test design for coverage, alignment with acceptance criteria, and test quality. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the test design can be revised."
+    send: false
   - target: docs-agent
     label: "Document Test Strategy"
     prompt: "Please document the test strategy in the project documentation."
@@ -184,11 +188,27 @@ Example: `docs/planning/test-design/new-agent-type-test-design-20260114.md`
 
 After generating the test design:
 
-1. Present the test design to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/test-design/{filename}.md`
+2. Route to `@review-agent` for sub-agent review:
+
+```
+@review-agent Please review the test design at docs/planning/test-design/{filename}.md for:
+- Complete acceptance criteria coverage (all stories addressed)
+- Test case specificity (concrete inputs and expected outputs)
+- Test pyramid balance (unit/integration/e2e appropriate ratio)
+- Clear pass/fail criteria for each test
+- No over-testing trivial functionality
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@review-agent` identifies 🔴 blockers, revise the test design and request re-review
+4. Once `@review-agent` approves, present the reviewed test design to the user:
 
 ```
 📋 **Test Design Generated:** `docs/planning/test-design/{filename}.md`
+
+🔍 **Sub-Agent Review:** @review-agent has approved this test design.
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - Validation Tests: {count}

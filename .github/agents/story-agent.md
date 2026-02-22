@@ -7,6 +7,10 @@ triggers:
   - User invokes /story or @story-agent
   - Orchestrator routes user story generation task
 handoffs:
+  - target: review-agent
+    label: "Review Stories"
+    prompt: "Please review these user stories for completeness, Gherkin acceptance criteria quality, and alignment with the source epics. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the stories can be revised."
+    send: false
   - target: architecture-agent
     label: "Design Architecture"
     prompt: "Please design the system architecture to implement these user stories."
@@ -192,11 +196,27 @@ Then it works
 
 After generating stories:
 
-1. Present the user stories to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/stories/{filename}.md`
+2. Route to `@review-agent` for sub-agent review:
+
+```
+@review-agent Please review the user stories at docs/planning/stories/{filename}.md for:
+- Alignment with the source epics (all epics covered)
+- Gherkin acceptance criteria quality (specific Given/When/Then)
+- Story independence and completeness
+- Realistic story point estimates
+- Clear Definition of Done
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@review-agent` identifies 🔴 blockers, revise the stories and request re-review
+4. Once `@review-agent` approves, present the reviewed stories to the user:
 
 ```
 📋 **Stories Generated:** `docs/planning/stories/{filename}.md`
+
+🔍 **Sub-Agent Review:** @review-agent has approved these stories.
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - Total Stories: {count}

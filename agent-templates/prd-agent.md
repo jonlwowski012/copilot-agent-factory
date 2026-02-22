@@ -7,6 +7,10 @@ triggers:
   - User invokes /prd or @prd-agent
   - Orchestrator routes product discovery task
 handoffs:
+  - target: review-agent
+    label: "Review PRD"
+    prompt: "Please review this PRD for completeness, clarity, measurable success criteria, and alignment with the feature request. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the PRD can be revised."
+    send: false
   - target: epic-agent
     label: "Break into Epics"
     prompt: "Please break down this PRD into actionable epics with clear scope and acceptance criteria."
@@ -158,11 +162,26 @@ Example: `docs/planning/prd/user-authentication-20251229.md`
 
 After generating the PRD:
 
-1. Present the PRD to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/prd/{filename}.md`
+2. Route to `@review-agent` for sub-agent review:
+
+```
+@review-agent Please review the PRD at docs/planning/prd/{filename}.md for:
+- Completeness (all required sections present with real content)
+- Clarity (specific, measurable success metrics)
+- Scope (clear in-scope and out-of-scope)
+- Feasibility (requirements are implementable)
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@review-agent` identifies 🔴 blockers, revise the PRD and request re-review
+4. Once `@review-agent` approves, present the reviewed PRD to the user:
 
 ```
 📋 **PRD Generated:** `docs/planning/prd/{filename}.md`
+
+🔍 **Sub-Agent Review:** @review-agent has approved this PRD.
+[Include any 🟡 suggestions for user awareness]
 
 Please review the PRD above.
 
