@@ -7,6 +7,10 @@ triggers:
   - User invokes /prd or @prd-agent
   - Orchestrator routes product discovery task
 handoffs:
+  - target: review-agent
+    label: "Review PRD"
+    prompt: "Please review this PRD for completeness, clarity, measurable success criteria, and alignment with the feature request. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the PRD can be revised."
+    send: false
   - target: epic-agent
     label: "Break into Epics"
     prompt: "Please break down this PRD into actionable epics with clear scope and acceptance criteria."
@@ -158,11 +162,40 @@ Example: `docs/planning/prd/user-authentication-20251229.md`
 
 After generating the PRD:
 
-1. Present the PRD to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/prd/{filename}.md`
+2. Route to `@epic-agent` for domain expert review (Stage 1):
+
+```
+@epic-agent Please review this PRD from an epic-breakdown perspective:
+- Is the scope clear enough to break into 3-7 meaningful epics?
+- Are the requirements concrete enough to estimate effort?
+- Are there any requirements too vague or contradictory for epic planning?
+- Are success metrics measurable enough to define acceptance criteria?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@epic-agent` identifies 🔴 blockers, revise the PRD and request re-review
+4. Route to `@review-agent` for quality review (Stage 2):
+
+```
+@review-agent Please review the PRD at docs/planning/prd/{filename}.md for:
+- Completeness (all required sections present with real content)
+- Clarity (specific, measurable success metrics)
+- Scope (clear in-scope and out-of-scope)
+- Feasibility (requirements are implementable)
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+5. If `@review-agent` identifies 🔴 blockers, revise the PRD and request re-review
+6. Once both reviewers approve, present the reviewed PRD to the user:
 
 ```
 📋 **PRD Generated:** `docs/planning/prd/{filename}.md`
+
+🔍 **Sub-Agent Reviews:**
+- @epic-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
+[Include any 🟡 suggestions for user awareness]
 
 Please review the PRD above.
 

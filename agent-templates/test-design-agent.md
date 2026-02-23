@@ -7,6 +7,10 @@ triggers:
   - User invokes /test-design or @test-design-agent
   - Orchestrator routes test design task
 handoffs:
+  - target: review-agent
+    label: "Review Test Design"
+    prompt: "Please review this test design for coverage, alignment with acceptance criteria, and test quality. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the test design can be revised."
+    send: false
   - target: test-agent
     label: "Implement Tests"
     prompt: "Please implement the test cases specified in this test design document."
@@ -476,11 +480,41 @@ Example: `docs/planning/test-design/user-authentication-test-design-20251229.md`
 
 After generating the test design:
 
-1. Present the test design to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/test-design/{filename}.md`
+2. Route to `@architecture-agent` for domain expert review (Stage 1):
+
+```
+@architecture-agent Please review this test design from an architecture perspective:
+- Do the integration and E2E tests validate the correct component interactions per the architecture?
+- Are the test cases respecting the architectural boundaries (not mocking across wrong layers)?
+- Do performance or load tests match the architectural scalability requirements?
+- Are there any test cases that would give false confidence about architectural compliance?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@architecture-agent` identifies 🔴 blockers, revise the test design and request re-review
+4. Route to `@review-agent` for quality review (Stage 2):
+
+```
+@review-agent Please review the test design at docs/planning/test-design/{filename}.md for:
+- Complete acceptance criteria coverage (all stories addressed)
+- Test case specificity (concrete inputs and expected outputs)
+- Test pyramid balance (unit/integration/e2e appropriate ratio)
+- Clear pass/fail criteria for each test
+- Acceptance criteria traceability
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+5. If `@review-agent` identifies 🔴 blockers, revise the test design and request re-review
+6. Once both reviewers approve, present the reviewed test design to the user:
 
 ```
 📋 **Test Design Generated:** `docs/planning/test-design/{filename}.md`
+
+🔍 **Sub-Agent Reviews:**
+- @architecture-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - Unit Test Cases: {count}

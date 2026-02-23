@@ -7,6 +7,10 @@ triggers:
   - User invokes /epic or @epic-agent
   - Orchestrator routes epic generation task
 handoffs:
+  - target: review-agent
+    label: "Review Epics"
+    prompt: "Please review these epics for completeness, testable acceptance criteria, and alignment with the source PRD. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the epics can be revised."
+    send: false
   - target: story-agent
     label: "Generate User Stories"
     prompt: "Please create detailed user stories with Gherkin acceptance criteria based on these epics."
@@ -166,11 +170,41 @@ Example: `docs/planning/epics/user-authentication-epics-20251229.md`
 
 After generating epics:
 
-1. Present the epic breakdown to the user for review
-2. Prompt with approval options:
+1. Save to `docs/planning/epics/{filename}.md`
+2. Route to `@story-agent` for domain expert review (Stage 1):
+
+```
+@story-agent Please review these epics from a user-story perspective:
+- Are the epics scoped correctly for story breakdown (not too large, not too small)?
+- Is the acceptance criteria specific enough to write testable user stories?
+- Are there any epics that should be split or merged for better story granularity?
+- Is the implementation order logical for incremental story delivery?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@story-agent` identifies 🔴 blockers, revise the epics and request re-review
+4. Route to `@review-agent` for quality review (Stage 2):
+
+```
+@review-agent Please review the epics at docs/planning/epics/{filename}.md for:
+- Alignment with the source PRD
+- Testable and specific acceptance criteria
+- Clear scope boundaries (in-scope / out-of-scope)
+- Appropriate epic sizing (avoid XL epics that should be split)
+- Meaningful dependency graph
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+5. If `@review-agent` identifies 🔴 blockers, revise the epics and request re-review
+6. Once both reviewers approve, present the reviewed epics to the user:
 
 ```
 📋 **Epics Generated:** `docs/planning/epics/{filename}.md`
+
+🔍 **Sub-Agent Reviews:**
+- @story-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @review-agent (quality check): Approved ✅ [Key feedback addressed]
+[Include any 🟡 suggestions for user awareness]
 
 **Summary:**
 - Total Epics: {count}
