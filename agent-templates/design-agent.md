@@ -11,6 +11,14 @@ handoffs:
     label: "Review Design"
     prompt: "Please review this technical design for completeness, API contract clarity, and alignment with the source architecture. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the design can be revised."
     send: false
+  - target: business-architecture-agent
+    label: "Business Architecture Review"
+    prompt: "Please review this technical design for business domain alignment, business rule placement, and business capability scoping. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
+    send: false
+  - target: application-architecture-agent
+    label: "Application Architecture Review"
+    prompt: "Please review this technical design for component boundary correctness, API contract completeness, and integration pattern adherence. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
+    send: false
   - target: test-design-agent
     label: "Design Tests"
     prompt: "Please create a comprehensive test design strategy based on this technical design."
@@ -443,7 +451,31 @@ Example: `docs/planning/design/user-authentication-design-20251229.md`
 After generating the design:
 
 1. Save to `docs/planning/design/{filename}.md`
-2. Route to `@architecture-agent` for domain expert review (Stage 1, parallel - alignment):
+2. Route to `@business-architecture-agent` for domain expert review (Stage 1 - business alignment):
+
+```
+@business-architecture-agent Please review this technical design from a business architecture perspective:
+- Does the design correctly implement the domain models?
+- Is business logic placed at the correct design boundaries?
+- Are the business rules enforced in the right components?
+- Does the design stay within the scope of its intended business capability?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@business-architecture-agent` identifies 🔴 blockers, revise the design and request re-review
+4. Route to `@application-architecture-agent` for domain expert review (Stage 1 - application alignment):
+
+```
+@application-architecture-agent Please review this technical design from an application architecture perspective:
+- Are the agent handoff contracts fully specified (inputs, outputs, format)?
+- Are the component boundaries respected (no agent reaching into another's internal state)?
+- Are the revision/re-review paths specified as explicit application flows?
+- Are the integration boundaries precise enough for integration testing?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+5. If `@application-architecture-agent` identifies 🔴 blockers, revise the design and request re-review
+6. Route to `@architecture-agent` for domain expert review (Stage 1, parallel - ADR alignment):
 
 ```
 @architecture-agent Please review this technical design from an architecture alignment perspective:
@@ -454,8 +486,8 @@ After generating the design:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@architecture-agent` identifies 🔴 blockers, revise the design and request re-review
-4. Route to `@test-design-agent` for domain expert review (Stage 1, parallel - testability):
+7. If `@architecture-agent` identifies 🔴 blockers, revise the design and request re-review
+8. Route to `@test-design-agent` for domain expert review (Stage 1, parallel - testability):
 
 ```
 @test-design-agent Please review this technical design from a test-design perspective:
@@ -466,8 +498,8 @@ Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-5. If `@test-design-agent` identifies 🔴 blockers, revise the design and request re-review
-6. Route to `@review-agent` for quality review (Stage 2):
+9. If `@test-design-agent` identifies 🔴 blockers, revise the design and request re-review
+10. Route to `@review-agent` for quality review (Stage 2):
 
 ```
 @review-agent Please review the technical design at docs/planning/design/{filename}.md for:
@@ -479,14 +511,16 @@ Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-7. If `@review-agent` identifies 🔴 blockers, revise the design and request re-review
-8. Once all reviewers approve, present the reviewed design to the user:
+11. If `@review-agent` identifies 🔴 blockers, revise the design and request re-review
+12. Once all reviewers approve, present the reviewed design to the user:
 
 ```
 📋 **Technical Design Generated:** `docs/planning/design/{filename}.md`
 
 🔍 **Sub-Agent Reviews:**
-- @architecture-agent (alignment check): Approved ✅ [Key feedback addressed]
+- @business-architecture-agent (business alignment): Approved ✅ [Key feedback addressed]
+- @application-architecture-agent (application alignment): Approved ✅ [Key feedback addressed]
+- @architecture-agent (ADR alignment): Approved ✅ [Key feedback addressed]
 - @test-design-agent (testability check): Approved ✅ [Key feedback addressed]
 - @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]

@@ -47,6 +47,14 @@ handoffs:
     label: "Phase 2.1: Design Architecture"
     prompt: "Design system architecture based on these requirements: {{planning_artifacts}}"
     send: false
+  - target: business-architecture-agent
+    label: "Architecture Expert Review: Business Domain Alignment"
+    prompt: "Review the architecture at {{architecture_path}} for business domain alignment: Do the components map to actual business capabilities? Are business rules documented in ADRs? Are business capability boundaries clearly defined? Use 🔴/🟡/🟢 format."
+    send: false
+  - target: application-architecture-agent
+    label: "Architecture Expert Review: Application Layer Alignment"
+    prompt: "Review the architecture at {{architecture_path}} for application-layer correctness: Are application component boundaries clear? Are inter-component contracts fully specified? Are agent communication patterns consistent with the handoff model? Use 🔴/🟡/🟢 format."
+    send: false
   - target: design-agent
     label: "Architecture Expert Review: Design Feasibility"
     prompt: "Review the architecture at {{architecture_path}} from a technical design perspective: Is the architecture specific enough to create detailed designs and API contracts? Are the ADRs clear enough to guide implementation decisions? Flag any components that lack enough detail. Use 🔴/🟡/🟢 format."
@@ -58,6 +66,14 @@ handoffs:
   - target: design-agent
     label: "Phase 2.2: Technical Design"
     prompt: "Create detailed technical specifications based on this architecture: {{architecture_path}}"
+    send: false
+  - target: business-architecture-agent
+    label: "Design Expert Review: Business Alignment"
+    prompt: "Review the technical design at {{design_path}} for business architecture alignment: Does the design correctly implement domain models? Is business logic placed at correct boundaries? Are business rules enforced in the right components? Use 🔴/🟡/🟢 format."
+    send: false
+  - target: application-architecture-agent
+    label: "Design Expert Review: Application Architecture Alignment"
+    prompt: "Review the technical design at {{design_path}} for application architecture alignment: Are agent handoff contracts fully specified? Are component boundaries respected? Are revision/re-review paths specified as explicit flows? Use 🔴/🟡/🟢 format."
     send: false
   - target: architecture-agent
     label: "Design Expert Review: Architecture Alignment"
@@ -329,19 +345,26 @@ gate: MUST wait for both reviews, then user `/approve` or `/skip`
 agent: @architecture-agent
 input: All Phase 1 artifacts
 output: docs/planning/architecture/{feature}-architecture-{YYYYMMDD}.md
-expert_review: @design-agent  # Checks: is this architecture ready for technical design?
-quality_review: @review-agent  # Checks: ADR quality, security, completeness
-gate: MUST wait for both reviews, then user `/approve` or `/skip`
+expert_review:
+  - @business-architecture-agent   # Stage 1 (parallel): Business domain alignment
+  - @application-architecture-agent # Stage 1 (parallel): Application layer alignment
+  - @design-agent                   # Stage 1: Is architecture ready for technical design?
+quality_review: @review-agent  # Stage 2: ADR quality, security, completeness
+gate: MUST wait for all reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 2.1 Discrete Steps:**
 1. Invoke `@architecture-agent` to design the architecture
-2. Invoke `@design-agent` for expert review: "Is the architecture specific enough to create API contracts and data models?"
-3. If `@design-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
-4. Invoke `@review-agent` for quality review: ADR quality, security considerations, completeness
-5. If `@review-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
-6. Once both approve, present reviewed architecture to user with combined review summary
-7. Wait for user `/approve` or `/skip`
+2. Invoke `@business-architecture-agent` for expert review: "Do components map to business capabilities? Are business rules in ADRs?"
+3. If `@business-architecture-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
+4. Invoke `@application-architecture-agent` for expert review: "Are application boundaries and inter-component contracts fully specified?"
+5. If `@application-architecture-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
+6. Invoke `@design-agent` for expert review: "Is the architecture specific enough to create API contracts and data models?"
+7. If `@design-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
+8. Invoke `@review-agent` for quality review: ADR quality, security considerations, completeness
+9. If `@review-agent` finds 🔴 blockers: share feedback with `@architecture-agent` → revise → re-review
+10. Once all approve, present reviewed architecture to user with combined review summary
+11. Wait for user `/approve` or `/skip`
 
 **Phase 2.2: Technical Design**
 ```yaml
@@ -349,21 +372,27 @@ agent: @design-agent
 input: Architecture document + Phase 1 artifacts
 output: docs/planning/design/{feature}-design-{YYYYMMDD}.md
 expert_review:
-  - @architecture-agent  # Stage 1 (parallel): Checks design stays true to ADRs
-  - @test-design-agent   # Stage 1 (parallel): Checks design is testable
-quality_review: @review-agent          # Checks: specification clarity, completeness
+  - @business-architecture-agent   # Stage 1 (parallel): Business domain alignment
+  - @application-architecture-agent # Stage 1 (parallel): Application layer alignment
+  - @architecture-agent             # Stage 1 (parallel): Design stays true to ADRs?
+  - @test-design-agent              # Stage 1 (parallel): Is design testable?
+quality_review: @review-agent  # Stage 2: Specification clarity, completeness
 gate: MUST wait for all reviews, then user `/approve` or `/skip`
 ```
 
 **Phase 2.2 Discrete Steps:**
 1. Invoke `@design-agent` to create the technical design
-2. Invoke `@architecture-agent` for expert review: "Does this design stay true to all ADRs and architectural decisions?"
-3. Invoke `@test-design-agent` for expert review: "Are the API contracts and data models specific enough to write test cases?"
-4. If either expert finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review that expert
-5. Invoke `@review-agent` for quality review: specification clarity, error handling, completeness
-6. If `@review-agent` finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review
-7. Once all three approve, present reviewed design to user with combined review summary
-8. Wait for user `/approve` or `/skip`
+2. Invoke `@business-architecture-agent` for expert review: "Is business logic at correct boundaries? Are domain models correctly implemented?"
+3. If `@business-architecture-agent` finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review
+4. Invoke `@application-architecture-agent` for expert review: "Are agent handoff contracts fully specified? Are component boundaries respected?"
+5. If `@application-architecture-agent` finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review
+6. Invoke `@architecture-agent` for expert review: "Does this design stay true to all ADRs and architectural decisions?"
+7. Invoke `@test-design-agent` for expert review: "Are the API contracts and data models specific enough to write test cases?"
+8. If either expert finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review that expert
+9. Invoke `@review-agent` for quality review: specification clarity, error handling, completeness
+10. If `@review-agent` finds 🔴 blockers: share feedback with `@design-agent` → revise → re-review
+11. Once all approve, present reviewed design to user with combined review summary
+12. Wait for user `/approve` or `/skip`
 
 ### Phase 3: Test Strategy (TDD Approach with Sub-Agent Review)
 
@@ -453,7 +482,11 @@ Each planning document is first reviewed by the **domain expert who will consume
 | PRD | @epic-agent | Scope clear enough for epic breakdown? |
 | Epics | @story-agent | Structured well enough for user stories? |
 | Stories | @test-design-agent | Acceptance criteria testable enough? |
+| Architecture | @business-architecture-agent | Business domain alignment & capability boundaries |
+| Architecture | @application-architecture-agent | Application component boundaries & interface contracts |
 | Architecture | @design-agent | Detailed enough for API/data model design? |
+| Design | @business-architecture-agent | Business logic placement & domain model fidelity |
+| Design | @application-architecture-agent | Agent handoff contracts & component coupling |
 | Design | @architecture-agent | Stays true to ADRs? | 
 | Design | @test-design-agent | API contracts testable? |
 | Test Design | @architecture-agent | Tests validate correct architectural boundaries? |

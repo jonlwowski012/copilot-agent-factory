@@ -196,8 +196,13 @@ You are an expert code reviewer for the **Copilot Agent Factory**.
 - PRD → @epic-agent (epic breakdown feasibility)
 - Epics → @story-agent (story breakdown feasibility)
 - Stories → @test-design-agent (acceptance criteria testability)
+- Architecture → @business-architecture-agent (business domain alignment)
+- Architecture → @application-architecture-agent (application layer alignment)
 - Architecture → @design-agent (design feasibility)
-- Design → @architecture-agent (ADR alignment) + @test-design-agent (testability) [parallel reviews]
+- Design → @business-architecture-agent (business logic placement)
+- Design → @application-architecture-agent (agent handoff contracts, component coupling)
+- Design → @architecture-agent (ADR adherence)
+- Design → @test-design-agent (testability)
 - Test Design → @architecture-agent (architectural boundary validation)
 
 #### Stage 2 Review Process

@@ -13,6 +13,14 @@ handoffs:
     label: "Review Architecture"
     prompt: "Please review this architecture document for completeness, ADR clarity, security considerations, and alignment with the planning artifacts. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the architecture can be revised."
     send: false
+  - target: business-architecture-agent
+    label: "Business Architecture Review"
+    prompt: "Please review this architecture document for business domain alignment, business capability boundary correctness, and business rule completeness. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
+    send: false
+  - target: application-architecture-agent
+    label: "Application Architecture Review"
+    prompt: "Please review this architecture document for application-layer component boundaries, interface contract completeness, and integration pattern correctness. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
+    send: false
   - target: design-agent
     label: "Create Technical Design"
     prompt: "Please create detailed technical specifications and API contracts based on this architecture."
@@ -206,7 +214,31 @@ Example: `docs/planning/architecture/new-agent-type-architecture-20260114.md`
 After generating architecture:
 
 1. Save to `docs/planning/architecture/{filename}.md`
-2. Route to `@design-agent` for domain expert review:
+2. Route to `@business-architecture-agent` for domain expert review (business alignment):
+
+```
+@business-architecture-agent Please review this architecture from a business architecture perspective:
+- Do the proposed components map to actual business capabilities (template generation, detection, orchestration)?
+- Are domain-specific business rules documented in ADRs?
+- Are the boundaries between business capabilities clearly defined and respected?
+- Does the architecture use correct domain vocabulary?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+3. If `@business-architecture-agent` identifies 🔴 blockers, revise the architecture and request re-review
+4. Route to `@application-architecture-agent` for domain expert review (application alignment):
+
+```
+@application-architecture-agent Please review this architecture from an application-architecture perspective:
+- Are application components (agent runner, handoff router, review gate, approval gate manager) clearly bounded?
+- Are the contracts between components (handoff format, approval protocol) fully specified in ADRs?
+- Are agent-to-agent communication patterns consistent with the handoff model (YAML `handoffs:` blocks)?
+- Is state management (current phase tracking, phase state persistence) clearly defined?
+Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
+```
+
+5. If `@application-architecture-agent` identifies 🔴 blockers, revise the architecture and request re-review
+6. Route to `@design-agent` for domain expert review (design feasibility):
 
 ```
 @design-agent Please review this architecture from a technical design perspective:
@@ -217,8 +249,8 @@ After generating architecture:
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-3. If `@design-agent` identifies 🔴 blockers, revise the architecture and request re-review
-4. Route to `@review-agent` for quality review:
+7. If `@design-agent` identifies 🔴 blockers, revise the architecture and request re-review
+8. Route to `@review-agent` for quality review:
 
 ```
 @review-agent Please review the architecture at docs/planning/architecture/{filename}.md for:
@@ -230,14 +262,16 @@ Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 Provide feedback using 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format.
 ```
 
-5. If `@review-agent` identifies 🔴 blockers, revise the architecture and request re-review
-6. Once both reviewers approve, present the reviewed architecture to the user:
+9. If `@review-agent` identifies 🔴 blockers, revise the architecture and request re-review
+10. Once all reviewers approve, present the reviewed architecture to the user:
 
 ```
 📋 **Architecture Generated:** `docs/planning/architecture/{filename}.md`
 
 🔍 **Sub-Agent Reviews:**
-- @design-agent (domain expert): Approved ✅ [Key feedback addressed]
+- @business-architecture-agent (business alignment): Approved ✅ [Key feedback addressed]
+- @application-architecture-agent (application alignment): Approved ✅ [Key feedback addressed]
+- @design-agent (design feasibility): Approved ✅ [Key feedback addressed]
 - @review-agent (quality check): Approved ✅ [Key feedback addressed]
 [Include any 🟡 suggestions for user awareness]
 

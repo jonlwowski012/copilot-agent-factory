@@ -222,8 +222,8 @@ Check these files for additional project-specific standards:
 - PRD → @epic-agent (epic breakdown feasibility)
 - Epics → @story-agent (story breakdown feasibility)
 - Stories → @test-design-agent (acceptance criteria testability)
-- Architecture → @design-agent (design feasibility)
-- Design → @architecture-agent (ADR alignment) + @test-design-agent (testability) [parallel reviews]
+- Architecture → @business-architecture-agent (business domain alignment) + @application-architecture-agent (application layer alignment) + @design-agent (design feasibility)
+- Design → @business-architecture-agent (business logic placement) + @application-architecture-agent (agent handoff contracts, component coupling) + @architecture-agent (ADR alignment) + @test-design-agent (testability)
 - Test Design → @architecture-agent (architectural boundary validation)
 
 #### Stage 2 Review Process
