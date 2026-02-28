@@ -50,12 +50,12 @@ Skills have been successfully added to Copilot Agent Factory with 8 skill templa
 - `pytest-setup` - Setup pytest with coverage
 - `run-tests` - Commands to run tests
 - `debug-test-failures` - Investigate test failures
-- `debug-code-profiling` - Debug with profiling and critical path timing (profile first, suggest second)
 
-**Development Workflows (3):**
+**Development Workflows (4):**
 - `local-dev-setup` - Setup dev environment
 - `code-formatting` - Format code to standards
 - `git-workflow` - Branch/commit/PR process
+- `debug-code-profiling` - Debug with profiling and critical path timing (profile first, suggest second)
 
 **DevOps (1):**
 - `ci-pipeline` - Understanding CI/CD pipelines
