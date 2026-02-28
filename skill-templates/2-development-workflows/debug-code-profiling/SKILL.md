@@ -32,6 +32,13 @@ This skill activates when you need to:
 2. Identifying and timing the critical path
 3. Documenting measured baseline metrics
 
+## Prerequisites
+
+Before using this skill, ensure:
+- You have access to the relevant codebase and can run it in an appropriate environment
+- You have permission to run profiling and performance tools on the target environment (local, CI, or production-like)
+- The necessary profiling tools are installed for the target language/runtime (for example, Python `cProfile`, Node.js `--prof`/profilers, browser devtools, or APM/profiling agents)
+- You can execute a representative workload, test suite, or scenario that reproduces the performance issue
 ## Step-by-Step Workflow
 
 ### Step 1: Run Profiling (REQUIRED – Do Not Skip)
