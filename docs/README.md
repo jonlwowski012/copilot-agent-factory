@@ -13,7 +13,7 @@ This directory contains reference documentation for the GitHub Copilot Agent Ski
 
 **✅ Skills Support Implemented**
 
-Skills have been successfully added to Copilot Agent Factory with 7 skill templates and full cross-platform support.
+Skills have been successfully added to Copilot Agent Factory with 8 skill templates and full cross-platform support.
 
 ## Quick Summary
 
@@ -44,12 +44,13 @@ Skills have been successfully added to Copilot Agent Factory with 7 skill templa
 
 ## Implemented Skill Templates
 
-### 7 Skill Templates (Complete)
+### 8 Skill Templates (Complete)
 
 **Testing & Quality (3):**
 - `pytest-setup` - Setup pytest with coverage
 - `run-tests` - Commands to run tests
 - `debug-test-failures` - Investigate test failures
+- `debug-code-profiling` - Debug with profiling and critical path timing (profile first, suggest second)
 
 **Development Workflows (3):**
 - `local-dev-setup` - Setup dev environment

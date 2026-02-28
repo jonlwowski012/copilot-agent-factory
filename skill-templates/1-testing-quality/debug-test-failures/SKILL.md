@@ -310,6 +310,7 @@ test('example', () => {
 ## Related Skills
 
 - **run-tests** - Execute tests
+- **debug-code-profiling** - Debug performance issues with profiling and critical path timing (for slow-code, not failing tests)
 - **pytest-setup** - Configure test framework
 - **code-formatting** - Fix linting/formatting issues
 
