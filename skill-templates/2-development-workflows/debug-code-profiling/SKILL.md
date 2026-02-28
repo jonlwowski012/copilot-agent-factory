@@ -250,7 +250,7 @@ AWSXRay.captureAsyncFunc('processData', (subsegment) => {
       subsegment.close();
       return result;
     });
-}, segment);
+});
 ```
 
 **Annotation conventions for critical path:**
