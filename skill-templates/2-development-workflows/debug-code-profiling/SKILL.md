@@ -112,8 +112,12 @@ import _ "net/http/pprof"
 #### Java/JVM
 
 ```bash
-# JMX profiling
-java -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:StartFlightRecording=duration=60s,filename=profile.jfr -jar app.jar
+# Java Flight Recorder (JFR)
+# For JDK 11+ (OpenJDK and modern Oracle JDK, JFR is built-in):
+java -XX:StartFlightRecording=duration=60s,filename=profile.jfr -jar app.jar
+
+# For Oracle JDK 8 commercial only (deprecated in newer JDKs, will fail on JDK 16+):
+# java -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:StartFlightRecording=duration=60s,filename=profile.jfr -jar app.jar
 
 # Or use VisualVM, YourKit, JProfiler
 ```
