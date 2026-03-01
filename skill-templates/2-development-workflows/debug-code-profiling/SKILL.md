@@ -243,10 +243,10 @@ app.use(AWSXRay.express.openSegment('myApp'));
 // Add subsegment for critical path
 AWSXRay.captureAsyncFunc('processData', (subsegment) => {
   subsegment.addAnnotation('segment', 'processData');
-  subsegment.addMetadata('profiling', 'inputSize', data.length);
+  subsegment.addMetadata('inputSize', data.length, 'profiling');
   return processData(data)
     .then(result => {
-      subsegment.addMetadata('profiling', 'outputSize', result.length);
+      subsegment.addMetadata('outputSize', result.length, 'profiling');
       subsegment.close();
       return result;
     });
