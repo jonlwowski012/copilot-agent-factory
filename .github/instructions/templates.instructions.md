@@ -16,17 +16,16 @@ All agent templates must follow this structure:
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-opus
 description: Clear one-sentence description of agent purpose
-triggers:
-  - Specific detection pattern 1
-  - Specific detection pattern 2
-  - Specific detection pattern 3
+handoffs:
+  - agent: related-agent
+    label: "Next Step"
+    prompt: "Handoff context"
+    send: false
 ---
 ```
 
-**Model Selection:**
-- **All agents now use `claude-4-5-opus`** for maximum reasoning capability and consistent high-quality output.
+**Note:** The `model:` field and `triggers:` are not supported by GitHub Copilot custom agents (VS Code) and must be omitted from the YAML frontmatter.
 
 ### 2. Agent Introduction
 
@@ -150,14 +149,7 @@ When adding new placeholders:
 
 ### Writing Detection Triggers
 
-In YAML frontmatter, specify when agent should be generated:
-
-```yaml
-triggers:
-  - package.json contains "react" dependency
-  - .jsx or .tsx files present
-  - tsconfig.json exists
-```
+Detection triggers help understand when an agent should be used. While `triggers:` is no longer supported in the YAML frontmatter, you can describe detection patterns in the agent body text to indicate when the agent should be invoked. In the agent-generator.md, these patterns are used to determine which agents to generate for a given repository.
 
 **Rules for good detection:**
 - Be specific (not "React project", say "package.json with react")
@@ -191,9 +183,7 @@ You are a helpful AI assistant. Please help the user with their requests.
 ```
 
 **Problems:**
-- No `model:` field
 - Generic description
-- No detection triggers
 - "Helpful AI" is too vague
 
 ### ✅ Do This Instead
@@ -201,21 +191,20 @@ You are a helpful AI assistant. Please help the user with their requests.
 ```yaml
 ---
 name: api-agent
-model: claude-4-5-sonnet
 description: REST API specialist for creating endpoints, validation, and error handling
-triggers:
-  - FastAPI or Flask or Express.js detected
-  - api/ or routes/ directory exists
-  - API endpoint patterns in code
+handoffs:
+  - agent: test-agent
+    label: "Test API"
+    prompt: "Write tests for the endpoints"
+    send: false
 ---
 
 You are an expert API developer specializing in REST endpoint design for this project.
 ```
 
 **Why better:**
-- Includes `model:` field
 - Specific role and purpose
-- Clear detection patterns
+- Includes handoffs for workflow
 - Concrete expertise area
 
 ## Template Categories
@@ -240,12 +229,11 @@ Place templates in appropriate category:
 Before finalizing a template:
 
 1. **Syntax check:** Verify YAML frontmatter is valid
-2. **Placeholder check:** All {{placeholders}} are documented
-3. **Detection check:** Detection rules are specific and testable
+2. **Compliance check:** No `model:` or `triggers:` in YAML (VS Code/GitHub Copilot requirement)
+3. **Placeholder check:** All {{placeholders}} are documented
 4. **Structure check:** Follows standard template structure
 5. **Boundary check:** Boundaries section has ✅/⚠️/🚫
 6. **MCP check:** MCP Servers section present
-7. **Model check:** `model:` field present in YAML
 
 ## Integration with Agent-Generator
 
@@ -315,10 +303,10 @@ This skill activates when you: {description}
 
 Before submitting a template:
 
-- [ ] `model:` field present in YAML frontmatter
-- [ ] Model selection is appropriate (opus vs sonnet)
+- [ ] No `model:` field in YAML frontmatter (not supported by GitHub Copilot)
+- [ ] No `triggers:` in YAML frontmatter (not supported by GitHub Copilot)
+- [ ] `handoffs` use `agent:` key (not `target:`)
 - [ ] Description is clear and specific
-- [ ] Detection triggers are concrete
 - [ ] Structure follows standard format
 - [ ] Placeholders use {{double_braces}} and snake_case
 - [ ] Boundaries section has ✅/⚠️/🚫 format

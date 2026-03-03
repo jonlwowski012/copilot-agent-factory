@@ -444,45 +444,45 @@ automatic_agent_gen/
 ├── agent-generator.md        # Meta-agent that creates other agents
 ├── agent-templates/          # Shared agent templates with {{placeholders}}
 │   ├── Planning & Design Agents
-│   │   ├── prd-agent.md           # Product Requirements Documents
-│   │   ├── epic-agent.md          # Epic breakdown from PRDs
-│   │   ├── story-agent.md         # User stories with Gherkin
-│   │   ├── architecture-agent.md  # System architecture & ADRs
-│   │   ├── design-agent.md        # Technical design specifications
-│   │   └── test-design-agent.md   # Test strategy (TDD)
+│   │   ├── prd-agent.agent.md           # Product Requirements Documents
+│   │   ├── epic-agent.agent.md          # Epic breakdown from PRDs
+│   │   ├── story-agent.agent.md         # User stories with Gherkin
+│   │   ├── architecture-agent.agent.md  # System architecture & ADRs
+│   │   ├── design-agent.agent.md        # Technical design specifications
+│   │   └── test-design-agent.agent.md   # Test strategy (TDD)
 │   ├── Core Development Agents
-│   │   ├── orchestrator.md        # Coordinates all agents + workflow management
-│   │   ├── docs-agent.md          # Documentation and technical writing
-│   │   ├── test-agent.md          # Testing and coverage
-│   │   ├── lint-agent.md          # Code formatting and style
-│   │   ├── review-agent.md        # Code review and best practices
-│   │   ├── debug-agent.md         # Error investigation and troubleshooting
-│   │   ├── refactor-agent.md      # Code restructuring and tech debt
-│   │   ├── performance-agent.md   # Profiling and optimization
-│   │   ├── security-agent.md      # Security audits and vulnerability detection
-│   │   └── devops-agent.md        # CI/CD, Docker, deployments
+│   │   ├── orchestrator.agent.md        # Coordinates all agents + workflow management
+│   │   ├── docs-agent.agent.md          # Documentation and technical writing
+│   │   ├── test-agent.agent.md          # Testing and coverage
+│   │   ├── lint-agent.agent.md          # Code formatting and style
+│   │   ├── review-agent.agent.md        # Code review and best practices
+│   │   ├── debug-agent.agent.md         # Error investigation and troubleshooting
+│   │   ├── refactor-agent.agent.md      # Code restructuring and tech debt
+│   │   ├── performance-agent.agent.md   # Profiling and optimization
+│   │   ├── security-agent.agent.md      # Security audits and vulnerability detection
+│   │   └── devops-agent.agent.md        # CI/CD, Docker, deployments
 │   ├── API & Backend Agents
-│   │   ├── api-agent.md           # API development and endpoints
-│   │   └── backend-agent.md       # Server-side logic
+│   │   ├── api-agent.agent.md           # API development and endpoints
+│   │   └── backend-agent.agent.md       # Server-side logic
 │   ├── Mobile Development Agents
-│   │   ├── mobile-ios-agent.md         # iOS development (Swift, SwiftUI, UIKit)
-│   │   ├── mobile-react-native-agent.md # React Native cross-platform
-│   │   └── mobile-flutter-agent.md     # Flutter/Dart development
+│   │   ├── mobile-ios-agent.agent.md         # iOS development (Swift, SwiftUI, UIKit)
+│   │   ├── mobile-react-native-agent.agent.md # React Native cross-platform
+│   │   └── mobile-flutter-agent.agent.md     # Flutter/Dart development
 │   ├── Frontend Framework Agents
-│   │   ├── frontend-react-agent.md   # React development with hooks and TypeScript
-│   │   ├── frontend-vue-agent.md     # Vue.js with Composition API
-│   │   └── frontend-angular-agent.md # Angular with RxJS and standalone components
+│   │   ├── frontend-react-agent.agent.md   # React development with hooks and TypeScript
+│   │   ├── frontend-vue-agent.agent.md     # Vue.js with Composition API
+│   │   └── frontend-angular-agent.agent.md # Angular with RxJS and standalone components
 │   ├── Database Agents
-│   │   └── database-agent.md      # Schema design, migrations, query optimization
+│   │   └── database-agent.agent.md      # Schema design, migrations, query optimization
 │   └── ML/AI Agents
-│       ├── ml-trainer.md          # ML model training
-│       ├── data-prep.md           # Data preprocessing
-│       ├── eval-agent.md          # Model evaluation
-│       ├── inference-agent.md     # Model inference and serving
-│       ├── pytorch-agent.md       # PyTorch neural networks
-│       ├── tensorflow-agent.md    # TensorFlow/Keras models
-│       ├── pytorch-lightning-agent.md  # Lightning structured training
-│       └── torchgeo-agent.md      # Geospatial deep learning
+│       ├── ml-trainer.agent.md          # ML model training
+│       ├── data-prep.agent.md           # Data preprocessing
+│       ├── eval-agent.agent.md          # Model evaluation
+│       ├── inference-agent.agent.md     # Model inference and serving
+│       ├── pytorch-agent.agent.md       # PyTorch neural networks
+│       ├── tensorflow-agent.agent.md    # TensorFlow/Keras models
+│       ├── pytorch-lightning-agent.agent.md  # Lightning structured training
+│       └── torchgeo-agent.agent.md      # Geospatial deep learning
 ├── AGENT.md                  # Global agent conventions
 ├── README.md                 # This documentation
 └── docs/                     # Planning artifacts
@@ -499,8 +499,8 @@ automatic_agent_gen/
 
 ### VS Code (GitHub Copilot)
 
-- **Output:** Multiple `.md` files in `.github/agents/`
-- **YAML Frontmatter:** Full format with `name`, `model`, `description`, `triggers`, `handoffs`
+- **Output:** Multiple `.agent.md` files in `.github/agents/`
+- **YAML Frontmatter:** Compliant format with `name`, `description`, `handoffs` (no `model` or `triggers`)
 - **Invocation:** `@agent-name` in VS Code chat
 - **Handoffs:** Supported for agent-to-agent transitions
 
@@ -913,12 +913,9 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 ```markdown
 ---
 name: my-agent
-model: claude-4-5-sonnet
 description: What this agent does
-triggers:
-  - file patterns or conditions that indicate this agent is needed
 handoffs:
-  - target: related-agent
+  - agent: related-agent
     label: "Next Step"
     prompt: "Handoff context"
     send: false
@@ -945,7 +942,7 @@ You are an expert [role] for this project.
 
 2. Update `agent-generator.md` to detect when your agent should be created
 
-**Note:** The `triggers` and `handoffs` sections are VS Code-specific and will be automatically stripped when generating for Claude Code or Cursor IDE. For Cursor, the YAML frontmatter is converted to include `description`, `globs`, and `alwaysApply` fields instead.
+**Note:** The `handoffs` section is VS Code-specific and will be automatically stripped when generating for Claude Code or Cursor IDE. For Cursor, the YAML frontmatter is converted to include `description`, `globs`, and `alwaysApply` fields instead.
 
 ### Overriding Detection
 
@@ -1027,11 +1024,11 @@ Each agent template includes handoffs in the YAML frontmatter:
 ---
 name: api-agent
 handoffs:
-  - target: test-agent
+  - agent: test-agent
     label: "Test API"
     prompt: "Please write comprehensive tests for the API endpoints implemented."
     send: false
-  - target: security-agent
+  - agent: security-agent
     label: "Security Review"
     prompt: "Please review the API endpoints for security vulnerabilities."
     send: false
@@ -1101,13 +1098,9 @@ For a Python ML project, the generator might produce different output formats ba
 ```markdown
 ---
 name: test-agent
-model: claude-4-5-sonnet
 description: Test engineer specializing in writing tests for ML pipelines
-triggers:
-  - pytest configuration detected
-  - test files present
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review Tests"
     prompt: "Please review the test coverage and quality"
     send: false
@@ -1281,7 +1274,7 @@ This repository uses GitHub Copilot's custom instructions feature to provide con
 
 - **Repository-wide instructions** (`.github/copilot-instructions.md`) - General conventions and project context
 - **Path-specific instructions** (`.github/instructions/*.instructions.md`) - Targeted guidance for templates and documentation
-- **Agent definitions** (`.github/agents/*.md`) - Specialized agents for specific tasks
+- **Agent definitions** (`.github/agents/*.agent.md`) - Specialized agents for specific tasks
 
 For detailed information about how Copilot instructions are configured in this repository, see:
 

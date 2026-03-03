@@ -8,17 +8,15 @@
 - Follow project conventions defined in AGENT.md
 - Use specialized agents via `@agent-name` for domain-specific tasks
 - Leverage MCP servers (git, filesystem) for template operations
-- **Critical:** Always include `model:` field in agent YAML frontmatter
+- **Critical:** GitHub Copilot custom agents use `.agent.md` extension and do NOT include `model:` or `triggers:` in YAML frontmatter
 
 ## Code Generation Standards
 
 ### Always
 
-- **Include `model:` field** in agent YAML frontmatter (`claude-4-5-opus`)
 - Use `{{placeholder}}` convention (double braces, snake_case)
 - Follow standard agent template structure (Role → Knowledge → Standards → Boundaries → MCP)
 - Include concrete examples in templates
-- Define specific detection triggers
 - Add Boundaries section with ✅/⚠️/🚫 format
 - Keep documentation under 1000 lines
 - Test examples before adding to documentation
@@ -26,14 +24,10 @@
 
 ### Never
 
-- Generate agent templates without `model:` field in YAML frontmatter
-- Use incorrect placeholder format (single braces, camelCase)
-- Create generic "helpful AI" instructions
-- Add placeholder/TODO sections to documentation
-- Include vague detection rules ("React project" vs "package.json with 'react'")
-- Break backwards compatibility without discussion
-- Skip approval gates in Feature Development Workflow
-- Duplicate content across templates without refactoring
+- Include `model:` field in VS Code agent YAML frontmatter (not supported by GitHub Copilot)
+- Include `triggers:` in VS Code agent YAML frontmatter (not supported by GitHub Copilot)
+- Use `target:` in handoffs (use `agent:` instead)
+- Use `*.md` extension for VS Code agents (use `*.agent.md` instead)
 
 ## Project-Specific Context
 
@@ -46,8 +40,8 @@ Copilot Agent Factory/
 ├── .github/
 │   ├── agents/ – Active agents for this repo
 │   │   ├── agent-generator.md (meta-agent)
-│   │   ├── orchestrator.md (coordinator)
-│   │   └── {specialized agents}
+│   │   ├── orchestrator.agent.md (coordinator)
+│   │   └── {specialized agents} (*.agent.md)
 │   ├── mcp-config.json – MCP server config
 │   └── copilot-instructions.md (this file)
 ├── agents/
@@ -129,9 +123,9 @@ Phase 5: Review & Documentation
 ### When Working with Templates
 
 **When creating new agent templates:**
-1. Must include `model:` field (use `claude-4-5-opus`)
-2. Use standard YAML frontmatter (name, model, description, triggers)
-3. Include detection patterns in triggers
+1. Use `.agent.md` file extension (GitHub Copilot requirement)
+2. Use compliant YAML frontmatter: `name`, `description`, `handoffs` only (no `model`, no `triggers`)
+3. Use `agent:` key in handoffs (not `target:`)
 4. Follow structure: Role → Knowledge → Standards → Boundaries → MCP
 5. Use documented placeholders only
 6. Route to @review-agent before finalizing
@@ -158,24 +152,23 @@ Phase 5: Review & Documentation
 3. Include placeholder resolution
 4. Use real-world scenarios
 
-## Model Selection Guide
+## Agent File Format
 
-**All agents now use `claude-4-5-opus` for maximum reasoning capability.**
+GitHub Copilot custom agents use the `.agent.md` extension and require specific YAML frontmatter:
 
-This unified approach ensures:
-- Consistent high-quality output across all agent types
-- Deep reasoning for complex tasks
-- Better understanding of project context
-- Improved code quality and architectural decisions
-
-**Always specify in YAML frontmatter:**
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-opus
 description: Description
+handoffs:
+  - agent: other-agent
+    label: "Button Label"
+    prompt: "Handoff context"
+    send: false
 ---
 ```
+
+**Note:** The `model:` field and `triggers:` are not supported by GitHub Copilot custom agents and must be omitted.
 
 ## Placeholder Reference
 
@@ -203,9 +196,11 @@ Agents automatically use these when available. Configuration in `.github/mcp-con
 ## Quality Checklist
 
 Before submitting changes:
-- [ ] Agent templates have `model:` field
+- [ ] Agent templates use `.agent.md` extension
+- [ ] No `model:` field in agent YAML (not supported by GitHub Copilot)
+- [ ] No `triggers:` in agent YAML (not supported by GitHub Copilot)
+- [ ] Handoffs use `agent:` key (not `target:`)
 - [ ] Placeholders use {{double_braces}}
-- [ ] Detection rules are specific
 - [ ] Boundaries section present
 - [ ] Examples tested
 - [ ] Documentation updated
@@ -226,14 +221,16 @@ Before submitting changes:
 ## Error Prevention
 
 **Common mistakes to avoid:**
-1. Missing `model:` field in agent YAML
-2. Wrong placeholder format ({{camelCase}} or {single})
-3. Vague detection rules
-4. Generic agent instructions
-5. Breaking template backwards compatibility
-6. Skipping approval gates
-7. Documentation out of sync with templates
-8. Untested examples
+1. Using `model:` field in VS Code agent YAML (not supported by GitHub Copilot)
+2. Using `triggers:` in VS Code agent YAML (not supported by GitHub Copilot)
+3. Using `target:` instead of `agent:` in handoffs
+4. Using `.md` extension instead of `.agent.md` for VS Code agents
+5. Wrong placeholder format ({{camelCase}} or {single})
+6. Generic agent instructions
+7. Breaking template backwards compatibility
+8. Skipping approval gates
+9. Documentation out of sync with templates
+10. Untested examples
 
 ## Getting Unstuck
 
