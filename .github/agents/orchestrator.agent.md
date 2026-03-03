@@ -1,109 +1,108 @@
 ---
 name: orchestrator
-model: claude-4-5-opus
 description: Master coordinator for Copilot Agent Factory - routes tasks to specialized agents and manages 6-phase workflows with strict enforcement
 handoffs:
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Phase 0: Verify State Diagram"
     prompt: "Check if docs/system-state-diagram.md exists and is up to date. If not, create or update a state machine diagram showing the current system states and transitions."
     send: false
-  - target: prd-agent
+  - agent: prd-agent
     label: "Start Phase 1: PRD"
     prompt: "Create a Product Requirements Document for this feature: {{feature_description}}"
     send: false
-  - target: epic-agent
+  - agent: epic-agent
     label: "PRD Expert Review: Epic Breakdown Feasibility"
     prompt: "Review the PRD at {{prd_path}} from an epic-breakdown perspective: Is the scope clear enough to break into epics? Are requirements concrete enough to estimate? Flag any requirements that are too vague or contradictory for epic planning. Use 🔴/🟡/🟢 format."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "PRD Quality Review: Completeness and Clarity"
     prompt: "Review the PRD at {{prd_path}} for completeness, clarity, and measurable success criteria. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @prd-agent with your feedback. Only approve once all blockers are resolved."
     send: false
-  - target: epic-agent
+  - agent: epic-agent
     label: "Phase 1.2: Break into Epics"
     prompt: "Break this PRD into implementable epics with acceptance criteria: {{prd_path}}"
     send: false
-  - target: story-agent
+  - agent: story-agent
     label: "Epics Expert Review: Story Breakdown Feasibility"
     prompt: "Review the epics at {{epics_path}} from a user-story perspective: Are the epics scoped correctly for story breakdown? Is the acceptance criteria specific enough to write testable stories? Flag any epics that are too large or too vague. Use 🔴/🟡/🟢 format."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "Epics Quality Review: Testability and Alignment"
     prompt: "Review the epics at {{epics_path}} for completeness, testability, and alignment with the PRD. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @epic-agent with your feedback. Only approve once all blockers are resolved."
     send: false
-  - target: story-agent
+  - agent: story-agent
     label: "Phase 1.3: Create Stories"
     prompt: "Convert these epics into detailed user stories with Gherkin scenarios: {{epics_path}}"
     send: false
-  - target: test-design-agent
+  - agent: test-design-agent
     label: "Stories Expert Review: Acceptance Criteria Testability"
     prompt: "Review the user stories at {{stories_path}} from a test-design perspective: Are the Gherkin acceptance criteria specific and testable? Are there missing edge cases or error scenarios needed for test coverage? Use 🔴/🟡/🟢 format."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "Stories Quality Review: Gherkin and Epic Alignment"
     prompt: "Review the user stories at {{stories_path}} for completeness, Gherkin acceptance criteria quality, and alignment with the epics. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @story-agent with your feedback. Only approve once all blockers are resolved."
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Phase 2.1: Design Architecture"
     prompt: "Design system architecture based on these requirements: {{planning_artifacts}}"
     send: false
-  - target: business-architecture-agent
+  - agent: business-architecture-agent
     label: "Architecture Expert Review: Business Domain Alignment"
     prompt: "Review the architecture at {{architecture_path}} for business domain alignment: Do the components map to actual business capabilities? Are business rules documented in ADRs? Are business capability boundaries clearly defined? Use 🔴/🟡/🟢 format."
     send: false
-  - target: application-architecture-agent
+  - agent: application-architecture-agent
     label: "Architecture Expert Review: Application Layer Alignment"
     prompt: "Review the architecture at {{architecture_path}} for application-layer correctness: Are application component boundaries clear? Are inter-component contracts fully specified? Are agent communication patterns consistent with the handoff model? Use 🔴/🟡/🟢 format."
     send: false
-  - target: design-agent
+  - agent: design-agent
     label: "Architecture Expert Review: Design Feasibility"
     prompt: "Review the architecture at {{architecture_path}} from a technical design perspective: Is the architecture specific enough to create detailed designs and API contracts? Are the ADRs clear enough to guide implementation decisions? Flag any components that lack enough detail. Use 🔴/🟡/🟢 format."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "Architecture Quality Review: ADRs and Completeness"
     prompt: "Review the architecture at {{architecture_path}} for completeness, ADR clarity, and alignment with requirements. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @architecture-agent with your feedback. Only approve once all blockers are resolved."
     send: false
-  - target: design-agent
+  - agent: design-agent
     label: "Phase 2.2: Technical Design"
     prompt: "Create detailed technical specifications based on this architecture: {{architecture_path}}"
     send: false
-  - target: business-architecture-agent
+  - agent: business-architecture-agent
     label: "Design Expert Review: Business Alignment"
     prompt: "Review the technical design at {{design_path}} for business architecture alignment: Does the design correctly implement domain models? Is business logic placed at correct boundaries? Are business rules enforced in the right components? Use 🔴/🟡/🟢 format."
     send: false
-  - target: application-architecture-agent
+  - agent: application-architecture-agent
     label: "Design Expert Review: Application Architecture Alignment"
     prompt: "Review the technical design at {{design_path}} for application architecture alignment: Are agent handoff contracts fully specified? Are component boundaries respected? Are revision/re-review paths specified as explicit flows? Use 🔴/🟡/🟢 format."
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Design Expert Review: Architecture Alignment"
     prompt: "Review the technical design at {{design_path}} from an architecture perspective: Does the design stay true to all ADRs? Does it introduce any architectural violations? Flag any deviations from the approved architecture. Use 🔴/🟡/🟢 format."
     send: false
-  - target: test-design-agent
+  - agent: test-design-agent
     label: "Design Expert Review: Testability"
     prompt: "Review the technical design at {{design_path}} from a test-design perspective: Are the API contracts specific enough to write integration tests? Are the data models and validation rules testable? Flag any underspecified behavior. Use 🔴/🟡/🟢 format."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "Design Quality Review: Specification Clarity"
     prompt: "Review the technical design at {{design_path}} for completeness, specification clarity, and alignment with the architecture. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @design-agent with your feedback. Only approve once all blockers are resolved."
     send: false
-  - target: test-design-agent
+  - agent: test-design-agent
     label: "Phase 3: Create Test Strategy"
     prompt: "Create comprehensive test strategy for this design (TDD approach): {{design_path}}"
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Test Design Expert Review: Architectural Boundary Validation"
     prompt: "Review the test design at {{test_design_path}} from an architecture perspective: Do the test cases align with the architectural boundaries? Are the integration and E2E tests validating the right component interactions? Flag any tests that would violate or misrepresent the architecture. Use 🔴/🟡/🟢 format."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "Test Design Quality Review: Coverage and Traceability"
     prompt: "Review the test design at {{test_design_path}} for coverage, alignment with acceptance criteria, and test quality. Use 🔴/🟡/🟢 feedback format. If changes are needed, route back to @test-design-agent with your feedback. Only approve once all blockers are resolved."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "Phase 5.1: Review Implementation"
     prompt: "Review the implementation for quality, consistency, and best practices"
     send: false
-  - target: docs-agent
+  - agent: docs-agent
     label: "Phase 5.2: Update Documentation"
     prompt: "Update all documentation to reflect the implemented changes"
     send: false

@@ -1,33 +1,28 @@
 ---
 name: design-agent
-model: claude-4-5-opus
 description: Creates detailed technical design documents including file structures, placeholder specifications, and implementation details
-triggers:
-  - Architecture approved and ready for detailed design
-  - User invokes /design or @design-agent
-  - Orchestrator routes technical design task
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review Design"
     prompt: "Please review this technical design for completeness, specification clarity, and alignment with the source architecture. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the design can be revised."
     send: false
-  - target: business-architecture-agent
+  - agent: business-architecture-agent
     label: "Business Architecture Review"
     prompt: "Please review this technical design for business domain alignment, business rule placement, and business capability scoping. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
     send: false
-  - target: application-architecture-agent
+  - agent: application-architecture-agent
     label: "Application Architecture Review"
     prompt: "Please review this technical design for component boundary correctness, API contract completeness, and integration pattern adherence. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
     send: false
-  - target: test-design-agent
+  - agent: test-design-agent
     label: "Design Tests"
     prompt: "Please create a comprehensive test design strategy based on this technical design."
     send: false
-  - target: docs-agent
+  - agent: docs-agent
     label: "Document Design"
     prompt: "Please document the technical design decisions in the README."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "Technical design is complete. Please coordinate the implementation phase."
     send: false
@@ -141,18 +136,16 @@ Python 3.10, FastAPI
 ```yaml
 ---
 name: template-name
-model: claude-4-5-opus
 description: One-sentence description
-triggers:
-  - Detection pattern 1
-  - Detection pattern 2
 handoffs:
-  - target: next-agent
+  - agent: next-agent
     label: "Action Label"
     prompt: "Handoff prompt"
     send: false
 ---
 ```
+
+Note: VS Code agent files use `.agent.md` extension and do NOT include `model:` or `triggers:` fields.
 
 ### 4.2 Body Structure
 ```markdown

@@ -1,26 +1,20 @@
 ---
 name: application-architecture-agent
-model: claude-4-5-opus
 description: Reviews planning artifacts and designs for application-layer architecture alignment, component interaction patterns, API contract consistency, and integration boundary correctness
-triggers:
-  - Orchestrator routes application architecture review task
-  - User invokes /application-architecture or @application-architecture-agent
-  - Architecture or design document needs application-layer review
-  - Request to validate component boundaries or integration patterns
 handoffs:
-  - target: business-architecture-agent
+  - agent: business-architecture-agent
     label: "Business Architecture Review"
     prompt: "Please review this architecture or design from a business-architecture perspective for domain model alignment and business capability boundaries."
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Update Architecture"
     prompt: "Please revise the architecture document based on the application architecture feedback provided."
     send: false
-  - target: design-agent
+  - agent: design-agent
     label: "Update Design"
     prompt: "Please revise the technical design based on the application architecture feedback provided."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "Application architecture review is complete. Please coordinate the next review step."
     send: false

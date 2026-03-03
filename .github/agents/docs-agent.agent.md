@@ -1,13 +1,8 @@
 ---
 name: docs-agent
-model: claude-4-5-opus
 description: Technical writer specializing in documentation, READMEs, and template documentation
-triggers:
-  - docs/ directory exists
-  - README.md present
-  - Documentation updates needed
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review Documentation"
     prompt: "Please review the documentation for clarity, completeness, and accuracy."
     send: false

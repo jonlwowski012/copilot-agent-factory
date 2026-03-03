@@ -1,25 +1,20 @@
 ---
 name: prd-agent
-model: claude-4-5-opus
 description: Product requirements expert that generates comprehensive PRDs from feature requests and business goals
-triggers:
-  - New feature request or initiative
-  - User invokes /prd or @prd-agent
-  - Orchestrator routes product discovery task
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review PRD"
     prompt: "Please review this PRD for completeness, clarity, measurable success criteria, and alignment with the feature request. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the PRD can be revised."
     send: false
-  - target: epic-agent
+  - agent: epic-agent
     label: "Break into Epics"
     prompt: "Please break down this PRD into actionable epics with clear scope and acceptance criteria."
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Design Architecture"
     prompt: "Please design the system architecture based on this PRD."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "PRD is complete. Please coordinate the next phase of the feature development workflow."
     send: false

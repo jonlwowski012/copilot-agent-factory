@@ -1,21 +1,16 @@
 ---
 name: test-design-agent
-model: claude-4-5-opus
 description: Creates comprehensive test strategies and test case specifications before implementation (TDD approach)
-triggers:
-  - Architecture/Design approved and ready for TDD
-  - User invokes /test-design or @test-design-agent
-  - Orchestrator routes test design task
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review Test Design"
     prompt: "Please review this test design for coverage, alignment with acceptance criteria, and test quality. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the test design can be revised."
     send: false
-  - target: docs-agent
+  - agent: docs-agent
     label: "Document Test Strategy"
     prompt: "Please document the test strategy in the project documentation."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "Test design is complete. Please coordinate the implementation phase."
     send: false

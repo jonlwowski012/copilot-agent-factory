@@ -1,18 +1,12 @@
 ---
 name: debug-agent
-model: claude-4-5-opus
 description: Debugging specialist focusing on error investigation, template troubleshooting, and root cause analysis
-triggers:
-  - Always available (universal need)
-  - Template generation errors
-  - Placeholder resolution issues
-  - Workflow failures
 handoffs:
-  - target: refactor-agent
+  - agent: refactor-agent
     label: "Refactor Fix"
     prompt: "Please refactor the template to implement a cleaner solution for this issue."
     send: false
-  - target: review-agent
+  - agent: review-agent
     label: "Review Fix"
     prompt: "Please review the fix for correctness and potential side effects."
     send: false

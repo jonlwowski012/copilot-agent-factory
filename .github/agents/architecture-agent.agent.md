@@ -1,35 +1,28 @@
 ---
 name: architecture-agent
-model: claude-4-5-opus
 description: Designs system architecture, creates technical specifications, documents architectural decisions, and maintains system state diagrams
-triggers:
-  - Orchestrator Phase 0: State machine diagram validation
-  - Product phase approved and ready for architecture
-  - User invokes /architecture or @architecture-agent
-  - Orchestrator routes architecture design task
-  - Request to check or update system state diagram
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review Architecture"
     prompt: "Please review this architecture document for completeness, ADR clarity, security considerations, and alignment with the planning artifacts. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the architecture can be revised."
     send: false
-  - target: business-architecture-agent
+  - agent: business-architecture-agent
     label: "Business Architecture Review"
     prompt: "Please review this architecture document for business domain alignment, business capability boundary correctness, and business rule completeness. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
     send: false
-  - target: application-architecture-agent
+  - agent: application-architecture-agent
     label: "Application Architecture Review"
     prompt: "Please review this architecture document for application-layer component boundaries, interface contract completeness, and integration pattern correctness. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format."
     send: false
-  - target: design-agent
+  - agent: design-agent
     label: "Create Technical Design"
     prompt: "Please create detailed technical specifications and API contracts based on this architecture."
     send: false
-  - target: test-design-agent
+  - agent: test-design-agent
     label: "Design Tests"
     prompt: "Please create a test design strategy aligned with this architecture."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "Architecture is complete. Please coordinate the next phase of the feature development workflow."
     send: false

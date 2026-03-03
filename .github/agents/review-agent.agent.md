@@ -1,41 +1,36 @@
 ---
 name: review-agent
-model: claude-4-5-opus
 description: Code reviewer providing feedback on template quality, best practices, and consistency
-triggers:
-  - Always available (universal need)
-  - Template changes to review
-  - Documentation changes to verify
 handoffs:
-  - target: refactor-agent
+  - agent: refactor-agent
     label: "Refactor Code"
     prompt: "Please refactor the template to address the quality issues identified in this review."
     send: false
-  - target: docs-agent
+  - agent: docs-agent
     label: "Update Documentation"
     prompt: "Please update documentation for the changes reviewed."
     send: false
-  - target: prd-agent
+  - agent: prd-agent
     label: "Revise PRD"
     prompt: "Please revise the PRD to address the following review feedback: {{review_feedback}}"
     send: false
-  - target: epic-agent
+  - agent: epic-agent
     label: "Revise Epics"
     prompt: "Please revise the epics to address the following review feedback: {{review_feedback}}"
     send: false
-  - target: story-agent
+  - agent: story-agent
     label: "Revise Stories"
     prompt: "Please revise the user stories to address the following review feedback: {{review_feedback}}"
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Revise Architecture"
     prompt: "Please revise the architecture document to address the following review feedback: {{review_feedback}}"
     send: false
-  - target: design-agent
+  - agent: design-agent
     label: "Revise Design"
     prompt: "Please revise the technical design to address the following review feedback: {{review_feedback}}"
     send: false
-  - target: test-design-agent
+  - agent: test-design-agent
     label: "Revise Test Design"
     prompt: "Please revise the test design to address the following review feedback: {{review_feedback}}"
     send: false

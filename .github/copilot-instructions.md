@@ -8,17 +8,14 @@
 - Follow project conventions defined in AGENT.md
 - Use specialized agents via `@agent-name` for domain-specific tasks
 - Leverage MCP servers (git, filesystem) for template operations
-- **Critical:** Always include `model:` field in agent YAML frontmatter
 
 ## Code Generation Standards
 
 ### Always
 
-- **Include `model:` field** in agent YAML frontmatter (`claude-4-5-opus`)
 - Use `{{placeholder}}` convention (double braces, snake_case)
 - Follow standard agent template structure (Role → Knowledge → Standards → Boundaries → MCP)
 - Include concrete examples in templates
-- Define specific detection triggers
 - Add Boundaries section with ✅/⚠️/🚫 format
 - Keep documentation under 1000 lines
 - Test examples before adding to documentation
@@ -26,7 +23,6 @@
 
 ### Never
 
-- Generate agent templates without `model:` field in YAML frontmatter
 - Use incorrect placeholder format (single braces, camelCase)
 - Create generic "helpful AI" instructions
 - Add placeholder/TODO sections to documentation
@@ -46,8 +42,8 @@ Copilot Agent Factory/
 ├── .github/
 │   ├── agents/ – Active agents for this repo
 │   │   ├── agent-generator.md (meta-agent)
-│   │   ├── orchestrator.md (coordinator)
-│   │   └── {specialized agents}
+│   │   ├── orchestrator.agent.md (coordinator)
+│   │   └── {specialized agents}.agent.md
 │   ├── mcp-config.json – MCP server config
 │   └── copilot-instructions.md (this file)
 ├── agents/
@@ -129,12 +125,10 @@ Phase 5: Review & Documentation
 ### When Working with Templates
 
 **When creating new agent templates:**
-1. Must include `model:` field (use `claude-4-5-opus`)
-2. Use standard YAML frontmatter (name, model, description, triggers)
-3. Include detection patterns in triggers
-4. Follow structure: Role → Knowledge → Standards → Boundaries → MCP
-5. Use documented placeholders only
-6. Route to @review-agent before finalizing
+1. Use standard YAML frontmatter (name, description, handoffs) - no model or triggers for VS Code format
+2. Follow structure: Role → Knowledge → Standards → Boundaries → MCP
+3. Use documented placeholders only
+4. Route to @review-agent before finalizing
 
 **Modifying existing templates:**
 1. Check consistency with other templates in category
@@ -160,22 +154,7 @@ Phase 5: Review & Documentation
 
 ## Model Selection Guide
 
-**All agents now use `claude-4-5-opus` for maximum reasoning capability.**
-
-This unified approach ensures:
-- Consistent high-quality output across all agent types
-- Deep reasoning for complex tasks
-- Better understanding of project context
-- Improved code quality and architectural decisions
-
-**Always specify in YAML frontmatter:**
-```yaml
----
-name: agent-name
-model: claude-4-5-opus
-description: Description
----
-```
+**For Claude Code agents**, specify `model:` in YAML frontmatter. For VS Code (GitHub Copilot) agents, the `model:` field is not used.
 
 ## Placeholder Reference
 
@@ -203,9 +182,10 @@ Agents automatically use these when available. Configuration in `.github/mcp-con
 ## Quality Checklist
 
 Before submitting changes:
-- [ ] Agent templates have `model:` field
+- [ ] Agent templates use `.agent.md` extension for VS Code format
+- [ ] VS Code agent frontmatter has no `model:` or `triggers:` fields
+- [ ] VS Code agent handoffs use `agent:` not `target:`
 - [ ] Placeholders use {{double_braces}}
-- [ ] Detection rules are specific
 - [ ] Boundaries section present
 - [ ] Examples tested
 - [ ] Documentation updated
@@ -226,14 +206,15 @@ Before submitting changes:
 ## Error Prevention
 
 **Common mistakes to avoid:**
-1. Missing `model:` field in agent YAML
-2. Wrong placeholder format ({{camelCase}} or {single})
-3. Vague detection rules
-4. Generic agent instructions
-5. Breaking template backwards compatibility
-6. Skipping approval gates
-7. Documentation out of sync with templates
-8. Untested examples
+1. Missing `.agent.md` extension for VS Code agent files
+2. Including `model:` or `triggers:` in VS Code agent YAML frontmatter
+3. Using `target:` instead of `agent:` in handoffs
+4. Wrong placeholder format ({{camelCase}} or {single})
+5. Generic agent instructions
+6. Breaking template backwards compatibility
+7. Skipping approval gates
+8. Documentation out of sync with templates
+9. Untested examples
 
 ## Getting Unstuck
 

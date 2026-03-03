@@ -1,25 +1,20 @@
 ---
 name: story-agent
-model: claude-4-5-opus
 description: Generates detailed user stories with acceptance criteria and Gherkin scenarios from epics
-triggers:
-  - Epics approved and ready for story breakdown
-  - User invokes /story or @story-agent
-  - Orchestrator routes user story generation task
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review Stories"
     prompt: "Please review these user stories for completeness, Gherkin acceptance criteria quality, and alignment with the source epics. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the stories can be revised."
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Design Architecture"
     prompt: "Please design the system architecture to implement these user stories."
     send: false
-  - target: test-design-agent
+  - agent: test-design-agent
     label: "Design Tests"
     prompt: "Please create a test design strategy based on these user stories and their acceptance criteria."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "User stories are complete. Please coordinate the next phase of the feature development workflow."
     send: false

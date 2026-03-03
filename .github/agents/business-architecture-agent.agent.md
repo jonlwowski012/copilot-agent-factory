@@ -1,26 +1,20 @@
 ---
 name: business-architecture-agent
-model: claude-4-5-opus
 description: Reviews planning artifacts and designs for business domain alignment, domain model consistency, business rule completeness, and business capability boundaries
-triggers:
-  - Orchestrator routes business architecture review task
-  - User invokes /business-architecture or @business-architecture-agent
-  - Architecture or design document needs business domain review
-  - Request to validate business capability boundaries or domain model
 handoffs:
-  - target: application-architecture-agent
+  - agent: application-architecture-agent
     label: "Application Architecture Review"
     prompt: "Please review this architecture or design from an application-architecture perspective for component boundaries and integration patterns."
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Update Architecture"
     prompt: "Please revise the architecture document based on the business architecture feedback provided."
     send: false
-  - target: design-agent
+  - agent: design-agent
     label: "Update Design"
     prompt: "Please revise the technical design based on the business architecture feedback provided."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "Business architecture review is complete. Please coordinate the next review step."
     send: false

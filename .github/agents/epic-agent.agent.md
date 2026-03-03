@@ -1,25 +1,20 @@
 ---
 name: epic-agent
-model: claude-4-5-opus
 description: Breaks down PRDs into well-structured epics with clear scope and acceptance criteria
-triggers:
-  - PRD approved and ready for breakdown
-  - User invokes /epic or @epic-agent
-  - Orchestrator routes epic generation task
 handoffs:
-  - target: review-agent
+  - agent: review-agent
     label: "Review Epics"
     prompt: "Please review these epics for completeness, testable acceptance criteria, and alignment with the source PRD. Use 🔴 BLOCKER / 🟡 SUGGESTION / 🟢 NIT format. If blockers exist, provide specific feedback so the epics can be revised."
     send: false
-  - target: story-agent
+  - agent: story-agent
     label: "Generate User Stories"
     prompt: "Please create detailed user stories with Gherkin acceptance criteria based on these epics."
     send: false
-  - target: architecture-agent
+  - agent: architecture-agent
     label: "Design Architecture"
     prompt: "Please design the system architecture to support these epics."
     send: false
-  - target: orchestrator
+  - agent: orchestrator
     label: "Continue Workflow"
     prompt: "Epics are complete. Please coordinate the next phase of the feature development workflow."
     send: false
