@@ -103,10 +103,18 @@ npx clinic flame -- node your_script.js
 # CPU profiling
 go test -cpuprofile=cpu.prof -bench=.
 go tool pprof -top cpu.prof
+```
 
-# Or at runtime
+For runtime profiling, add to your application:
+
+```go
 import _ "net/http/pprof"
-# Then: go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
+```
+
+Then analyze:
+
+```bash
+go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
 ```
 
 #### Java/JVM
