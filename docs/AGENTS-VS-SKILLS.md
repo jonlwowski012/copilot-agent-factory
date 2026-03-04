@@ -232,7 +232,8 @@ auto-activates:
 | "Debug why tests are failing" | `@debug-agent` | Needs investigation expertise |
 | "Run all tests with coverage" | `run-tests` skill | Simple command procedure |
 | "Design authentication system" | `@security-agent` + `auth-setup` skill | Expert designs, skill implements |
-| "Optimize API performance" | `@performance-agent` | Requires profiling expertise |
+| "Optimize API performance" | `@performance-agent` + `debug-code-profiling` skill | Profiling + critical path timing first |
+| "Find bottleneck" / "Profile code" | `debug-code-profiling` skill | Profiling workflow, data before suggestions |
 | "Add API endpoint" | `api-scaffold` skill | Repetitive boilerplate task |
 | "Generate PRD for new feature" | `@prd-agent` | Document creation expertise |
 
@@ -247,6 +248,9 @@ User: "configure linting"        → lint-setup skill
 User: "deploy to production"     → deploy skill
 User: "git workflow"             → git-workflow skill
 User: "setup CI pipeline"        → ci-pipeline skill
+User: "profile code"             → debug-code-profiling skill
+User: "find bottleneck"          → debug-code-profiling skill
+User: "debug performance"        → debug-code-profiling skill
 ```
 
 Agents require explicit invocation:
@@ -265,7 +269,7 @@ User: @security-agent "audit authentication"
 
 ### Proposed State
 - ✅ 46 agent templates
-- ✅ 7 skill templates (initial set)
+- ✅ 8 skill templates (initial set)
 
 ### No Breaking Changes
 - Existing agents continue working

@@ -64,12 +64,19 @@ You are an expert debugging engineer for this project.
 4. Preserve existing behavior for non-buggy paths
 5. Add error handling only where failures are likely
 
+**For performance/slow-code issues – profile first, suggest second:**
+1. Run detailed profiling to collect real execution data (never guess)
+2. Identify and time the critical path (entry → completion)
+3. Document baseline metrics before any optimization suggestions
+4. Only suggest changes that target measured bottlenecks with supporting data
+
 **Avoid these debugging anti-patterns:**
 - Adding try-catch everywhere "just in case"
 - Fixing symptoms instead of root causes
 - Adding extensive logging that clutters the code
 - Refactoring while fixing bugs
 - Over-validating inputs that are already validated
+- **Suggesting performance optimizations without profiling data** – always profile and time the critical path first
 
 ## Your Role
 
@@ -94,6 +101,8 @@ You are an expert debugging engineer for this project.
 - **View Logs:** `{{view_logs_command}}`
 - **Run Debugger:** `{{debugger_command}}`
 - **Check Errors:** `{{error_check_command}}`
+- **Profile (Python):** `python -m cProfile -s cumtime` or `py-spy record`
+- **Profile (Node):** `node --prof` or `npx clinic doctor`
 
 ## Debugging Standards
 
@@ -238,6 +247,38 @@ breakpoint()                  # Python 3.7+
 | **Git bisect** | Regression | Find the commit that broke it |
 | **Diff debugging** | Works elsewhere | Compare working vs broken environments |
 
+### Performance Debugging: Profiling and Critical Path
+
+**Critical rule:** Never suggest performance optimizations without first profiling and timing the critical path.
+
+**Required workflow for slow-code or performance issues:**
+
+1. **Run detailed profiling** – Use `cProfile`, `py-spy`, `node --prof`, `clinic.js`, or equivalent for the tech stack. Collect execution data.
+
+2. **Identify the critical path** – Trace from entry point to completion. The critical path is the sequence that determines minimum execution time.
+
+3. **Time and document each segment:**
+   - Create a timing breakdown: function/file:line, cumulative %, self time, call count
+   - Identify the top 3 bottlenecks by self-time or cumulative contribution
+   - Record baseline: tool used, duration, critical path total time
+
+4. **Make data-driven suggestions only after profiling:**
+   - Target measured bottlenecks (reference profiling data)
+   - Include expected impact (e.g., "Addresses ~45% of critical path time")
+   - Justify each suggestion with timing evidence
+
+**Example profiling baseline before suggestions:**
+```
+Profiling: cProfile, 5s run
+Critical path total: 450ms
+Top bottlenecks:
+  1. process_data() line 95 - 200ms (45%)
+  2. parse_input() line 23 - 120ms (27%)
+  3. validate() line 12 - 80ms (18%)
+```
+
+**Related skill:** Use the **debug-code-profiling** skill for step-by-step profiling workflows (Python, Node, Go, Java).
+
 ### Git Bisect for Regressions
 
 ```bash
@@ -298,6 +339,7 @@ git bisect reset
 - Add logging to understand data flow
 - Write a test case that catches the bug
 - Use type annotations to catch type-related bugs early
+- **For performance issues:** Run profiling and time the critical path before making any optimization suggestions
 
 ### ⚠️ Ask First
 - Adding extensive debug logging to production code
