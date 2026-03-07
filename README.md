@@ -79,6 +79,12 @@ Or specify all platforms:
 Analyze this repository and generate agents and skills for all three platforms
 ```
 
+**Fresh install (Cursor only):** Copy generator + templates (Step 1), then create the rules dir and generate:
+```bash
+mkdir -p .cursor/rules .claude/skills
+```
+Then in Cursor chat: `@agent-generator --platform cursor --output .cursor/rules/` and ask it to analyze the repo and generate agents and skills. Rules land in `.cursor/rules/`, skills in `.claude/skills/`.
+
 The generator will:
 1. 🔍 Scan your repository structure
 2. 🎯 Detect tech stack, frameworks, and tools
@@ -122,9 +128,18 @@ Learn more: [Context7 Skills Catalog](https://context7.com/?tab=skills)
 
 Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
 
-**Cursor IDE:**
+**Cursor IDE (fresh install):**
 
-Generated files go in `.cursor/rules/` (Cursor’s Project Rules). Cursor will recognize and apply these rules automatically based on context and file patterns.
+1. Create the rules directory (if it doesn’t exist): `mkdir -p .cursor/rules`
+2. Run the generator (Step 2 above) with: `--platform cursor --output .cursor/rules/`
+3. Generated **rules** (agents) go into `.cursor/rules/`; **skills** go into `.claude/skills/`. Cursor uses both (rules from `.cursor/rules/`, and skills from `.claude/skills/` work across platforms).
+4. No copy or migration step for a fresh install.
+
+**If you already had rules in the old path** (e.g. `.cursor/agents/`), migrate once:
+```bash
+mkdir -p .cursor/rules && cp .cursor/agents/*.mdc .cursor/rules/
+```
+(Using a subfolder like `.cursor/rules/agents/` is optional; Cursor reads all of `.cursor/rules/` recursively.)
 
 **Using Skills (All Platforms):**
 
