@@ -20,7 +20,7 @@ This generator supports three target platforms with different output formats:
 |----------|---------------|-----------------|
 | **VS Code** (GitHub Copilot) | Multiple `.agent.md` files (one per agent) | User-specified (default: `.github/agents/`) |
 | **Claude Code** | Multiple `.md` files (one per agent) | User-specified (default: `.claude/agents/`) |
-| **Cursor IDE** | Multiple `.mdc` files (one per agent) | User-specified (default: `.cursor/agents/`) |
+| **Cursor IDE** | Multiple `.mdc` files (Project Rules) | User-specified (default: `.cursor/rules/`) |
 
 ### Required Parameters
 
@@ -49,10 +49,10 @@ When invoking the agent-generator, you **MUST** specify:
 - Generates individual `.mdc` files (Markdown Cursor format) per agent
 - YAML frontmatter uses Cursor-specific fields: `description`, `globs`, `alwaysApply`
 - Strips VS Code-specific `triggers` and `handoffs`
-- Output to specified directory (e.g., `--output .cursor/agents/`)
+- Output to specified directory (e.g., `--output .cursor/rules/`)
 
 **Multiple Platform Output:**
-- Example: `--platform vscode,cursor --output-vscode .github/agents/ --output-cursor .cursor/agents/`
+- Example: `--platform vscode,cursor --output-vscode .github/agents/ --output-cursor .cursor/rules/`
 - Generates agents in appropriate formats for each platform simultaneously
 
 ## CRITICAL: Agent File Header Format

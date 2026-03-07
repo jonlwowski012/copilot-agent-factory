@@ -10,7 +10,7 @@ Transform any codebase into an AI-powered development environment by automatical
 |----------|--------|--------|------------------|
 | **VS Code** (GitHub Copilot) | `.agent.md` files | `.claude/skills/` | `.github/agents/` |
 | **Claude Code** | `.md` files | `.claude/skills/` | `.claude/agents/` |
-| **Cursor IDE** | `.mdc` files | `.claude/skills/` | `.cursor/agents/` |
+| **Cursor IDE** | `.mdc` files (Rules) | `.claude/skills/` | `.cursor/rules/` |
 
 ## What is this?
 
@@ -61,7 +61,7 @@ Analyze this repository and generate all appropriate agents and skills
 **For Cursor IDE:**
 
 ```
-@agent-generator --platform cursor --output .cursor/agents/
+@agent-generator --platform cursor --output .cursor/rules/
 Analyze this repository and generate all appropriate agents and skills
 ```
 
@@ -75,7 +75,7 @@ Analyze this repository and generate agents and skills for both platforms
 Or specify all platforms:
 
 ```
-@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/agents/
+@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/rules/
 Analyze this repository and generate agents and skills for all three platforms
 ```
 
@@ -124,7 +124,7 @@ Agents are available in your `.claude/agents/` directory and Claude will automat
 
 **Cursor IDE:**
 
-Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context.
+Generated files go in `.cursor/rules/` (Cursor’s Project Rules). Cursor will recognize and apply these rules automatically based on context and file patterns.
 
 **Using Skills (All Platforms):**
 
@@ -515,11 +515,11 @@ automatic_agent_gen/
 
 ### Cursor IDE
 
-- **Output:** Multiple `.mdc` files (Markdown Cursor format) in `.cursor/agents/`
-- **YAML Frontmatter:** Cursor-specific format with `description`, `globs`, `alwaysApply` (no `triggers` or `handoffs`)
-- **Invocation:** Cursor uses agents automatically based on context and file patterns
+- **Output:** Multiple `.mdc` files (Project Rules) in `.cursor/rules/` (see [Cursor Rules docs](https://cursor.com/docs/context/rules))
+- **YAML Frontmatter:** Cursor format with `description`, `globs`, `alwaysApply` (no `triggers` or `handoffs`)
+- **Invocation:** Cursor applies rules from `.cursor/rules/` by context and file patterns
 - **Handoffs:** Not supported (Cursor handles routing internally)
-- **Additional:** Can use `.cursorrules` file in project root for global project instructions
+- **Additional:** Can use `AGENTS.md` in project root as a simple alternative to rules
 
 ## Agent Detection Rules
 

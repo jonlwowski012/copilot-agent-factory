@@ -74,7 +74,7 @@ Skills have been successfully added to Copilot Agent Factory with 8 skill templa
 
 | Feature | GitHub Copilot | Claude Code | Cursor IDE |
 |---------|----------------|-------------|------------|
-| Agents | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/agents/*.mdc` |
+| Agents | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/rules/*.mdc` |
 | Skills | ✅ `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.claude/skills/` |
 
 **Result:** Skills have BETTER cross-platform support than agents.
