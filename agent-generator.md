@@ -19,7 +19,7 @@ This generator supports three target platforms with different output formats:
 
 | Platform | Output Format | Output Location |
 |----------|---------------|-----------------|
-| **VS Code** (GitHub Copilot) | Multiple `.md` files (one per agent) | User-specified (default: `.github/agents/`) |
+| **VS Code** (GitHub Copilot) | Multiple `.agent.md` files (one per agent) | User-specified (default: `.github/agents/`) |
 | **Claude Code** | Multiple `.md` files (one per agent) | User-specified (default: `.claude/agents/`) |
 | **Cursor IDE** | Multiple `.mdc` files (one per agent) | User-specified (default: `.cursor/agents/`) |
 
@@ -37,13 +37,13 @@ When invoking the agent-generator, you **MUST** specify:
 ### Platform-Specific Output
 
 **VS Code Output (`--platform vscode`):**
-- Generates individual `.md` files per agent
-- Includes full YAML frontmatter: `name`, `model`, `description`, `triggers`, `handoffs`
+- Generates individual `.agent.md` files per agent
+- Includes full YAML frontmatter: `name`, `description`, `handoffs`
 - Output to specified directory (e.g., `--output .github/agents/`)
 
 **Claude Code Output (`--platform claude-code`):**
 - Generates individual `.md` files per agent
-- YAML frontmatter includes only: `name`, `model`, `description` (strips `triggers` and `handoffs`)
+- YAML frontmatter includes only: `name`, `model`, `description` (strips `handoffs`)
 - Output to specified directory (e.g., `--output .claude/agents/`)
 
 **Cursor IDE Output (`--platform cursor`):**
@@ -58,22 +58,16 @@ When invoking the agent-generator, you **MUST** specify:
 
 ## CRITICAL: Agent File Header Format
 
-**Every generated agent MUST include the `model:` field in the YAML frontmatter header.**
-
 ### VS Code Format (Full YAML)
 
-For `--platform vscode`, preserve all fields including `triggers` and `handoffs`:
+For `--platform vscode`, use `.agent.md` file extension with `name`, `description`, and `handoffs` fields (no `model` or `triggers`):
 
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet
 description: Description of the agent
-triggers:
-  - condition1
-  - condition2
 handoffs:
-  - target: other-agent
+  - agent: other-agent
     label: "Button Label"
     prompt: "Handoff prompt text"
     send: false
@@ -82,7 +76,7 @@ handoffs:
 
 ### Claude Code Format (Stripped YAML)
 
-For `--platform claude-code`, remove `triggers` and `handoffs` (VS Code-specific):
+For `--platform claude-code`, remove `handoffs` (VS Code-specific), keep `model` for Claude Code:
 
 ```yaml
 ---
@@ -109,94 +103,61 @@ alwaysApply: false
 **Cursor Format Notes:**
 - File extension should be `.mdc` (Markdown Cursor), not `.md`
 - `description`: Combines the agent's purpose and usage context
-- `globs`: Optional array of file path patterns where the agent applies (derived from `triggers` if available)
+- `globs`: Optional array of file path patterns where the agent applies
 - `alwaysApply`: Boolean indicating if agent is always active (default: `false`)
 - Do NOT include `name`, `model`, `triggers`, or `handoffs` fields
-
-### Model Selection by Agent Type
-
-Use **claude-4-5-opus** (deep reasoning) for agents requiring complex analysis:
-| Agent | Reason |
-|-------|--------|
-| `orchestrator` | Complex workflow coordination and task routing |
-| `prd-agent` | Product strategy and requirements analysis |
-| `epic-agent` | Breaking down requirements into actionable epics |
-| `story-agent` | User story writing with acceptance criteria |
-| `architecture-agent` | System design and architectural decisions |
-| `design-agent` | Technical specifications and API contracts |
-| `test-design-agent` | Test strategy and TDD planning |
-| `review-agent` | Deep code quality analysis and best practices |
-| `security-agent` | Vulnerability detection and security analysis |
-| `debug-agent` | Root cause analysis and error investigation |
-| `refactor-agent` | Design patterns and architectural decisions |
-| `performance-agent` | Bottleneck analysis and optimization strategies |
-
-Use **claude-4-5-sonnet** (fast, capable) for other agents:
-| Agent | Reason |
-|-------|--------|
-| `docs-agent` | Documentation generation and formatting |
-| `test-agent` | Test writing and coverage |
-| `lint-agent` | Code formatting and style fixes |
-| `api-agent` | API endpoint implementation |
-| `devops-agent` | CI/CD and deployment tasks |
-| `ml-trainer` | Training script implementation |
-| `data-prep` | Data preprocessing code |
-| `eval-agent` | Evaluation metrics implementation |
-| `inference-agent` | Inference pipeline code |
-
-**Do NOT omit the `model:` field from any generated agent.**
 
 ## Available Agent Templates
 
 ### Planning & Design Agents (Workflow)
 | Template | Purpose |
 |----------|---------|
-| `prd-agent.md` | Product Requirements Documents from feature requests |
-| `epic-agent.md` | Break PRDs into epics with acceptance criteria |
-| `story-agent.md` | User stories with Gherkin scenarios |
-| `architecture-agent.md` | System architecture, ADRs, component design |
-| `design-agent.md` | Technical specifications, API contracts, data models |
-| `test-design-agent.md` | Test strategy and test case specifications (TDD) |
+| `prd-agent.agent.md` | Product Requirements Documents from feature requests |
+| `epic-agent.agent.md` | Break PRDs into epics with acceptance criteria |
+| `story-agent.agent.md` | User stories with Gherkin scenarios |
+| `architecture-agent.agent.md` | System architecture, ADRs, component design |
+| `design-agent.agent.md` | Technical specifications, API contracts, data models |
+| `test-design-agent.agent.md` | Test strategy and test case specifications (TDD) |
 
 ### Core Agents (Universal)
 | Template | Purpose |
 |----------|---------|
-| `orchestrator.md` | Central coordinator, routes to other agents, manages workflows |
-| `docs-agent.md` | Documentation, READMEs, API docs, docstrings |
-| `test-agent.md` | Writing tests, coverage, TDD |
-| `lint-agent.md` | Code formatting, style enforcement |
-| `review-agent.md` | Code review, PR feedback, best practices |
-| `security-agent.md` | Vulnerability detection, secure coding, audits |
-| `devops-agent.md` | CI/CD, Docker, deployments, infrastructure |
-| `debug-agent.md` | Error investigation, log analysis, troubleshooting |
-| `refactor-agent.md` | Code restructuring, design patterns, tech debt |
-| `performance-agent.md` | Profiling, optimization, bottlenecks |
+| `orchestrator.agent.md` | Central coordinator, routes to other agents, manages workflows |
+| `docs-agent.agent.md` | Documentation, READMEs, API docs, docstrings |
+| `test-agent.agent.md` | Writing tests, coverage, TDD |
+| `lint-agent.agent.md` | Code formatting, style enforcement |
+| `review-agent.agent.md` | Code review, PR feedback, best practices |
+| `security-agent.agent.md` | Vulnerability detection, secure coding, audits |
+| `devops-agent.agent.md` | CI/CD, Docker, deployments, infrastructure |
+| `debug-agent.agent.md` | Error investigation, log analysis, troubleshooting |
+| `refactor-agent.agent.md` | Code restructuring, design patterns, tech debt |
+| `performance-agent.agent.md` | Profiling, optimization, bottlenecks |
 
 ### Domain-Specific Agents
 | Template | Purpose |
 |----------|---------|
-| `api-agent.md` | API endpoints, routes, request/response handling |
-| `backend-agent.md` | Server-side logic, business rules, application architecture |
-| `cloud-agent.md` | AWS/GCP/Azure infrastructure, Terraform, serverless |
-| `microservices-agent.md` | Distributed systems, service communication, K8s |
-| `queue-agent.md` | Message queues, async processing, background jobs |
-| `observability-agent.md` | Logging, metrics, tracing, monitoring |
-| `ml-trainer.md` | Model training, hyperparameters, training loops |
-| `data-prep.md` | Data loading, preprocessing, augmentation |
-| `eval-agent.md` | Model evaluation, metrics, benchmarking |
-| `inference-agent.md` | Model inference, predictions, serving |
-| `pytorch-agent.md` | PyTorch neural networks, training, optimization |
-| `tensorflow-agent.md` | TensorFlow/Keras models, training, serving |
-| `pytorch-lightning-agent.md` | Lightning modules, structured training, distributed |
-| `torchgeo-agent.md` | Geospatial deep learning, remote sensing, satellite imagery |
-| `metaflow-agent.md` | ML workflow orchestration, pipeline management, experiment tracking |
+| `api-agent.agent.md` | API endpoints, routes, request/response handling |
+| `backend-agent.agent.md` | Server-side logic, business rules, application architecture |
+| `cloud-agent.agent.md` | AWS/GCP/Azure infrastructure, Terraform, serverless |
+| `microservices-agent.agent.md` | Distributed systems, service communication, K8s |
+| `queue-agent.agent.md` | Message queues, async processing, background jobs |
+| `observability-agent.agent.md` | Logging, metrics, tracing, monitoring |
+| `ml-trainer.agent.md` | Model training, hyperparameters, training loops |
+| `data-prep.agent.md` | Data loading, preprocessing, augmentation |
+| `eval-agent.agent.md` | Model evaluation, metrics, benchmarking |
+| `inference-agent.agent.md` | Model inference, predictions, serving |
+| `pytorch-agent.agent.md` | PyTorch neural networks, training, optimization |
+| `tensorflow-agent.agent.md` | TensorFlow/Keras models, training, serving |
+| `pytorch-lightning-agent.agent.md` | Lightning modules, structured training, distributed |
+| `torchgeo-agent.agent.md` | Geospatial deep learning, remote sensing, satellite imagery |
+| `metaflow-agent.agent.md` | ML workflow orchestration, pipeline management, experiment tracking |
 
 ### Robotics Agents
 | Template | Purpose |
 |----------|---------|
-| `robotics-cpp-agent.md` | C++ development for robotics with CMake, modern C++ standards, RAII |
-| `robotics-ros-agent.md` | ROS 1 and ROS 2 development, nodes, topics, services, launch files |
-| `robotics-jetson-agent.md` | NVIDIA Jetson edge AI, CUDA, TensorRT, JetPack SDK optimization |
+| `robotics-cpp-agent.agent.md` | C++ development for robotics with CMake, modern C++ standards, RAII |
+| `robotics-ros-agent.agent.md` | ROS 1 and ROS 2 development, nodes, topics, services, launch files |
+| `robotics-jetson-agent.agent.md` | NVIDIA Jetson edge AI, CUDA, TensorRT, JetPack SDK optimization |
 
 ## Available Skills
 
@@ -1004,10 +965,10 @@ echo "✅ Essential skills installed successfully!"
 
 For each selected agent:
 
-1. Read the template from `agent-templates/{agent-name}.md`
+1. Read the template from `agent-templates/{agent-name}.agent.md`
 2. **Apply platform-specific YAML handling:**
-   - **VS Code (`--platform vscode`):** Preserve entire YAML frontmatter including `name`, `model`, `description`, `triggers`, `handoffs`
-   - **Claude Code (`--platform claude-code`):** Strip `triggers` and `handoffs` from YAML, keep only `name`, `model`, `description`
+   - **VS Code (`--platform vscode`):** Use `.agent.md` extension. Preserve `name`, `description`, `handoffs`. Remove `model` and `triggers`.
+   - **Claude Code (`--platform claude-code`):** Strip `handoffs` from YAML, keep only `name`, `model`, `description`
 3. **Replace all `{{placeholder}}` markers with detected values** from Steps 1-4.5:
    - Tech stack, commands, and directories from Steps 1-4
    - **Coding standards and style conventions from Step 4.5**
@@ -1018,11 +979,11 @@ For each selected agent:
    - Use detected docstring style in docs-agent
    - Apply naming conventions across all domain agents
 5. **Output based on platform:**
-   - **VS Code:** Write individual files to `{output-dir}/{agent-name}.md`
+   - **VS Code:** Write individual files to `{output-dir}/{agent-name}.agent.md`
    - **Claude Code:** Write individual files to `{output-dir}/{agent-name}.md`
 6. Update orchestrator's `{{active_agents_table}}` with generated agents
 
-**CRITICAL:** When customizing templates, only replace `{{placeholders}}` in the agent body content. Never modify or remove the core YAML frontmatter sections (name, model, description).
+**CRITICAL:** When customizing templates, only replace `{{placeholders}}` in the agent body content. Never modify or remove the core YAML frontmatter sections (name, description).
 
 **PRIORITY ORDER for Standards Detection:**
 1. Explicit standards files (CONTRIBUTING.md, STYLE.md) – highest priority
@@ -1037,7 +998,6 @@ When customizing templates, replace these markers:
 ### Universal Placeholders
 | Placeholder | Source |
 |-------------|--------|
-| `{{model}}` | **REQUIRED** - Model to use (e.g., "claude-4-5-sonnet", "claude-4-5-opus") |
 | `{{tech_stack}}` | Detected languages, frameworks, versions |
 | `{{source_dirs}}` | Source code directories found |
 | `{{test_dirs}}` | Test directories found |
@@ -1128,18 +1088,14 @@ When customizing templates, replace these markers:
 
 ### VS Code Output (Multiple Files)
 
-Generate each agent file with full YAML frontmatter:
+Generate each agent file (`.agent.md`) with compliant YAML frontmatter (no `model` or `triggers`):
 
 ```markdown
 ---
 name: {agent-name}
-model: claude-4-5-sonnet
 description: One-sentence description of what this agent does
-triggers:
-  - detection pattern 1
-  - detection pattern 2
 handoffs:
-  - target: next-agent
+  - agent: next-agent
     label: "Next Step Button"
     prompt: "Contextual handoff prompt"
     send: false
@@ -1172,7 +1128,7 @@ You are an expert [role] for this project.
 
 ### Claude Code Output (Multiple Files)
 
-Generate each agent file with stripped YAML frontmatter (no `triggers` or `handoffs`):
+Generate each agent file with stripped YAML frontmatter (no `handoffs`):
 
 ```markdown
 ---
@@ -1211,7 +1167,7 @@ You are an expert [role] for this project.
 Generate agents and skills in this order to handle dependencies:
 
 1. **Planning agents** – prd-agent, epic-agent, story-agent, architecture-agent, design-agent, test-design-agent
-2. **orchestrator.md** – Central coordinator that references all other agents
+2. **orchestrator** – Central coordinator that references all other agents
 3. **Core agents** – docs, test, lint, review, security, devops, debug, refactor, performance
 4. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
 7. **Generate Context7 skills installation scripts** – Create `scripts/install-context7-skills.sh` and `scripts/install-context7-skills.ps1` with detected skills

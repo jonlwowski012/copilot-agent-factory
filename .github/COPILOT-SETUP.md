@@ -19,18 +19,18 @@ This repository uses GitHub Copilot's custom instructions feature to provide con
 │   ├── templates.instructions.md        # Instructions for agent/skill templates
 │   └── documentation.instructions.md    # Instructions for documentation files
 └── agents/
-    ├── agent-generator.md               # Meta-agent for generating agents
-    ├── orchestrator.md                  # Workflow coordinator
-    ├── prd-agent.md                     # Product requirements
-    ├── epic-agent.md                    # Epic breakdown
-    ├── story-agent.md                   # User stories
-    ├── architecture-agent.md            # Architecture design
-    ├── design-agent.md                  # Technical design
-    ├── test-design-agent.md             # Test strategy (TDD)
-    ├── docs-agent.md                    # Documentation
-    ├── review-agent.md                  # Code review
-    ├── refactor-agent.md                # Code refactoring
-    └── debug-agent.md                   # Debugging assistance
+    ├── agent-generator.agent.md               # Meta-agent for generating agents
+    ├── orchestrator.agent.md            # Workflow coordinator
+    ├── prd-agent.agent.md               # Product requirements
+    ├── epic-agent.agent.md              # Epic breakdown
+    ├── story-agent.agent.md             # User stories
+    ├── architecture-agent.agent.md      # Architecture design
+    ├── design-agent.agent.md            # Technical design
+    ├── test-design-agent.agent.md       # Test strategy (TDD)
+    ├── docs-agent.agent.md              # Documentation
+    ├── review-agent.agent.md            # Code review
+    ├── refactor-agent.agent.md          # Code refactoring
+    └── debug-agent.agent.md             # Debugging assistance
 ```
 
 ## 1. Repository-Wide Instructions
@@ -95,31 +95,30 @@ Provides guidance for:
 
 ## 3. Agent Definitions
 
-**Location:** `.github/agents/*.md`
+**Location:** `.github/agents/*.agent.md`
 
 These are specialized AI agents that can be invoked with `@agent-name` syntax. Each agent has:
 
 - **Expertise:** Specific domain knowledge (PRD, architecture, testing, etc.)
 - **Role:** Clear responsibilities and boundaries
 - **Workflow:** Step-by-step procedures
-- **Model:** Appropriate Claude model for the task
 
 ### Available Agents
 
-| Agent | Purpose | Model |
-|-------|---------|-------|
-| `@orchestrator` | Coordinate feature development workflow | claude-4-5-opus |
-| `@agent-generator` | Generate customized agents for repositories | claude-4-5-opus |
-| `@prd-agent` | Create product requirements documents | claude-4-5-opus |
-| `@epic-agent` | Break down features into epics | claude-4-5-opus |
-| `@story-agent` | Write user stories with Gherkin scenarios | claude-4-5-opus |
-| `@architecture-agent` | Design system architecture and ADRs | claude-4-5-opus |
-| `@design-agent` | Create technical design specifications | claude-4-5-opus |
-| `@test-design-agent` | Develop test strategies (TDD approach) | claude-4-5-opus |
-| `@docs-agent` | Write and maintain documentation | claude-4-5-sonnet |
-| `@review-agent` | Review code and templates | claude-4-5-opus |
-| `@refactor-agent` | Refactor and optimize code | claude-4-5-opus |
-| `@debug-agent` | Debug issues and errors | claude-4-5-opus |
+| Agent | Purpose |
+|-------|---------|
+| `@orchestrator` | Coordinate feature development workflow |
+| `@agent-generator` | Generate customized agents for repositories |
+| `@prd-agent` | Create product requirements documents |
+| `@epic-agent` | Break down features into epics |
+| `@story-agent` | Write user stories with Gherkin scenarios |
+| `@architecture-agent` | Design system architecture and ADRs |
+| `@design-agent` | Create technical design specifications |
+| `@test-design-agent` | Develop test strategies (TDD approach) |
+| `@docs-agent` | Write and maintain documentation |
+| `@review-agent` | Review code and templates |
+| `@refactor-agent` | Refactor and optimize code |
+| `@debug-agent` | Debug issues and errors |
 
 ## How It Works
 
@@ -163,9 +162,9 @@ Edit `.github/copilot-instructions.md` to update general guidance. This file sho
 
 ### Creating New Agents
 
-1. Create a new file in `.github/agents/` with `.md` extension
+1. Create a new file in `.github/agents/` with `.agent.md` extension
 2. Follow the agent template structure defined in `templates.instructions.md`
-3. Include YAML frontmatter with name, model, description, and triggers
+3. Include YAML frontmatter with `name`, `description`, and optionally `handoffs`
 4. Define role, workflow, boundaries, and MCP server integration
 
 ## Best Practices
@@ -194,7 +193,7 @@ To verify your Copilot instructions setup:
    ```bash
    ls -la .github/copilot-instructions.md
    ls -la .github/instructions/*.instructions.md
-   ls -la .github/agents/*.md
+   ls -la .github/agents/*.agent.md
    ```
 
 2. **Validate frontmatter:** Path-specific instructions must have `applyTo` field

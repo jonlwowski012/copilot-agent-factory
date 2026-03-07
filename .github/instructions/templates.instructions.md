@@ -1,5 +1,5 @@
 ---
-applyTo: "agents/templates/**/*.md,agents/skill-templates/**/*.md,.github/agents/*.md"
+applyTo: "agents/templates/**/*.md,agents/skill-templates/**/*.md,.github/agents/*.agent.md"
 ---
 
 # Template Development Instructions
@@ -16,17 +16,25 @@ All agent templates must follow this structure:
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-opus
 description: Clear one-sentence description of agent purpose
-triggers:
-  - Specific detection pattern 1
-  - Specific detection pattern 2
-  - Specific detection pattern 3
 ---
 ```
 
-**Model Selection:**
-- **All agents now use `claude-4-5-opus`** for maximum reasoning capability and consistent high-quality output.
+For agents with handoffs:
+
+```yaml
+---
+name: agent-name
+description: Clear one-sentence description of agent purpose
+handoffs:
+  - agent: other-agent-name
+    label: "Button Label"
+    prompt: "Handoff prompt text"
+    send: false
+---
+```
+
+**Note:** VS Code (GitHub Copilot) agents do NOT include `model:` or `triggers:` fields in the YAML frontmatter. File extension must be `.agent.md`.
 
 ### 2. Agent Introduction
 
@@ -148,22 +156,7 @@ When adding new placeholders:
 
 ## Detection Rules
 
-### Writing Detection Triggers
-
-In YAML frontmatter, specify when agent should be generated:
-
-```yaml
-triggers:
-  - package.json contains "react" dependency
-  - .jsx or .tsx files present
-  - tsconfig.json exists
-```
-
-**Rules for good detection:**
-- Be specific (not "React project", say "package.json with react")
-- Be verifiable programmatically
-- Cover common cases without false positives
-- List files/patterns to check
+Detection triggers are no longer part of the VS Code agent YAML frontmatter. Instead, document when an agent should be used in the agent body text.
 
 ### Detection Implementation
 
@@ -184,16 +177,19 @@ Update `agent-generator.md` with detection logic:
 ```yaml
 ---
 name: helper-agent
+model: claude-4-5-opus
 description: Helpful AI assistant
+triggers:
+  - Always
 ---
 
 You are a helpful AI assistant. Please help the user with their requests.
 ```
 
 **Problems:**
-- No `model:` field
+- Includes unsupported `model:` field for VS Code agents
+- Includes unsupported `triggers:` field
 - Generic description
-- No detection triggers
 - "Helpful AI" is too vague
 
 ### ✅ Do This Instead
@@ -201,21 +197,21 @@ You are a helpful AI assistant. Please help the user with their requests.
 ```yaml
 ---
 name: api-agent
-model: claude-4-5-sonnet
 description: REST API specialist for creating endpoints, validation, and error handling
-triggers:
-  - FastAPI or Flask or Express.js detected
-  - api/ or routes/ directory exists
-  - API endpoint patterns in code
 ---
 
 You are an expert API developer specializing in REST endpoint design for this project.
+
+## When to Use This Agent
+- FastAPI or Flask or Express.js project detected
+- Working on `api/` or `routes/` directory
+- Creating or modifying API endpoints
 ```
 
 **Why better:**
-- Includes `model:` field
+- Compliant with GitHub Copilot requirements (no `model:` or `triggers:`)
 - Specific role and purpose
-- Clear detection patterns
+- Context/usage documented in body text
 - Concrete expertise area
 
 ## Template Categories
@@ -241,22 +237,22 @@ Before finalizing a template:
 
 1. **Syntax check:** Verify YAML frontmatter is valid
 2. **Placeholder check:** All {{placeholders}} are documented
-3. **Detection check:** Detection rules are specific and testable
-4. **Structure check:** Follows standard template structure
-5. **Boundary check:** Boundaries section has ✅/⚠️/🚫
-6. **MCP check:** MCP Servers section present
-7. **Model check:** `model:` field present in YAML
+3. **Structure check:** Follows standard template structure
+4. **Boundary check:** Boundaries section has ✅/⚠️/🚫
+5. **MCP check:** MCP Servers section present
+6. **Compliance check:** No `model:` or `triggers:` in YAML (VS Code format)
+7. **Extension check:** File uses `.agent.md` extension
 
 ## Integration with Agent-Generator
 
 When creating a new agent template:
 
-1. **Add template file** to appropriate category
+1. **Add template file** to appropriate category (use `.agent.md` extension)
 2. **Update agent-generator.md:**
    - Add to detection rules table
    - Add to active agents table
    - Add to placeholder reference if new placeholders
-3. **Update orchestrator.md:**
+3. **Update orchestrator.agent.md:**
    - Add to Available Agents table
    - Add to routing logic
 4. **Update README.md:**
@@ -315,10 +311,11 @@ This skill activates when you: {description}
 
 Before submitting a template:
 
-- [ ] `model:` field present in YAML frontmatter
-- [ ] Model selection is appropriate (opus vs sonnet)
+- [ ] File uses `.agent.md` extension
+- [ ] No `model:` field in YAML frontmatter (VS Code format)
+- [ ] No `triggers:` field in YAML frontmatter
+- [ ] Handoffs use `agent:` not `target:`
 - [ ] Description is clear and specific
-- [ ] Detection triggers are concrete
 - [ ] Structure follows standard format
 - [ ] Placeholders use {{double_braces}} and snake_case
 - [ ] Boundaries section has ✅/⚠️/🚫 format
