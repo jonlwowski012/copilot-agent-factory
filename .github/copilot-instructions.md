@@ -41,7 +41,7 @@ Copilot Agent Factory/
 ├── AGENT.md – Global agent instructions
 ├── .github/
 │   ├── agents/ – Active agents for this repo
-│   │   ├── agent-generator.md (meta-agent)
+│   │   ├── agent-generator.agent.md (meta-agent)
 │   │   ├── orchestrator.agent.md (coordinator)
 │   │   └── {specialized agents}.agent.md
 │   ├── mcp-config.json – MCP server config

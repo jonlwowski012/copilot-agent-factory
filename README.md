@@ -441,7 +441,7 @@ docs/
 
 ```
 automatic_agent_gen/
-├── agent-generator.md        # Meta-agent that creates other agents
+├── agent-generator.md        # Meta-agent that creates other agents (root copy)
 ├── agent-templates/          # Shared agent templates with {{placeholders}}
 │   ├── Planning & Design Agents
 │   │   ├── prd-agent.agent.md           # Product Requirements Documents

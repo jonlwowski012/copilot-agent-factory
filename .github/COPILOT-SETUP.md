@@ -19,7 +19,7 @@ This repository uses GitHub Copilot's custom instructions feature to provide con
 │   ├── templates.instructions.md        # Instructions for agent/skill templates
 │   └── documentation.instructions.md    # Instructions for documentation files
 └── agents/
-    ├── agent-generator.md               # Meta-agent for generating agents
+    ├── agent-generator.agent.md               # Meta-agent for generating agents
     ├── orchestrator.agent.md            # Workflow coordinator
     ├── prd-agent.agent.md               # Product requirements
     ├── epic-agent.agent.md              # Epic breakdown
