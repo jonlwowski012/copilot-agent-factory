@@ -180,6 +180,7 @@ Skills are cross-platform procedural workflows that auto-activate based on keywo
 | `local-dev-setup` | "dev setup", "local environment", "install dependencies" | All projects |
 | `code-formatting` | "format code", "fix formatting", "run formatter" | Projects with linter/formatter |
 | `git-workflow` | "git workflow", "commit message", "branch strategy" | All projects |
+| `debug-code-profiling` | "profile code", "find bottleneck", "debug performance", "critical path", "time execution" | Projects with performance-sensitive code |
 
 ### DevOps & Deployment Skills
 | Skill | Auto-Activates On | When to Include |

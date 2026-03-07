@@ -191,6 +191,8 @@ The factory includes skill templates that auto-activate based on keywords:
   *Keywords:* "git workflow", "commit message", "branch strategy"
 - **shareable-packages-template** - Make Python/TypeScript packages shareable and publishable  
   *Keywords:* "make packages shareable", "prepare for pip publish", "prepare for npm publish", "publish to PyPI", "publish to npm"
+- **debug-code-profiling** - Debug code using detailed profiling and critical path timing before making suggestions  
+  *Keywords:* "debug performance", "profile code", "find bottleneck"
 
 #### DevOps & Deployment (1)
 - **ci-pipeline** - Debug CI/CD pipelines  
