@@ -526,7 +526,7 @@ handoff_prompt: "Create comprehensive test strategy for this design (TDD approac
    - Simple changes → Direct implementation
 2. Route to selected agent with context from all planning phases
 3. Agent implements feature following:
-   - **DRY and SOLID** (see AGENT.md Development Standards)
+   - **DRY and SOLID** (see `AGENT.md` → Development Standards → DRY/SOLID guidelines)
    - Design specifications from Phase 2.2
    - Test strategy from Phase 3
    - Architecture from Phase 2.1
