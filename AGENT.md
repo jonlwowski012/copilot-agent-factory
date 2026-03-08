@@ -63,6 +63,15 @@ skill-templates/
 
 ## Development Standards
 
+### DRY and SOLID During New Feature Development
+
+When developing new features (design or implementation), follow **DRY** and **SOLID**:
+
+- **DRY (Don't Repeat Yourself):** One place for each piece of logic or data; extract shared behavior instead of copying; parameterize differences.
+- **SOLID:** Single Responsibility (one reason to change), Open/Closed (extend via new code), Liskov Substitution (subtypes substitutable), Interface Segregation (small, specific interfaces), Dependency Inversion (depend on abstractions).
+
+Apply these in technical designs and in implementation so new code stays maintainable and consistent with refactoring standards.
+
 ### Template Conventions
 
 **YAML Frontmatter (Required):**

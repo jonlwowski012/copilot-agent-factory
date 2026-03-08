@@ -13,6 +13,7 @@
 
 ### Always
 
+- Follow **DRY** and **SOLID** when developing new features (see `AGENT.md` → [DRY and SOLID During New Feature Development](#dry-and-solid-during-new-feature-development))
 - Use `{{placeholder}}` convention (double braces, snake_case)
 - Follow standard agent template structure (Role → Knowledge → Standards → Boundaries → MCP)
 - Include concrete examples in templates

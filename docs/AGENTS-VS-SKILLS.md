@@ -14,7 +14,7 @@
 | **Think of it as** | "Who" does the work | "How" to do specific tasks |
 | **Invocation** | Explicit: `@agent-name` | Auto-activates on keywords |
 | **File Structure** | Single `.md` file | Folder: `SKILL.md` + scripts/assets |
-| **Location** | `.github/agents/` (Copilot)<br>`.claude/agents/` (Claude)<br>`.cursor/agents/` (Cursor) | `.github/skills/` or `.claude/skills/`<br>(Works for ALL platforms) |
+| **Location** | `.github/agents/` (Copilot)<br>`.claude/agents/` (Claude)<br>`.cursor/rules/` (Cursor) | `.github/skills/` or `.claude/skills/`<br>(Works for ALL platforms) |
 | **Customization** | 60+ project-specific placeholders | 10 core placeholders with fallbacks |
 | **Scope** | Broad domain knowledge | Narrow, specific procedure |
 | **Platform Support** | Platform-specific formats | Single format, cross-platform |
@@ -146,7 +146,7 @@ Let me invoke the auth-setup skill to help you implement this..."
 
 | Feature | GitHub Copilot | Claude Code | Cursor IDE |
 |---------|----------------|-------------|------------|
-| **Agents** | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/agents/*.mdc` |
+| **Agents** | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/rules/*.mdc` |
 | **Skills** | ✅ `.github/skills/` or `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.claude/skills/` |
 | **Auto-activation** | ✅ Yes | ✅ Yes | ✅ Yes |
 | **Cross-platform** | ⚠️ Platform-specific format | ⚠️ Platform-specific format | ✅ Single format works everywhere |
