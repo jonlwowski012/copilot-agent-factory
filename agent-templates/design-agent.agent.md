@@ -26,7 +26,7 @@ handoffs:
     label: "Continue Workflow"
     prompt: "Technical design is complete. Please coordinate the implementation phase."
     send: false
-  - agent: shareable-package-agent
+  - agent: shareable-package
     label: "Make Package Shareable"
     prompt: "The design specifies this component/repo as a shareable or publishable package (pip/npm). Please apply the shareable-packages workflow to make it installable and document publish steps."
     send: false
@@ -83,7 +83,7 @@ When in doubt, ask: "If we implement this design as-is, would the code be DRY an
 - Define API contracts, data models, and interfaces
 - Specify implementation details for each component
 - Output design documents to `docs/planning/design/`
-- When the design specifies a **shareable or publishable package** (pip/npm or private registry), offer the **Make Package Shareable** handoff to `@shareable-package-agent` (do not hand off to the shareable-packages skill; handoffs are to agents only)
+- When the design specifies a **shareable or publishable package** (pip/npm or private registry), offer the **Make Package Shareable** handoff to `@shareable-package` (handoffs are to agents only; the shareable-packages skill is keyword-activated)
 
 ## Project Knowledge
 

@@ -141,7 +141,7 @@ alwaysApply: false
 | `cloud-agent.agent.md` | AWS/GCP/Azure infrastructure, Terraform, serverless |
 | `microservices-agent.agent.md` | Distributed systems, service communication, K8s |
 | `queue-agent.agent.md` | Message queues, async processing, background jobs |
-| `shareable-package-agent.agent.md` | Making Python/TS packages shareable (pip/npm); handoff target from design-agent |
+| `shareable-package.agent.md` | Making Python/TS packages shareable (pip/npm); handoff target from design-agent |
 | `observability-agent.agent.md` | Logging, metrics, tracing, monitoring |
 | `ml-trainer.agent.md` | Model training, hyperparameters, training loops |
 | `data-prep.agent.md` | Data loading, preprocessing, augmentation |
@@ -526,7 +526,7 @@ Generate agents based on detection:
 | Agent | Generate If |
 |-------|-------------|
 | **api-agent** | API framework detected (FastAPI, Flask, Express, etc.) OR `api/` directory |
-| **shareable-package-agent** | `pyproject.toml` OR `setup.py` OR `package.json` at repo root (Python/TS package that may be made shareable); also handoff from design-agent when design specifies publishable package |
+| **shareable-package** | `pyproject.toml` OR `setup.py` OR `package.json` at repo root (Python/TS package that may be made shareable); also handoff from design-agent when design specifies publishable package |
 | **ml-trainer** | `train.py` OR `training/` OR ML framework in deps |
 | **data-prep** | `data/` directory OR data processing imports (pandas, numpy, etc.) |
 | **eval-agent** | `eval.py` OR `evaluate.py` OR `metrics/` OR ML framework detected |
