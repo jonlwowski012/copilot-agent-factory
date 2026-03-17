@@ -151,7 +151,8 @@ Let me invoke the auth-setup skill to help you implement this..."
 | **Auto-activation** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
 | **Cross-platform** | ⚠️ Platform-specific format | ⚠️ Platform-specific format | ⚠️ Platform-specific format | ⚠️ Platform-specific format |
 
-**Key Takeaway:** Skill content format is portable (`SKILL.md` directories), while destination paths are platform defaults (`.claude/skills/` for existing platforms, `.codex/skills/` for Codex).
+**Key Takeaway:** Skill content format is portable (`SKILL.md` directories).  
+Destination paths are platform-specific: `.claude/skills/` for Copilot/Claude/Cursor and `.codex/skills/` for Codex.
 
 ## File Structure Comparison
 

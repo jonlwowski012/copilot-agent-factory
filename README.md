@@ -80,6 +80,8 @@ Analyze this repository and generate all appropriate agents and skills
 Analyze this repository and generate agents and skills for both platforms
 ```
 
+**Note:** `both` is a legacy shorthand for `vscode,claude-code` only. Use explicit platform lists for clarity.
+
 Or specify all platforms:
 
 ```
@@ -101,7 +103,7 @@ The generator will:
 5. ✨ Select relevant agents and skills based on detected patterns
 6. 🛠️ Customize templates with repo-specific values
 7. 🚀 Output ready-to-use agents in the appropriate format
-8. 🤖 Output auto-activating skills to the platform default skills location (`.claude/skills/` for existing platforms, `.codex/skills/` for Codex)
+8. 🤖 Output auto-activating skills to platform-specific skill directories
 9. 🌐 Recommend Context7 skills from the catalog based on your tech stack
 
 ### 3. Install Context7 Skills (Optional)
@@ -166,9 +168,7 @@ Skills auto-activate based on keywords in your prompts. No explicit invocation n
 "debug failing test"           → debug-test-failures skill activates
 ```
 
-Skills are available in platform-specific default skill directories:
-- VS Code / Claude Code / Cursor IDE: `.claude/skills/`
-- OpenAI Codex: `.codex/skills/`
+Skills are available in platform-specific default skill directories (see the platform table above for exact locations).
 
 ---
 

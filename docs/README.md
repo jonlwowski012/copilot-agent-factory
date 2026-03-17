@@ -32,7 +32,8 @@ Skills have been successfully added to Copilot Agent Factory with 8 skill templa
 | Cursor IDE | ✅ Compatible |
 | OpenAI Codex | ✅ Supported (`AGENTS.md` + `.codex/skills/`) |
 
-**Key:** Skill content format is shared (`SKILL.md` directories), but default destination differs for Codex (`.codex/skills/`).
+**Key:** Skill content format is shared across all platforms (`SKILL.md` directories).  
+Default destinations are platform-specific: `.claude/skills/` for Copilot/Claude/Cursor and `.codex/skills/` for Codex.
 
 ### Why Skills Are Valuable
 

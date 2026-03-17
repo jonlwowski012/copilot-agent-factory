@@ -28,13 +28,15 @@ This generator supports four target platforms with different output formats:
 
 When invoking the agent-generator, you **MUST** specify:
 
-1. **`--platform`** (required): `vscode`, `claude-code`, `cursor`, `codex`, `both` (vscode+claude-code), or comma-separated list (e.g., `vscode,cursor,codex`)
+1. **`--platform`** (required): `vscode`, `claude-code`, `cursor`, `codex`, `both`, or comma-separated list (e.g., `vscode,cursor,codex`)
 2. **`--output`** (required for single platform): Output path for generated agents
 3. **Platform-specific outputs** (when using multiple platforms):
    - `--output-vscode <dir>` for VS Code
    - `--output-claude <dir>` for Claude Code
    - `--output-cursor <dir>` for Cursor IDE
    - `--output-codex <file>` for OpenAI Codex (default: `AGENTS.md`)
+
+**Note:** `both` (which means `vscode,claude-code` only) is a legacy shorthand. Prefer explicit platform lists for new usage.
 
 ### Platform-Specific Output
 
@@ -1233,11 +1235,11 @@ Generate agents and skills in this order to handle dependencies:
 2. **orchestrator** – Central coordinator that references all other agents
 3. **Core agents** – docs, test, lint, review, security, devops, debug, refactor, performance
 4. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
-7. **Generate Context7 skills installation scripts** – Create `scripts/install-context7-skills.sh` and `scripts/install-context7-skills.ps1` with detected skills
-8. **Recommend Context7 skills** – Output a summary of recommended Context7 skills based on detected patterns
-5. **Skills** – Copy all relevant skills from `skill-templates/` to the platform default skills location
+5. **Skills** – Copy all relevant skills from `skill-templates/` to the platform default skills location (see **Platform Output Defaults**)
 6. **Update orchestrator** – Fill in `{{active_agents_table}}` with generated agents
 7. **Create docs/planning/** – Create the planning directory structure
+8. **Generate Context7 skills installation scripts** – Create `scripts/install-context7-skills.sh` and `scripts/install-context7-skills.ps1` with detected skills
+9. **Recommend Context7 skills** – Output a summary of recommended Context7 skills based on detected patterns
 
 ### Skills Output Instructions
 
@@ -1339,7 +1341,7 @@ Analyze this repository and generate agents and skills
 Analyze this repository and generate agents and skills
 ```
 
-**Note:** For Codex, generate skills under `.codex/skills/`. For existing platforms, keep current defaults from the Platform Output Defaults table.
+**Note:** For Codex, generate skills under `.codex/skills/`. For `vscode`, `claude-code`, and `cursor`, use `.claude/skills/` per the Platform Output Defaults table.
 
 ## IMPORTANT: Batch Generation Strategy
 
@@ -1677,6 +1679,6 @@ Use these checks as acceptance tests for platform support:
 | `--platform claude-code --output .claude/agents/` | `.claude/agents/*.md` | `.claude/skills/<skill>/SKILL.md` |
 | `--platform cursor --output .cursor/rules/` | `.cursor/rules/*.mdc` | `.claude/skills/<skill>/SKILL.md` |
 | `--platform codex --output AGENTS.md` | root `AGENTS.md` with `## {agent-name}` sections | `.codex/skills/<skill>/SKILL.md` |
-| `--platform vscode,codex --output-vscode .github/agents/ --output-codex AGENTS.md` | both output targets generated | both platform skill locations generated correctly |
+| `--platform vscode,codex --output-vscode .github/agents/ --output-codex AGENTS.md` | vscode: `.github/agents/*.agent.md`; codex: `AGENTS.md` | vscode: `.claude/skills/<skill>/SKILL.md`; codex: `.codex/skills/<skill>/SKILL.md` |
 
 **Compatibility expectation:** Existing platform outputs remain unchanged; Codex adds an additional output path without breaking current behavior.
