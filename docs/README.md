@@ -30,8 +30,9 @@ Skills have been successfully added to Copilot Agent Factory with 8 skill templa
 | GitHub Copilot | ✅ Native (Dec 2025) |
 | Claude Code | ✅ Native |
 | Cursor IDE | ✅ Compatible |
+| OpenAI Codex | ✅ Supported (`AGENTS.md` + `.codex/skills/`) |
 
-**Key:** Single `.claude/skills/` format works on ALL platforms.
+**Key:** Skill content format is shared (`SKILL.md` directories), but default destination differs for Codex (`.codex/skills/`).
 
 ### Why Skills Are Valuable
 
@@ -72,10 +73,10 @@ Skills have been successfully added to Copilot Agent Factory with 8 skill templa
 
 ### 1. Cross-Platform Table
 
-| Feature | GitHub Copilot | Claude Code | Cursor IDE |
-|---------|----------------|-------------|------------|
-| Agents | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/rules/*.mdc` |
-| Skills | ✅ `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.claude/skills/` |
+| Feature | GitHub Copilot | Claude Code | Cursor IDE | OpenAI Codex |
+|---------|----------------|-------------|------------|--------------|
+| Agents | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/rules/*.mdc` | ✅ `AGENTS.md` |
+| Skills | ✅ `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.codex/skills/` |
 
 **Result:** Skills have BETTER cross-platform support than agents.
 

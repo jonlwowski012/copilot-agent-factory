@@ -1,6 +1,6 @@
 # Copilot Agent Factory 🏭
 
-**Auto-generate customized agents and skills for VS Code (GitHub Copilot), Claude Code, or Cursor IDE from any repository.**
+**Auto-generate customized agents and skills for VS Code (GitHub Copilot), Claude Code, Cursor IDE, or OpenAI Codex from any repository.**
 
 Transform any codebase into an AI-powered development environment by automatically detecting your tech stack, frameworks, and patterns, then generating perfectly tailored agents and skills that understand your project's specific needs.
 
@@ -11,6 +11,7 @@ Transform any codebase into an AI-powered development environment by automatical
 | **VS Code** (GitHub Copilot) | `.agent.md` files | `.claude/skills/` | `.github/agents/` |
 | **Claude Code** | `.md` files | `.claude/skills/` | `.claude/agents/` |
 | **Cursor IDE** | `.mdc` files (Rules) | `.claude/skills/` | `.cursor/rules/` |
+| **OpenAI Codex** | Single root `AGENTS.md` | `.codex/skills/` | `AGENTS.md` |
 
 ## What is this?
 
@@ -65,6 +66,13 @@ Analyze this repository and generate all appropriate agents and skills
 Analyze this repository and generate all appropriate agents and skills
 ```
 
+**For OpenAI Codex:**
+
+```
+@agent-generator --platform codex --output AGENTS.md
+Analyze this repository and generate all appropriate agents and skills
+```
+
 **For Multiple Platforms:**
 
 ```
@@ -75,8 +83,8 @@ Analyze this repository and generate agents and skills for both platforms
 Or specify all platforms:
 
 ```
-@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/rules/
-Analyze this repository and generate agents and skills for all three platforms
+@agent-generator --platform vscode,claude-code,cursor,codex --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/rules/ --output-codex AGENTS.md
+Analyze this repository and generate agents and skills for all supported platforms
 ```
 
 **Fresh install (Cursor only):** Copy generator + templates (Step 1), then create the rules dir and generate:
@@ -93,7 +101,7 @@ The generator will:
 5. ✨ Select relevant agents and skills based on detected patterns
 6. 🛠️ Customize templates with repo-specific values
 7. 🚀 Output ready-to-use agents in the appropriate format
-8. 🤖 Output auto-activating skills to `.claude/skills/`
+8. 🤖 Output auto-activating skills to the platform default skills location (`.claude/skills/` for existing platforms, `.codex/skills/` for Codex)
 9. 🌐 Recommend Context7 skills from the catalog based on your tech stack
 
 ### 3. Install Context7 Skills (Optional)
@@ -135,6 +143,11 @@ Agents are available in your `.claude/agents/` directory and Claude will automat
 3. Generated **rules** (agents) go into `.cursor/rules/`; **skills** go into `.claude/skills/`. Cursor uses both (rules from `.cursor/rules/`, and skills from `.claude/skills/` work across platforms).
 4. No copy or migration step for a fresh install.
 
+**OpenAI Codex:**
+
+1. Run the generator with: `--platform codex --output AGENTS.md`
+2. Generated **agents** go to root `AGENTS.md`; **skills** go to `.codex/skills/` as per-skill directories containing `SKILL.md`.
+
 **If you already had rules in the old path** (e.g. `.cursor/agents/`), migrate once:
 ```bash
 mkdir -p .cursor/rules && cp .cursor/agents/*.mdc .cursor/rules/
@@ -153,7 +166,9 @@ Skills auto-activate based on keywords in your prompts. No explicit invocation n
 "debug failing test"           → debug-test-failures skill activates
 ```
 
-Skills are available in `.claude/skills/` and work across GitHub Copilot, Claude Code, and Cursor IDE.
+Skills are available in platform-specific default skill directories:
+- VS Code / Claude Code / Cursor IDE: `.claude/skills/`
+- OpenAI Codex: `.codex/skills/`
 
 ---
 
@@ -165,7 +180,7 @@ The factory now generates both **agents** and **skills** to provide comprehensiv
 |--------|--------|--------|
 | **Purpose** | Domain expertise and decision-making | Step-by-step procedural workflows |
 | **Invocation** | Explicit: `@agent-name` | Auto-activates based on keywords |
-| **Location** | `.github/agents/` (platform-specific) | `.claude/skills/` (cross-platform) |
+| **Location** | `.github/agents/`, `.claude/agents/`, `.cursor/rules/`, or root `AGENTS.md` (platform-specific) | `.claude/skills/` (existing platforms) or `.codex/skills/` (Codex) |
 | **Best For** | Code review, architecture, debugging | Setup tasks, running commands, workflows |
 | **Example** | `@test-agent` reviews test quality | "set up pytest" auto-activates pytest-setup skill |
 
@@ -215,15 +230,16 @@ The factory includes skill templates that auto-activate based on keywords:
 
 ### Cross-Platform Skills Support
 
-Skills use the `.claude/skills/` format which works natively across all three platforms:
+Skills use per-skill directories with `SKILL.md` and platform defaults:
 
 | Platform | Skills Support | Auto-Activation |
 |----------|----------------|-----------------|
-| GitHub Copilot | ✅ Native (Dec 2025) | ✅ Yes |
-| Claude Code | ✅ Native | ✅ Yes |
-| Cursor IDE | ✅ Compatible | ✅ Yes |
+| GitHub Copilot | ✅ `.claude/skills/` | ✅ Yes |
+| Claude Code | ✅ `.claude/skills/` | ✅ Yes |
+| Cursor IDE | ✅ `.claude/skills/` | ✅ Yes |
+| OpenAI Codex | ✅ `.codex/skills/` | ✅ Yes |
 
-**Key advantage:** Skills use a single format that works everywhere, while agents need platform-specific conversion.
+**Key advantage:** Skills use one directory-based format (`SKILL.md` per skill) while platform defaults control destination paths.
 
 ---
 
@@ -631,7 +647,9 @@ The generator also creates skills based on project needs. Skills auto-activate b
 |-------|-------------|-------------------|
 | **ci-pipeline** | `.github/workflows/` or CI/CD configs exist | "CI pipeline", "GitHub Actions", "CI failing" |
 
-**Skills output location:** `.claude/skills/` (works across GitHub Copilot, Claude Code, and Cursor IDE)
+**Skills output location defaults:**
+- `.claude/skills/` for GitHub Copilot, Claude Code, and Cursor IDE
+- `.codex/skills/` for OpenAI Codex
 
 ## Context7 Skills Integration
 
@@ -684,17 +702,21 @@ The agent-generator creates installation scripts that download skills directly f
 Download skill files directly from GitHub:
 
 ```bash
+# Choose destination (default shown for non-Codex platforms)
+SKILLS_DIR=.claude/skills
+# For Codex use: SKILLS_DIR=.codex/skills
+
 # Create skills directory
-mkdir -p .claude/skills/pdf
+mkdir -p "$SKILLS_DIR/pdf"
 
 # Download a specific skill
-curl -o .claude/skills/pdf/SKILL.md \
+curl -o "$SKILLS_DIR/pdf/SKILL.md" \
   https://raw.githubusercontent.com/anthropics/skills/main/skills/pdf/SKILL.md
 
 # Download multiple skills
 for skill in git commit code-review; do
-  mkdir -p ".claude/skills/$skill"
-  curl -o ".claude/skills/$skill/SKILL.md" \
+  mkdir -p "$SKILLS_DIR/$skill"
+  curl -o "$SKILLS_DIR/$skill/SKILL.md" \
     "https://raw.githubusercontent.com/anthropics/skills/main/skills/$skill/SKILL.md"
 done
 ```
@@ -816,7 +838,7 @@ curl -fsSL "$ANTHROPIC_BASE/code-review/SKILL.md" -o "$SKILLS_DIR/code-review/SK
 echo "  ✓ code-review"
 
 echo ""
-echo "✅ Essential skills downloaded to .claude/skills/"
+echo "✅ Essential skills downloaded to $SKILLS_DIR/"
 
 # Optional skills (commented out - uncomment to download)
 # mkdir -p "$SKILLS_DIR/docker"
@@ -1267,9 +1289,10 @@ These scripts ensure all team members use the same Context7 skills configuration
 
 2. **Or download skills manually:**
    ```bash
-   mkdir -p .claude/skills/python
-   curl -o .claude/skills/python/SKILL.md \
-     https://raw.githubusercontent.com/anthropics/skills/main/skills/python/SKILL.md
+   SKILLS_DIR=.claude/skills   # For Codex use: .codex/skills
+   mkdir -p "$SKILLS_DIR/python"
+   curl -o "$SKILLS_DIR/python/SKILL.md" \
+      https://raw.githubusercontent.com/anthropics/skills/main/skills/python/SKILL.md
    ```
 
 3. **Or use the Context7 CLI (optional):**
