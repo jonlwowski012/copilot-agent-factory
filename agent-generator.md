@@ -1263,7 +1263,6 @@ When generating skills:
    - `local-dev-setup` – Universal, helps with onboarding
    - `code-formatting` – Include if linter/formatter detected
    - `git-workflow` – Universal, helps with git conventions
-   - `trycycle` – Universal, multi-phase implementation workflow (plan → test strategy → implement → review)
 
 4. **Conditional skills:**
    - `pytest-setup` – Only if Python project detected
