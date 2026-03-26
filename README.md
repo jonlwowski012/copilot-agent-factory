@@ -363,7 +363,7 @@ Phase 5 (Review):       Trycycle's automated review loop
 
 ```bash
 # Update to latest version
-git -C .github/skills/trycycle pull
+git -C "$SKILLS_DIR/trycycle" pull
 ```
 
 Trycycle includes a built-in version check (Step 1 of its workflow) and will notify you if an update is available.
