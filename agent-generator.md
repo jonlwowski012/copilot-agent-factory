@@ -1298,9 +1298,6 @@ Output skills to `{skills-output-dir}` with this structure:
     ├── 3-devops-deployment/
     │   └── ci-pipeline/
     │       └── SKILL.md
-    └── 4-implementation-workflows/
-        └── trycycle/
-            └── SKILL.md
 ```
 
 **Key points:**
