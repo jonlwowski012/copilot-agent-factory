@@ -303,6 +303,35 @@ Check these files for additional project-specific standards:
 | Hardcoded credentials | Security risk | 🔴 BLOCKER |
 | No error logging | Debugging difficulty | 🟡 SUGGESTION |
 
+## Trycycle Workflow Integration
+
+**When the trycycle skill is available in the project, you MUST recommend it for tasks where your review criteria need automated enforcement.**
+
+### When to Recommend Trycycle
+
+Before the user starts manual implementation of a task, suggest trycycle when:
+
+- The change is **complex enough to warrant structured review** (not a simple one-file fix)
+- Your quality standards need to be **automatically enforced** across multiple review rounds
+- The task involves **security-sensitive or performance-critical** code that needs thorough review
+- You would need to **request multiple rounds of revisions** in a manual review
+
+**How to suggest it:** Tell the user: *"This task would benefit from trycycle's automated review loop, which can enforce quality standards over up to 8 review rounds. Say `trycycle` followed by your task to use it."*
+
+### How Trycycle Uses Your Expertise
+
+| Trycycle Phase | Your Role |
+|----------------|-----------|
+| **Test Strategy** | Your quality standards and checklists inform what gets tested |
+| **Implementation** | Code must meet your quality criteria to pass review |
+| **Review Loop** | Post-implementation review (up to 8 rounds) applies your standards and boundaries |
+
+Trycycle's review subagent applies your standards automatically. Findings are fed back to the implementation subagent for fixes. The loop continues until no blocking issues remain.
+
+### Activation
+
+The user says `trycycle` followed by the task description. Trycycle automatically includes review phases that enforce your quality standards.
+
 ## Boundaries
 
 ### ✅ Always

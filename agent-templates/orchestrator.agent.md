@@ -1012,6 +1012,40 @@ Routing directly to @docs-agent...
 @docs-agent Update the README with better MCP server examples
 ```
 
+## Trycycle Workflow Integration
+
+**When the trycycle skill is available in the project, you MUST recommend it for qualifying implementation tasks.**
+
+### When to Route to Trycycle
+
+You should suggest trycycle to the user when:
+
+| Condition | Action |
+|-----------|--------|
+| Task is a **well-defined implementation** spanning 3+ files | Recommend trycycle |
+| User completed **Feature Dev Workflow Phases 0-3** and is ready for Phase 4 | Recommend trycycle for implementation |
+| Task is a **complex refactor** with risk of regression | Recommend trycycle |
+| Task is a **quick fix** or single-file change | Handle normally with domain agents |
+| Task **needs stakeholder alignment** first | Use Feature Development Workflow, then trycycle for Phase 4 |
+
+**How to suggest it:** Tell the user: *"This task would benefit from trycycle's structured workflow. Say `trycycle` followed by your task description to use it."*
+
+### Feature Development Workflow + Trycycle
+
+| Aspect | Feature Development Workflow | Trycycle |
+|--------|------------------------------|----------|
+| **Scope** | Full lifecycle (PRD → Architecture → TDD → Implement → Review) | Focused implementation (Plan → Test Strategy → Implement → Review) |
+| **Planning** | Multi-agent planning with approval gates | Single planning subagent with iterative editing (up to 5 rounds) |
+| **Implementation** | Routes to domain agents | Dedicated implementation subagent in isolated worktree |
+| **Review** | @review-agent + @docs-agent | Automated review loop (up to 8 rounds) |
+| **Best For** | Major features needing stakeholder alignment | Complex implementation tasks needing structured execution |
+
+**Combining workflows:** Use the Feature Development Workflow for planning phases (Phases 0-3), then recommend trycycle for Phase 4 (Implementation) when the task is complex enough to benefit from automated planning → implementation → review.
+
+### Activation
+
+The user says `trycycle` followed by the task description. You can suggest trycycle when routing implementation tasks that would benefit from its structured subagent workflow.
+
 ## Boundaries
 
 - ✅ **Always:** Route to specialized agents, coordinate workflows, enforce quality

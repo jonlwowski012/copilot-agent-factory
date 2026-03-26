@@ -23,8 +23,11 @@ This document defines the standard format for creating skill templates in the Co
 ├── 2-development-workflows/
 │   └── local-dev-setup/
 │       └── SKILL.md
-└── 3-devops-deployment/
-    └── ci-pipeline/
+├── 3-devops-deployment/
+│   └── ci-pipeline/
+│       └── SKILL.md
+└── 4-implementation-workflows/
+    └── trycycle/
         └── SKILL.md
 ```
 

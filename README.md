@@ -31,19 +31,56 @@ Instead of manually writing agent files for each project, Copilot Agent Factory:
 
 ## Quick Start
 
-Get up and running in 3 simple steps:
+Get up and running in 2 simple steps:
 
-### 1. Copy to Your Repository
+### 1. Clone Into Your Repository
+
+Clone the factory directly into your target repo. Pick the command for your platform:
+
+**VS Code (GitHub Copilot):**
 
 ```bash
-# From this project, copy the generator and templates to your target repo
-cp agent-generator.md /path/to/your/repo/
-cp -r agent-templates /path/to/your/repo/
-cp -r skill-templates /path/to/your/repo/
-cp SKILL-TEMPLATE-STANDARD.md /path/to/your/repo/
+cd /path/to/your/repo
+git clone https://github.com/jonlwowski012/copilot-agent-factory.git .github/copilot-agent-factory
 ```
 
-### 2. Generate Agents and Skills for Your Platform
+**Claude Code:**
+
+```bash
+cd /path/to/your/repo
+git clone https://github.com/jonlwowski012/copilot-agent-factory.git .claude/copilot-agent-factory
+```
+
+**Cursor IDE:**
+
+```bash
+cd /path/to/your/repo
+git clone https://github.com/jonlwowski012/copilot-agent-factory.git .cursor/copilot-agent-factory
+```
+
+**OpenAI Codex:**
+
+```bash
+cd /path/to/your/repo
+git clone https://github.com/jonlwowski012/copilot-agent-factory.git .codex/copilot-agent-factory
+```
+
+**Multiple platforms at once:**
+
+```bash
+cd /path/to/your/repo
+git clone https://github.com/jonlwowski012/copilot-agent-factory.git .github/copilot-agent-factory
+# The generator outputs to any platform from a single clone
+```
+
+> **Or let your AI agent do it:** Tell your coding agent:
+> ```
+> Read https://raw.githubusercontent.com/jonlwowski012/copilot-agent-factory/main/README.md. Follow the installation instructions there.
+> ```
+
+### 2. Generate Agents and Skills
+
+Ask your AI agent to run the generator. It reads the clone location automatically:
 
 **For VS Code (GitHub Copilot):**
 
@@ -76,24 +113,11 @@ Analyze this repository and generate all appropriate agents and skills
 **For Multiple Platforms:**
 
 ```
-@agent-generator --platform both --output-vscode .github/agents/ --output-claude .claude/agents/
-Analyze this repository and generate agents and skills for both platforms
-```
-
-**Note:** `both` is a legacy shorthand for `vscode,claude-code` only. Use explicit platform lists for clarity.
-
-Or specify all platforms:
-
-```
 @agent-generator --platform vscode,claude-code,cursor,codex --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/rules/ --output-codex AGENTS.md
 Analyze this repository and generate agents and skills for all supported platforms
 ```
 
-**Fresh install (Cursor only):** Copy generator + templates (Step 1), then create the rules dir and generate:
-```bash
-mkdir -p .cursor/rules .claude/skills
-```
-Then in Cursor chat: `@agent-generator --platform cursor --output .cursor/rules/` and ask it to analyze the repo and generate agents and skills. Rules land in `.cursor/rules/`, skills in `.claude/skills/`.
+**Note:** `--platform both` is a legacy shorthand for `vscode,claude-code` only. Use explicit platform lists for clarity.
 
 The generator will:
 1. 🔍 Scan your repository structure
@@ -138,23 +162,22 @@ Learn more: [Context7 Skills Catalog](https://context7.com/?tab=skills)
 
 Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
 
-**Cursor IDE (fresh install):**
+**Cursor IDE:**
 
-1. Create the rules directory (if it doesn’t exist): `mkdir -p .cursor/rules`
-2. Run the generator (Step 2 above) with: `--platform cursor --output .cursor/rules/`
-3. Generated **rules** (agents) go into `.cursor/rules/`; **skills** go into `.claude/skills/`. Cursor uses both (rules from `.cursor/rules/`, and skills from `.claude/skills/` work across platforms).
-4. No copy or migration step for a fresh install.
+Generated **rules** (agents) go into `.cursor/rules/`; **skills** go into `.claude/skills/`. Cursor uses both locations.
 
 **OpenAI Codex:**
 
-1. Run the generator with: `--platform codex --output AGENTS.md`
-2. Generated **agents** go to root `AGENTS.md`; **skills** go to `.codex/skills/` as per-skill directories containing `SKILL.md`.
+Generated **agents** go to root `AGENTS.md`; **skills** go to `.codex/skills/` as per-skill directories containing `SKILL.md`.
 
-**If you already had rules in the old path** (e.g. `.cursor/agents/`), migrate once:
+**Updating the Factory:**
+
 ```bash
-mkdir -p .cursor/rules && cp .cursor/agents/*.mdc .cursor/rules/
+# Pull the latest factory updates (adjust path for your platform)
+git -C .github/copilot-agent-factory pull
+
+# Then re-run the generator to pick up new/improved templates
 ```
-(Using a subfolder like `.cursor/rules/agents/` is optional; Cursor reads all of `.cursor/rules/` recursively.)
 
 **Using Skills (All Platforms):**
 
@@ -200,7 +223,7 @@ The factory now generates both **agents** and **skills** to provide comprehensiv
 
 **They work together:** Agents can invoke skills for procedural tasks, and skills can reference agents for expert guidance.
 
-### Available Skills (8)
+### Available Skills (9)
 
 The factory includes skill templates that auto-activate based on keywords:
 
@@ -228,6 +251,10 @@ The factory includes skill templates that auto-activate based on keywords:
 - **ci-pipeline** - Debug CI/CD pipelines  
   *Keywords:* "CI pipeline", "GitHub Actions", "CI failing"
 
+#### Implementation Workflows (1)
+- **trycycle** - Multi-phase development workflow with structured planning, test strategy, implementation, and review via subagents in isolated worktrees  
+  *Keywords:* "trycycle" (explicit invocation only)
+
 ### Cross-Platform Skills Support
 
 Skills use per-skill directories with `SKILL.md` and platform defaults:
@@ -240,6 +267,111 @@ Skills use per-skill directories with `SKILL.md` and platform defaults:
 | OpenAI Codex | ✅ `.codex/skills/` | ✅ Yes |
 
 **Key advantage:** Skills use one directory-based format (`SKILL.md` per skill) while platform defaults control destination paths.
+
+---
+
+## Trycycle Integration
+
+[Trycycle](https://github.com/danshapiro/trycycle) is a skill that plans, strengthens, and reviews your code automatically. It works as a hill-climbing loop: plan → plan editing (up to 5 rounds) → test strategy → implementation → code review (up to 8 rounds), all in an isolated git worktree with dedicated subagents.
+
+### Why Use Trycycle
+
+| Without Trycycle | With Trycycle |
+|------------------|---------------|
+| Manual planning, then implementation, then manual review | Automated plan → strengthen → implement → review loop |
+| Single-pass code changes | Iterative improvement with fresh reviewers each round |
+| Risk of stale context in long sessions | Each round uses a fresh subagent — no stale context |
+| Manual worktree/branch management | Isolated worktree created automatically |
+
+**Best for:** Multi-file features, complex refactors, tasks where quality matters. Not needed for quick single-file fixes.
+
+### Installing Trycycle
+
+Trycycle requires `python3` on your `PATH`. Install it by cloning into your skills directory:
+
+**Per-project (recommended):**
+
+```bash
+# GitHub Copilot / VS Code
+git clone https://github.com/danshapiro/trycycle.git .github/skills/trycycle
+
+# Claude Code
+git clone https://github.com/danshapiro/trycycle.git .claude/skills/trycycle
+
+# Codex CLI
+git clone https://github.com/danshapiro/trycycle.git .codex/skills/trycycle
+```
+
+**Global (available to all projects):**
+
+```bash
+# Claude Code (global)
+git clone https://github.com/danshapiro/trycycle.git ~/.claude/skills/trycycle
+
+# Codex CLI (global)
+git clone https://github.com/danshapiro/trycycle.git ~/.codex/skills/trycycle
+
+# Kimi CLI
+git clone https://github.com/danshapiro/trycycle.git ~/.kimi/skills/trycycle
+
+# OpenCode
+git clone https://github.com/danshapiro/trycycle.git ~/.config/opencode/skills/trycycle
+```
+
+> **Note:** OpenCode also discovers skills at `~/.claude/skills/`, so if you already installed for Claude Code, OpenCode can use it too.
+
+### Using Trycycle
+
+Include the word **trycycle** in your request and describe what you want built:
+
+```
+trycycle Add OAuth2 authentication with social login support
+
+trycycle Refactor the payment module to use the Strategy pattern
+
+trycycle Build a REST API for the inventory management system
+```
+
+Trycycle asks any critical questions first, then handles everything else automatically:
+
+1. **Workspace** — Creates an isolated git worktree with a feature branch
+2. **Test Strategy** — Proposes a testing approach (requires your explicit approval)
+3. **Planning** — Writes an implementation plan via a dedicated subagent
+4. **Plan Strengthening** — Fresh subagents critique and improve the plan (up to 5 rounds)
+5. **Test Plan** — Concrete test cases based on the finalized plan
+6. **Implementation** — Builds the code in the isolated worktree
+7. **Review Loop** — Fresh reviewers find issues, implementation subagent fixes them (up to 8 rounds)
+8. **Finish** — Presents merge/PR options for the completed work
+
+### Trycycle + Feature Development Workflow
+
+Trycycle complements the existing Feature Development Workflow. Use them together for maximum benefit:
+
+```
+Phase 0-3 (Planning):  @orchestrator + planning agents
+                        ↓
+Phase 4 (Implementation): trycycle handles structured execution
+                        ↓
+Phase 5 (Review):       Trycycle's automated review loop
+```
+
+**All generated agents actively recommend trycycle** when they detect a qualifying task (multi-file changes, complex refactors, new features). You'll see suggestions like:
+
+> *"This task would benefit from trycycle's structured workflow. Say `trycycle` followed by your task to use it."*
+
+### Updating Trycycle
+
+```bash
+# Update to latest version
+git -C .github/skills/trycycle pull
+```
+
+Trycycle includes a built-in version check (Step 1 of its workflow) and will notify you if an update is available.
+
+### Learn More
+
+- **Repository:** https://github.com/danshapiro/trycycle
+- **License:** MIT
 
 ---
 
@@ -646,6 +778,11 @@ The generator also creates skills based on project needs. Skills auto-activate b
 | Skill | Created When | Auto-Activates On |
 |-------|-------------|-------------------|
 | **ci-pipeline** | `.github/workflows/` or CI/CD configs exist | "CI pipeline", "GitHub Actions", "CI failing" |
+
+### Implementation Workflow Skills
+| Skill | Created When | Auto-Activates On |
+|-------|-------------|-------------------|
+| **trycycle** | Always created (universal) | "trycycle" (explicit invocation only) |
 
 **Skills output location defaults:**
 - `.claude/skills/` for GitHub Copilot, Claude Code, and Cursor IDE

@@ -1263,6 +1263,7 @@ When generating skills:
    - `local-dev-setup` – Universal, helps with onboarding
    - `code-formatting` – Include if linter/formatter detected
    - `git-workflow` – Universal, helps with git conventions
+   - `trycycle` – Universal, multi-phase implementation workflow (plan → test strategy → implement → review)
 
 4. **Conditional skills:**
    - `pytest-setup` – Only if Python project detected
@@ -1294,8 +1295,11 @@ Output skills to `{skills-output-dir}` with this structure:
     │   │   └── SKILL.md
     │   └── git-workflow/
     │       └── SKILL.md
-    └── 3-devops-deployment/
-        └── ci-pipeline/
+    ├── 3-devops-deployment/
+    │   └── ci-pipeline/
+    │       └── SKILL.md
+    └── 4-implementation-workflows/
+        └── trycycle/
             └── SKILL.md
 ```
 

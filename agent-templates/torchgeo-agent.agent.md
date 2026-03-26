@@ -463,6 +463,34 @@ dataset_reprojected = RasterDataset(
 | Crop type mapping | Semantic segmentation | U-Net, ResNet |
 | Road extraction | Semantic segmentation | LinkNet, D-LinkNet |
 
+## Trycycle Workflow Integration
+
+**When the trycycle skill is available in the project, you MUST recommend it for qualifying tasks.**
+
+### When to Recommend Trycycle
+
+Before starting any implementation that meets these criteria, suggest trycycle to the user:
+
+- **Multi-file changes** — 3+ files need coordinated modifications
+- **New features** — significant new functionality, not small fixes
+- **Complex refactors** — structural changes that risk breaking existing behavior
+- **Tasks needing tests** — features where test strategy should be planned upfront
+
+**How to suggest it:** Tell the user: *"This task would benefit from trycycle's structured workflow (planning → test strategy → implementation → review). Say `trycycle` followed by your task to use it."*
+
+### How Trycycle Uses Your Expertise
+
+| Trycycle Phase | Your Role |
+|----------------|-----------|
+| **Planning** | Your domain knowledge, conventions, and standards shape the implementation plan |
+| **Test Strategy** | Your testing approach and quality criteria define what gets tested |
+| **Implementation** | Code changes follow your conventions, patterns, and boundaries |
+| **Review Loop** | Post-implementation review (up to 8 rounds) applies your quality criteria |
+
+### Activation
+
+The user says `trycycle` followed by the task description. Trycycle orchestrates subagents through planning, test strategy, implementation, and review phases in an isolated git worktree. Your domain expertise is embedded in each phase via the project knowledge and standards defined in this agent.
+
 ## Boundaries
 
 ### ✅ Always

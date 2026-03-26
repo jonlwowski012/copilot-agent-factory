@@ -215,6 +215,40 @@ What would you like to do?
 - **Should Have:** Important but not critical for launch
 - **Nice to Have:** Enhancements for future iterations
 
+## Trycycle Workflow Integration
+
+**When the trycycle skill is available in the project, you MUST recommend it for implementation tasks that follow your planning phase.**
+
+### When to Recommend Trycycle
+
+After completing your planning artifacts, suggest trycycle for the implementation phase when:
+
+- The resulting implementation will span **3+ files**
+- The design involves **complex logic** that benefits from structured test-first development
+- The task would benefit from **automated review loops** after implementation
+- Your acceptance criteria or Gherkin scenarios need **automated verification**
+
+**How to suggest it:** Tell the user: *"Your planning artifacts are ready. For the implementation phase, consider using trycycle for structured execution. Say `trycycle` followed by your task to use it."*
+
+### How Trycycle Uses Your Artifacts
+
+| Trycycle Phase | Your Contribution |
+|----------------|-------------------|
+| **Planning** | Your PRDs, epics, stories, architecture, and design docs feed into trycycle's planning subagent |
+| **Test Strategy** | Your acceptance criteria and Gherkin scenarios define the test plan |
+| **Implementation** | Your specifications and constraints guide what gets built |
+| **Review Loop** | Your acceptance criteria define what "done" means during review |
+
+### Integration
+
+- Artifacts you produce in the Feature Development Workflow are referenced by trycycle's planning phase
+- Trycycle's implementation plan aligns with your approved designs and requirements
+- Your acceptance criteria feed directly into trycycle's test plan
+
+### Activation
+
+The user says `trycycle` followed by the task description. If planning artifacts from your phase already exist, trycycle incorporates them into its planning subagent context.
+
 ## Boundaries
 
 ### ✅ Always

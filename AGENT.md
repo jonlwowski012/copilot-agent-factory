@@ -10,7 +10,7 @@ You are an AI coding assistant for the **Copilot Agent Factory** - a meta-reposi
 
 This repository contains:
 - **46 agent templates** across 12 categories (planning, core dev, backend, mobile, frontend, ML, etc.)
-- **7 skill templates** across 3 categories (testing, development, devops)
+- **9 skill templates** across 4 categories (testing, development, devops, implementation workflows)
 - **Agent-generator meta-agent** that analyzes repos and creates customized agents
 - **Orchestrator** for workflow coordination with approval gates
 
@@ -48,7 +48,8 @@ This repository contains:
 skill-templates/
 ├── 1-testing-quality/ (3 skills)
 ├── 2-development-workflows/ (3 skills)
-└── 3-devops-deployment/ (1 skill)
+├── 3-devops-deployment/ (1 skill)
+└── 4-implementation-workflows/ (1 skill: trycycle)
 ```
 
 ### Placeholder System
