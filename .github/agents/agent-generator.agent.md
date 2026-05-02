@@ -461,7 +461,7 @@ When customizing templates, replace these markers:
 
 **IMPORTANT: Apply platform-specific YAML handling.**
 
-### VS Code Output (Multiple Files)
+### VS Code Output (Multiple `.agent.md` Files)
 
 Generate each agent file (`.agent.md`) with compliant YAML frontmatter (no `model` or `triggers`):
 

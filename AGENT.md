@@ -74,24 +74,23 @@ Apply these in technical designs and in implementation so new code stays maintai
 
 ### Template Conventions
 
-**YAML Frontmatter (Required):**
+**YAML Frontmatter (Required for VS Code / GitHub Copilot):**
 ```yaml
 ---
 name: agent-name
-model: claude-4-5-sonnet | claude-4-5-opus
 description: One-sentence description
-triggers:
-  - Detection pattern 1
-  - Detection pattern 2
+handoffs:
+  - agent: other-agent
+    label: "Button Label"
+    prompt: "Handoff context"
+    send: false
 ---
 ```
 
-**Model Selection:**
-- `claude-4-5-opus`: orchestrator, planning agents, architecture, security, debug (complex reasoning)
-- `claude-4-5-sonnet`: most development agents (faster, cost-effective)
+**Note:** The `model:` field and `triggers:` are not supported by GitHub Copilot custom agents and must be omitted. For Claude Code format, `model:` is supported.
 
 **Template Structure:**
-1. YAML frontmatter (with `model:` field)
+1. YAML frontmatter (`name`, `description`, `handoffs`)
 2. Your Role section
 3. Project Knowledge section
 4. Workflow/Commands/Standards section

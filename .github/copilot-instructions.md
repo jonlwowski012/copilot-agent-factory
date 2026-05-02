@@ -153,9 +153,11 @@ Phase 5: Review & Documentation
 3. Include placeholder resolution
 4. Use real-world scenarios
 
-## Model Selection Guide
+## Agent File Format
 
 **For Claude Code agents**, specify `model:` in YAML frontmatter. For VS Code (GitHub Copilot) agents, the `model:` field is not used.
+
+**Note:** The `model:` field and `triggers:` are not supported by GitHub Copilot custom agents and must be omitted.
 
 ## Placeholder Reference
 
