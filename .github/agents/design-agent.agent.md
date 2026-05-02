@@ -136,18 +136,16 @@ Python 3.10, FastAPI
 ```yaml
 ---
 name: template-name
-model: claude-4-5-opus
 description: One-sentence description
-triggers:
-  - Detection pattern 1
-  - Detection pattern 2
 handoffs:
-  - target: next-agent
+  - agent: next-agent
     label: "Action Label"
     prompt: "Handoff prompt"
     send: false
 ---
 ```
+
+Note: VS Code agent files use `.agent.md` extension and do NOT include `model:` or `triggers:` fields.
 
 ### 4.2 Body Structure
 ```markdown

@@ -99,56 +99,34 @@ You are an expert software architect specializing in refactoring for the **Copil
 ```
 
 **Improve Trigger Specificity:**
-```markdown
-# Before - Vague
-triggers:
-  - React project
+> Note: `triggers:` field is no longer supported in VS Code agent YAML frontmatter. Detection context should be documented in the body text instead.
 
-# After - Specific
-triggers:
-  - package.json with "react" dependency
-  - *.jsx or *.tsx files present
-```
-
-**Add Missing Model Field:**
+**Correct VS Code Agent Format:**
 ```yaml
-# Before
 ---
 name: agent-name
 description: Description
----
-
-# After
----
-name: agent-name
-model: claude-4-5-opus
-description: Description
+handoffs:
+  - agent: other-agent
+    label: "Action Label"
+    prompt: "Handoff prompt"
+    send: false
 ---
 ```
 
-### Model Selection Guide
-
-**All agents now use `claude-4-5-opus` for maximum reasoning capability.**
-
-This provides:
-- Consistent high-quality output
-- Deep reasoning for complex tasks
-- Better understanding of project context
+Note: VS Code agents do NOT include `model:` or `triggers:` fields.
 
 ## Consistency Checks
 
 ## Consistency Checks
 
-### YAML Frontmatter
+### YAML Frontmatter (VS Code format)
 ```yaml
 ---
 name: kebab-case-name
-model: claude-4-5-opus
 description: One-sentence description
-triggers:
-  - Specific detection pattern
 handoffs:
-  - target: agent-name
+  - agent: agent-name
     label: "Action Label"
     prompt: "Handoff prompt"
     send: false

@@ -8,9 +8,9 @@ Transform any codebase into an AI-powered development environment by automatical
 
 | Platform | Agents | Skills | Default Location |
 |----------|--------|--------|------------------|
-| **VS Code** (GitHub Copilot) | `.md` files | `.claude/skills/` | `.github/agents/` |
+| **VS Code** (GitHub Copilot) | `.agent.md` files | `.claude/skills/` | `.github/agents/` |
 | **Claude Code** | `.md` files | `.claude/skills/` | `.claude/agents/` |
-| **Cursor IDE** | `.mdc` files | `.claude/skills/` | `.cursor/agents/` |
+| **Cursor IDE** | `.mdc` files (Rules) | `.claude/skills/` | `.cursor/rules/` |
 
 ## What is this?
 
@@ -61,7 +61,7 @@ Analyze this repository and generate all appropriate agents and skills
 **For Cursor IDE:**
 
 ```
-@agent-generator --platform cursor --output .cursor/agents/
+@agent-generator --platform cursor --output .cursor/rules/
 Analyze this repository and generate all appropriate agents and skills
 ```
 
@@ -75,9 +75,15 @@ Analyze this repository and generate agents and skills for both platforms
 Or specify all platforms:
 
 ```
-@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/agents/
+@agent-generator --platform vscode,claude-code,cursor --output-vscode .github/agents/ --output-claude .claude/agents/ --output-cursor .cursor/rules/
 Analyze this repository and generate agents and skills for all three platforms
 ```
+
+**Fresh install (Cursor only):** Copy generator + templates (Step 1), then create the rules dir and generate:
+```bash
+mkdir -p .cursor/rules .claude/skills
+```
+Then in Cursor chat: `@agent-generator --platform cursor --output .cursor/rules/` and ask it to analyze the repo and generate agents and skills. Rules land in `.cursor/rules/`, skills in `.claude/skills/`.
 
 The generator will:
 1. 🔍 Scan your repository structure
@@ -122,9 +128,18 @@ Learn more: [Context7 Skills Catalog](https://context7.com/?tab=skills)
 
 Agents are available in your `.claude/agents/` directory and Claude will automatically use them based on context.
 
-**Cursor IDE:**
+**Cursor IDE (fresh install):**
 
-Agents are available in your `.cursor/agents/` directory. Cursor will recognize and apply these agents automatically based on your project context.
+1. Create the rules directory (if it doesn’t exist): `mkdir -p .cursor/rules`
+2. Run the generator (Step 2 above) with: `--platform cursor --output .cursor/rules/`
+3. Generated **rules** (agents) go into `.cursor/rules/`; **skills** go into `.claude/skills/`. Cursor uses both (rules from `.cursor/rules/`, and skills from `.claude/skills/` work across platforms).
+4. No copy or migration step for a fresh install.
+
+**If you already had rules in the old path** (e.g. `.cursor/agents/`), migrate once:
+```bash
+mkdir -p .cursor/rules && cp .cursor/agents/*.mdc .cursor/rules/
+```
+(Using a subfolder like `.cursor/rules/agents/` is optional; Cursor reads all of `.cursor/rules/` recursively.)
 
 **Using Skills (All Platforms):**
 
@@ -191,6 +206,8 @@ The factory includes skill templates that auto-activate based on keywords:
   *Keywords:* "git workflow", "commit message", "branch strategy"
 - **shareable-packages-template** - Make Python/TypeScript packages shareable and publishable  
   *Keywords:* "make packages shareable", "prepare for pip publish", "prepare for npm publish", "publish to PyPI", "publish to npm"
+- **debug-code-profiling** - Debug code using detailed profiling and critical path timing before making suggestions  
+  *Keywords:* "debug performance", "profile code", "find bottleneck"
 
 #### DevOps & Deployment (1)
 - **ci-pipeline** - Debug CI/CD pipelines  
@@ -441,7 +458,7 @@ docs/
 
 ```
 automatic_agent_gen/
-├── agent-generator.md        # Meta-agent that creates other agents
+├── agent-generator.md        # Meta-agent that creates other agents (root copy)
 ├── agent-templates/          # Shared agent templates with {{placeholders}}
 │   ├── Planning & Design Agents
 │   │   ├── prd-agent.agent.md           # Product Requirements Documents
@@ -507,17 +524,17 @@ automatic_agent_gen/
 ### Claude Code
 
 - **Output:** Multiple `.md` files in `.claude/agents/`
-- **YAML Frontmatter:** Simplified format with `name`, `model`, `description` only (no `triggers` or `handoffs`)
+- **YAML Frontmatter:** Simplified format with `name`, `model`, `description` only (no `handoffs`)
 - **Invocation:** Claude uses agents automatically based on context
 - **Handoffs:** Not supported (Claude handles routing internally)
 
 ### Cursor IDE
 
-- **Output:** Multiple `.mdc` files (Markdown Cursor format) in `.cursor/agents/`
-- **YAML Frontmatter:** Cursor-specific format with `description`, `globs`, `alwaysApply` (no `triggers` or `handoffs`)
-- **Invocation:** Cursor uses agents automatically based on context and file patterns
+- **Output:** Multiple `.mdc` files (Project Rules) in `.cursor/rules/` (see [Cursor Rules docs](https://cursor.com/docs/context/rules))
+- **YAML Frontmatter:** Cursor format with `description`, `globs`, `alwaysApply` (no `triggers` or `handoffs`)
+- **Invocation:** Cursor applies rules from `.cursor/rules/` by context and file patterns
 - **Handoffs:** Not supported (Cursor handles routing internally)
-- **Additional:** Can use `.cursorrules` file in project root for global project instructions
+- **Additional:** Can use `AGENTS.md` in project root as a simple alternative to rules
 
 ## Agent Detection Rules
 
@@ -908,7 +925,7 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 
 ### Adding New Agent Templates
 
-1. Create a new template in `agent-templates/`:
+1. Create a new template in `agent-templates/` with `.agent.md` extension:
 
 ```markdown
 ---

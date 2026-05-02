@@ -14,7 +14,7 @@
 | **Think of it as** | "Who" does the work | "How" to do specific tasks |
 | **Invocation** | Explicit: `@agent-name` | Auto-activates on keywords |
 | **File Structure** | Single `.md` file | Folder: `SKILL.md` + scripts/assets |
-| **Location** | `.github/agents/` (Copilot)<br>`.claude/agents/` (Claude)<br>`.cursor/agents/` (Cursor) | `.github/skills/` or `.claude/skills/`<br>(Works for ALL platforms) |
+| **Location** | `.github/agents/` (Copilot)<br>`.claude/agents/` (Claude)<br>`.cursor/rules/` (Cursor) | `.github/skills/` or `.claude/skills/`<br>(Works for ALL platforms) |
 | **Customization** | 60+ project-specific placeholders | 10 core placeholders with fallbacks |
 | **Scope** | Broad domain knowledge | Narrow, specific procedure |
 | **Platform Support** | Platform-specific formats | Single format, cross-platform |
@@ -146,7 +146,7 @@ Let me invoke the auth-setup skill to help you implement this..."
 
 | Feature | GitHub Copilot | Claude Code | Cursor IDE |
 |---------|----------------|-------------|------------|
-| **Agents** | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/agents/*.mdc` |
+| **Agents** | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/rules/*.mdc` |
 | **Skills** | ✅ `.github/skills/` or `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.claude/skills/` |
 | **Auto-activation** | ✅ Yes | ✅ Yes | ✅ Yes |
 | **Cross-platform** | ⚠️ Platform-specific format | ⚠️ Platform-specific format | ✅ Single format works everywhere |
@@ -232,7 +232,8 @@ auto-activates:
 | "Debug why tests are failing" | `@debug-agent` | Needs investigation expertise |
 | "Run all tests with coverage" | `run-tests` skill | Simple command procedure |
 | "Design authentication system" | `@security-agent` + `auth-setup` skill | Expert designs, skill implements |
-| "Optimize API performance" | `@performance-agent` | Requires profiling expertise |
+| "Optimize API performance" | `@performance-agent` + `debug-code-profiling` skill | Profiling + critical path timing first |
+| "Find bottleneck" / "Profile code" | `debug-code-profiling` skill | Profiling workflow, data before suggestions |
 | "Add API endpoint" | `api-scaffold` skill | Repetitive boilerplate task |
 | "Generate PRD for new feature" | `@prd-agent` | Document creation expertise |
 
@@ -247,6 +248,9 @@ User: "configure linting"        → lint-setup skill
 User: "deploy to production"     → deploy skill
 User: "git workflow"             → git-workflow skill
 User: "setup CI pipeline"        → ci-pipeline skill
+User: "profile code"             → debug-code-profiling skill
+User: "find bottleneck"          → debug-code-profiling skill
+User: "debug performance"        → debug-code-profiling skill
 ```
 
 Agents require explicit invocation:
@@ -265,7 +269,7 @@ User: @security-agent "audit authentication"
 
 ### Proposed State
 - ✅ 46 agent templates
-- ✅ 7 skill templates (initial set)
+- ✅ 8 skill templates (initial set)
 
 ### No Breaking Changes
 - Existing agents continue working

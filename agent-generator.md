@@ -21,7 +21,7 @@ This generator supports three target platforms with different output formats:
 |----------|---------------|-----------------|
 | **VS Code** (GitHub Copilot) | Multiple `.agent.md` files (one per agent) | User-specified (default: `.github/agents/`) |
 | **Claude Code** | Multiple `.md` files (one per agent) | User-specified (default: `.claude/agents/`) |
-| **Cursor IDE** | Multiple `.mdc` files (one per agent) | User-specified (default: `.cursor/agents/`) |
+| **Cursor IDE** | Multiple `.mdc` files (Project Rules) | User-specified (default: `.cursor/rules/`) |
 
 ### Required Parameters
 
@@ -38,29 +38,29 @@ When invoking the agent-generator, you **MUST** specify:
 
 **VS Code Output (`--platform vscode`):**
 - Generates individual `.agent.md` files per agent
-- Includes YAML frontmatter: `name`, `description`, `handoffs` (no `model` or `triggers`)
+- Includes full YAML frontmatter: `name`, `description`, `handoffs`
 - Output to specified directory (e.g., `--output .github/agents/`)
 
 **Claude Code Output (`--platform claude-code`):**
 - Generates individual `.md` files per agent
-- YAML frontmatter includes only: `name`, `model`, `description` (strips `triggers` and `handoffs`)
+- YAML frontmatter includes only: `name`, `model`, `description` (strips `handoffs`)
 - Output to specified directory (e.g., `--output .claude/agents/`)
 
 **Cursor IDE Output (`--platform cursor`):**
 - Generates individual `.mdc` files (Markdown Cursor format) per agent
 - YAML frontmatter uses Cursor-specific fields: `description`, `globs`, `alwaysApply`
 - Strips VS Code-specific `triggers` and `handoffs`
-- Output to specified directory (e.g., `--output .cursor/agents/`)
+- Output to specified directory (e.g., `--output .cursor/rules/`)
 
 **Multiple Platform Output:**
-- Example: `--platform vscode,cursor --output-vscode .github/agents/ --output-cursor .cursor/agents/`
+- Example: `--platform vscode,cursor --output-vscode .github/agents/ --output-cursor .cursor/rules/`
 - Generates agents in appropriate formats for each platform simultaneously
 
 ## CRITICAL: Agent File Header Format
 
-### VS Code Format (Compliant YAML)
+### VS Code Format (Full YAML)
 
-For `--platform vscode`, use GitHub Copilot-compliant format (no `model`, no `triggers`):
+For `--platform vscode`, use `.agent.md` file extension with `name`, `description`, and `handoffs` fields (no `model` or `triggers`):
 
 ```yaml
 ---
@@ -76,7 +76,7 @@ handoffs:
 
 ### Claude Code Format (Stripped YAML)
 
-For `--platform claude-code`, remove `triggers` and `handoffs` (VS Code-specific):
+For `--platform claude-code`, remove `handoffs` (VS Code-specific), keep `model` for Claude Code:
 
 ```yaml
 ---
@@ -141,6 +141,7 @@ alwaysApply: false
 | `cloud-agent.agent.md` | AWS/GCP/Azure infrastructure, Terraform, serverless |
 | `microservices-agent.agent.md` | Distributed systems, service communication, K8s |
 | `queue-agent.agent.md` | Message queues, async processing, background jobs |
+| `shareable-package.agent.md` | Making Python/TS packages shareable (pip/npm); handoff target from design-agent |
 | `observability-agent.agent.md` | Logging, metrics, tracing, monitoring |
 | `ml-trainer.agent.md` | Model training, hyperparameters, training loops |
 | `data-prep.agent.md` | Data loading, preprocessing, augmentation |
@@ -180,6 +181,7 @@ Skills are cross-platform procedural workflows that auto-activate based on keywo
 | `local-dev-setup` | "dev setup", "local environment", "install dependencies" | All projects |
 | `code-formatting` | "format code", "fix formatting", "run formatter" | Projects with linter/formatter |
 | `git-workflow` | "git workflow", "commit message", "branch strategy" | All projects |
+| `debug-code-profiling` | "profile code", "find bottleneck", "debug performance", "critical path", "time execution" | Projects with performance-sensitive code |
 
 ### DevOps & Deployment Skills
 | Skill | Auto-Activates On | When to Include |
@@ -524,6 +526,7 @@ Generate agents based on detection:
 | Agent | Generate If |
 |-------|-------------|
 | **api-agent** | API framework detected (FastAPI, Flask, Express, etc.) OR `api/` directory |
+| **shareable-package** | `pyproject.toml` OR `setup.py` OR `package.json` at repo root (Python/TS package that may be made shareable); also handoff from design-agent when design specifies publishable package |
 | **ml-trainer** | `train.py` OR `training/` OR ML framework in deps |
 | **data-prep** | `data/` directory OR data processing imports (pandas, numpy, etc.) |
 | **eval-agent** | `eval.py` OR `evaluate.py` OR `metrics/` OR ML framework detected |
@@ -966,8 +969,8 @@ For each selected agent:
 
 1. Read the template from `agent-templates/{agent-name}.agent.md`
 2. **Apply platform-specific YAML handling:**
-   - **VS Code (`--platform vscode`):** Use compliant YAML with only `name`, `description`, `handoffs` (no `model`, no `triggers`). File extension must be `.agent.md`
-   - **Claude Code (`--platform claude-code`):** Strip `triggers` and `handoffs` from YAML, keep only `name`, `model`, `description`
+   - **VS Code (`--platform vscode`):** Use `.agent.md` extension. Preserve `name`, `description`, `handoffs`. Remove `model` and `triggers`.
+   - **Claude Code (`--platform claude-code`):** Strip `handoffs` from YAML, keep only `name`, `model`, `description`
 3. **Replace all `{{placeholder}}` markers with detected values** from Steps 1-4.5:
    - Tech stack, commands, and directories from Steps 1-4
    - **Coding standards and style conventions from Step 4.5**
@@ -997,7 +1000,6 @@ When customizing templates, replace these markers:
 ### Universal Placeholders
 | Placeholder | Source |
 |-------------|--------|
-| `{{model}}` | Model to use for Claude Code format (e.g., "claude-4-5-sonnet", "claude-4-5-opus") - not used for VS Code |
 | `{{tech_stack}}` | Detected languages, frameworks, versions |
 | `{{source_dirs}}` | Source code directories found |
 | `{{test_dirs}}` | Test directories found |
@@ -1088,7 +1090,7 @@ When customizing templates, replace these markers:
 
 ### VS Code Output (Multiple `.agent.md` Files)
 
-Generate each agent file with GitHub Copilot-compliant YAML frontmatter (no `model`, no `triggers`):
+Generate each agent file (`.agent.md`) with compliant YAML frontmatter (no `model` or `triggers`):
 
 ```markdown
 ---
@@ -1128,7 +1130,7 @@ You are an expert [role] for this project.
 
 ### Claude Code Output (Multiple Files)
 
-Generate each agent file with stripped YAML frontmatter (no `triggers` or `handoffs`):
+Generate each agent file with stripped YAML frontmatter (no `handoffs`):
 
 ```markdown
 ---
@@ -1167,7 +1169,7 @@ You are an expert [role] for this project.
 Generate agents and skills in this order to handle dependencies:
 
 1. **Planning agents** – prd-agent, epic-agent, story-agent, architecture-agent, design-agent, test-design-agent
-2. **orchestrator.md** – Central coordinator that references all other agents
+2. **orchestrator** – Central coordinator that references all other agents
 3. **Core agents** – docs, test, lint, review, security, devops, debug, refactor, performance
 4. **Domain agents** – api, ml-trainer, data-prep, eval, inference (if applicable)
 7. **Generate Context7 skills installation scripts** – Create `scripts/install-context7-skills.sh` and `scripts/install-context7-skills.ps1` with detected skills

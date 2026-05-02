@@ -104,8 +104,8 @@ Every agent template follows this structure:
 |------|---------|
 | `README.md` | Main project documentation |
 | `AGENT.md` | Global agent conventions |
-| `agent-generator.md` | Meta-agent documentation |
-| `agent-templates/*.md` | Individual agent templates |
+| `agent-generator.md` | Meta-agent documentation (root) |
+| `agent-templates/*.agent.md` | Individual agent templates |
 | `docs/MCP-SERVERS.md` | MCP server documentation |
 
 ## Writing Guidelines
