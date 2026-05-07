@@ -14,7 +14,7 @@
 | **Think of it as** | "Who" does the work | "How" to do specific tasks |
 | **Invocation** | Explicit: `@agent-name` | Auto-activates on keywords |
 | **File Structure** | Single `.md` file | Folder: `SKILL.md` + scripts/assets |
-| **Location** | `.github/agents/` (Copilot)<br>`.claude/agents/` (Claude)<br>`.cursor/rules/` (Cursor) | `.github/skills/` or `.claude/skills/`<br>(Works for ALL platforms) |
+| **Location** | `.github/agents/` (Copilot)<br>`.claude/agents/` (Claude)<br>`.cursor/rules/` (Cursor)<br>`AGENTS.md` (Codex) | `.claude/skills/` (Copilot/Claude/Cursor)<br>`.codex/skills/` (Codex) |
 | **Customization** | 60+ project-specific placeholders | 10 core placeholders with fallbacks |
 | **Scope** | Broad domain knowledge | Narrow, specific procedure |
 | **Platform Support** | Platform-specific formats | Single format, cross-platform |
@@ -144,14 +144,15 @@ Let me invoke the auth-setup skill to help you implement this..."
 
 ## Platform Support Matrix
 
-| Feature | GitHub Copilot | Claude Code | Cursor IDE |
-|---------|----------------|-------------|------------|
-| **Agents** | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/rules/*.mdc` |
-| **Skills** | ✅ `.github/skills/` or `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.claude/skills/` |
-| **Auto-activation** | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Cross-platform** | ⚠️ Platform-specific format | ⚠️ Platform-specific format | ✅ Single format works everywhere |
+| Feature | GitHub Copilot | Claude Code | Cursor IDE | OpenAI Codex |
+|---------|----------------|-------------|------------|--------------|
+| **Agents** | ✅ `.github/agents/*.md` | ✅ `.claude/agents/*.md` | ✅ `.cursor/rules/*.mdc` | ✅ `AGENTS.md` |
+| **Skills** | ✅ `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.claude/skills/` | ✅ `.codex/skills/` |
+| **Auto-activation** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Cross-platform** | ⚠️ Platform-specific format | ⚠️ Platform-specific format | ⚠️ Platform-specific format | ⚠️ Platform-specific format |
 
-**Key Takeaway:** Skills use `.claude/skills/` format that ALL three platforms recognize (as of Dec 2025).
+**Key Takeaway:** Skill content format is portable (`SKILL.md` directories).  
+Destination paths are platform-specific: `.claude/skills/` for Copilot/Claude/Cursor and `.codex/skills/` for Codex.
 
 ## File Structure Comparison
 
