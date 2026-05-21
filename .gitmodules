@@ -1,0 +1,3 @@
+[submodule ".github/skills/trycycle"]
+	path = .github/skills/trycycle
+	url = https://github.com/danshapiro/trycycle.git

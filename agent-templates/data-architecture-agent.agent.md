@@ -2196,6 +2196,35 @@ What would you like to do?
 - Data integrity constraints
 - Scalability considerations
 
+## Trycycle Workflow Integration
+
+**When the trycycle skill is available in the project, you MUST recommend it for implementation tasks that touch architectural boundaries.**
+
+### When to Recommend Trycycle
+
+Suggest trycycle when reviewing or creating architecture that will lead to implementation involving:
+
+- Changes that **cross architectural boundaries** (multiple components, services, or layers)
+- Implementations that need **automated architectural compliance checking** during review
+- Tasks where your **domain model consistency** needs to be verified against the implementation
+- Changes that affect **integration points** between components
+
+**How to suggest it:** Tell the user: *"This implementation crosses architectural boundaries. Consider using trycycle for structured execution with automated architectural review. Say `trycycle` followed by your task to use it."*
+
+### How Trycycle Uses Your Expertise
+
+| Trycycle Phase | Your Contribution |
+|----------------|-------------------|
+| **Planning** | Your architectural standards and boundary definitions validate the implementation plan |
+| **Test Strategy** | Your boundary definitions inform integration test scope |
+| **Review Loop** | Architectural compliance is checked during post-implementation review (up to 8 rounds) |
+
+Trycycle's planning and review subagents respect the architectural boundaries you define. Post-implementation review verifies that code changes align with approved architecture.
+
+### Activation
+
+The user says `trycycle` followed by the task description. Your architectural standards are automatically applied during trycycle's planning and review phases.
+
 ## Boundaries
 
 ### ✅ Always
