@@ -489,6 +489,11 @@ automatic_agent_gen/
 │   │   ├── frontend-react-agent.agent.md   # React development with hooks and TypeScript
 │   │   ├── frontend-vue-agent.agent.md     # Vue.js with Composition API
 │   │   └── frontend-angular-agent.agent.md # Angular with RxJS and standalone components
+│   ├── Loop Engineering Agents
+│   │   ├── loop-turn-agent.agent.md      # Turn-based loop: one reviewed increment per turn
+│   │   ├── loop-goal-agent.agent.md      # Goal-based loop: iterate until a predicate passes
+│   │   ├── loop-time-agent.agent.md      # Time-based loop: cron/interval scheduling
+│   │   └── loop-proactive-agent.agent.md # Proactive loop: signal-driven watches
 │   ├── Database Agents
 │   │   └── database-agent.agent.md      # Schema design, migrations, query optimization
 │   └── ML/AI Agents
@@ -501,6 +506,7 @@ automatic_agent_gen/
 │       ├── pytorch-lightning-agent.agent.md  # Lightning structured training
 │       └── torchgeo-agent.agent.md      # Geospatial deep learning
 ├── AGENT.md                  # Global agent conventions
+├── LOOP-AGENT-STANDARD.md    # Shared contract for loop-* agent templates
 ├── README.md                 # This documentation
 └── docs/                     # Planning artifacts
     └── planning/
@@ -563,6 +569,17 @@ The generator creates agents based on detected patterns:
 | **performance-agent** | Large codebase or performance-critical patterns |
 | **security-agent** | Auth code, API endpoints, database queries, or env vars |
 | **devops-agent** | `.github/workflows/`, `Dockerfile`, or CI/CD configs |
+
+### Loop Engineering Agents
+
+Loop agents run **more than once** on the same objective. They differ in what starts the next iteration — see `LOOP-AGENT-STANDARD.md` for the shared contract (stop conditions, budgets, iteration ledger, safety rails).
+
+| Agent | What starts an iteration | Created When |
+|-------|--------------------------|-------------|
+| **loop-turn-agent** | The human's next message | Always created (universal need) |
+| **loop-goal-agent** | The goal is still unmet | Test, lint, or type-check command detected |
+| **loop-time-agent** | A clock fires | `.github/workflows/` with `schedule:`, cron configs, or CI/CD to poll |
+| **loop-proactive-agent** | An external signal crosses a threshold | CI workflows, monitoring/alerting configs, or error-tracking dependencies |
 
 ### API & Backend Agents
 | Agent | Created When |
@@ -855,6 +872,28 @@ Templates use `{{placeholder}}` markers that get replaced with detected values:
 | `{{lint_command}}` | Linting command | "ruff check --fix .", "eslint --fix" |
 | `{{build_command}}` | Build command | "npm run build", "cargo build" |
 | `{{dev_command}}` | Development server command | "npm run dev", "python manage.py runserver" |
+
+### Loop Placeholders
+| Placeholder | Description | Example Values |
+|-------------|-------------|----------------|
+| `{{loop_objective}}` | The loop's one-sentence goal | "Keep the release branch green" |
+| `{{loop_state_file}}` | Append-only iteration ledger | "`docs/loops/release-green-state.md`" |
+| `{{loop_max_iterations}}` | Iteration cap | "10", "25" |
+| `{{loop_time_budget}}` | Wall-clock cap | "30m", "4h" |
+| `{{loop_scope_paths}}` | Files the loop may modify | "`src/auth/`, `tests/auth/`" |
+| `{{loop_verify_command}}` | Command proving success/progress | "pytest -q", "npm test" |
+| `{{loop_success_criteria}}` | Executable definition of done | "exit 0 and coverage ≥ 80%" |
+| `{{loop_runtime}}` | What starts the next iteration | "`/goal`", "Stop hook", "manual" |
+| `{{loop_turn_budget}}` | Turns between checkpoints | "5" |
+| `{{loop_interval}}` | Schedule interval | "5m", "2h" |
+| `{{loop_schedule_cron}}` | 5-field cron expression | "*/15 * * * *", "7 9 * * 1-5" |
+| `{{loop_scheduler}}` | Scheduler tier | "`/loop`", "Routines", "GitHub Actions" |
+| `{{loop_timezone}}` | Schedule timezone | "America/Chicago" |
+| `{{loop_trigger_signals}}` | Signals a watch subscribes to | "CI failure, 5xx rate > 1%" |
+| `{{loop_watch_paths}}` | Resources a watch monitors | "`.github/workflows/`, prod error feed" |
+| `{{loop_notify_channel}}` | Where findings are reported | "#eng-alerts", "PR comment" |
+| `{{loop_cooldown}}` | Re-alert suppression window | "1h", "24h" |
+| `{{loop_escalation_target}}` | Who receives a stopped loop | "@review-agent", "the on-call engineer" |
 
 ### Mobile Development Placeholders
 | Placeholder | Description | Example Values |
