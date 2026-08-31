@@ -9,7 +9,7 @@ You are an AI coding assistant for the **Copilot Agent Factory** - a meta-reposi
 ## Project Overview
 
 This repository contains:
-- **46 agent templates** across 12 categories (planning, core dev, backend, mobile, frontend, ML, etc.)
+- **50 agent templates** across 13 categories (planning, core dev, backend, mobile, frontend, ML, loop engineering, etc.)
 - **7 skill templates** across 3 categories (testing, development, devops)
 - **Agent-generator meta-agent** that analyzes repos and creates customized agents
 - **Orchestrator** for workflow coordination with approval gates
@@ -43,7 +43,8 @@ This repository contains:
     ├── 09-product/ (1 agent)
     ├── 10-project-management/ (3 agents)
     ├── 11-operations/ (2 agents)
-    └── 12-testing-quality/ (4 agents)
+    ├── 12-testing-quality/ (4 agents)
+    └── 13-loop-engineering/ (4 agents)
 
 skill-templates/
 ├── 1-testing-quality/ (3 skills)
@@ -281,6 +282,21 @@ This project uses a structured Feature Development Workflow:
 6. Success Criteria
 
 **See `SKILL-TEMPLATE-STANDARD.md` for complete guidelines.**
+
+## Loop Agent Guidelines
+
+Loop agents (`agent-templates/loop-*.agent.md`) run **more than once** on the same objective. Four types, differing in what starts the next iteration:
+
+| Agent | Iteration starts when | Terminates when |
+|-------|----------------------|-----------------|
+| **@loop-turn-agent** | The human sends the next message | The human accepts the result or stops replying |
+| **@loop-goal-agent** | The goal is still unmet | An executable predicate passes, or a budget/stall stops it |
+| **@loop-time-agent** | A clock fires (cron/interval) | The task is cancelled or expires |
+| **@loop-proactive-agent** | A signal crosses a threshold | The watch is removed |
+
+Every loop agent must define seven things before its first iteration: objective, iteration unit, executable success criteria, budgets, stop conditions, iteration record format, and escalation path.
+
+**See `LOOP-AGENT-STANDARD.md` for the complete loop contract, placeholders, and review checklist.**
 
 ### Skill Placeholders
 

@@ -37,7 +37,7 @@ Skills have been successfully added to Copilot Agent Factory with 8 skill templa
 
 1. **True cross-platform portability** - Write once, use everywhere
 2. **Complements existing agents** - Expertise + Procedures
-3. **Fills a gap** - Factory has 46 agents but no workflow procedures
+3. **Fills a gap** - Factory has 50 agents but no workflow procedures
 4. **Industry standard** - Official GitHub support
 5. **Auto-activation** - Seamless user experience
 6. **Lower maintenance** - Single format vs platform-specific

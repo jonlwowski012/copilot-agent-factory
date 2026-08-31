@@ -153,6 +153,16 @@ alwaysApply: false
 | `torchgeo-agent.agent.md` | Geospatial deep learning, remote sensing, satellite imagery |
 | `metaflow-agent.agent.md` | ML workflow orchestration, pipeline management, experiment tracking |
 
+### Loop Engineering Agents
+| Template | Purpose |
+|----------|---------|
+| `loop-turn-agent.agent.md` | Turn-based loop: one human-reviewed increment per turn, ledger-backed |
+| `loop-goal-agent.agent.md` | Goal-based loop: iterate autonomously until an executable predicate passes |
+| `loop-time-agent.agent.md` | Time-based loop: cron/interval scheduling, idempotent runs, scheduler tiers |
+| `loop-proactive-agent.agent.md` | Proactive loop: signal-driven watches with thresholds, cooldown, and noise budget |
+
+**See `LOOP-AGENT-STANDARD.md`** for the shared loop contract (stop conditions, budgets, iteration ledger, safety rails) that all four templates implement.
+
 ### Robotics Agents
 | Template | Purpose |
 |----------|---------|
@@ -536,6 +546,14 @@ Generate agents based on detection:
 | **pytorch-lightning-agent** | `pytorch-lightning` OR `lightning` in dependencies OR `import pytorch_lightning` statements OR LightningModule classes |
 | **torchgeo-agent** | `torchgeo` in dependencies OR `import torchgeo` statements OR geospatial dataset patterns |
 | **metaflow-agent** | `metaflow` in dependencies OR Flow class with `@step` decorators OR `flows/` directory OR metaflow imports |
+
+#### Loop Engineering Agents
+| Agent | Generate If |
+|-------|-------------|
+| **loop-turn-agent** | Always generate (universal need for multi-turn work that outlives one context window) |
+| **loop-goal-agent** | Test command detected OR lint/type-check command detected (an executable success predicate exists) |
+| **loop-time-agent** | `.github/workflows/` with a `schedule:` trigger OR cron configs OR CI/CD pipelines to poll |
+| **loop-proactive-agent** | `.github/workflows/` OR monitoring/alerting configs OR error-tracking deps (Sentry, Datadog) OR dependency audit tooling |
 
 #### Robotics Agents
 | Agent | Generate If |
@@ -1077,6 +1095,30 @@ When customizing templates, replace these markers:
 | `{{security_scan_command}}` | Security scanning command |
 | `{{secret_scan_command}}` | Secret detection command |
 
+### Loop Placeholders
+| Placeholder | Source |
+|-------------|--------|
+| `{{loop_objective}}` | The loop's one-sentence goal (from the user's request) |
+| `{{loop_state_file}}` | Iteration ledger path, default `docs/loops/{loop-name}-state.md` |
+| `{{loop_max_iterations}}` | Iteration cap (default 10; raise for mechanical work) |
+| `{{loop_time_budget}}` | Wall-clock cap (default 30m) |
+| `{{loop_scope_paths}}` | Files/dirs the loop may modify, from detected `{{source_dirs}}` |
+| `{{loop_verify_command}}` | Success/progress check, usually `{{test_command}}` |
+| `{{loop_success_criteria}}` | Executable definition of done |
+| `{{loop_runtime}}` | What starts the next iteration (`/goal`, Stop hook, manual) |
+| `{{loop_turn_budget}}` | Turns between checkpoints in a turn-based loop (default 5) |
+| `{{loop_interval}}` | Human-readable schedule interval (5m, 2h, 1d) |
+| `{{loop_schedule_cron}}` | 5-field cron expression derived from `{{loop_interval}}` |
+| `{{loop_scheduler}}` | Scheduler tier (`/loop`, Desktop task, Routines, GitHub Actions) |
+| `{{loop_timezone}}` | Schedule timezone (local for session/Desktop, UTC for GitHub Actions) |
+| `{{loop_trigger_signals}}` | Signals a proactive watch subscribes to |
+| `{{loop_watch_paths}}` | Paths/resources a proactive watch monitors |
+| `{{loop_notify_channel}}` | Where findings are reported |
+| `{{loop_cooldown}}` | Re-alert suppression window (default 1h) |
+| `{{loop_escalation_target}}` | Agent or human receiving a stopped loop |
+
+**See `LOOP-AGENT-STANDARD.md`** for the full loop contract and placeholder examples.
+
 ### Orchestrator-Specific Placeholders
 | Placeholder | Source |
 |-------------|--------|
@@ -1574,6 +1616,10 @@ For the orchestrator's `{{active_agents_table}}` placeholder:
 | @microservices-agent | ✅ Active | Distributed systems, K8s, service mesh |
 | @queue-agent | ✅ Active | Message queues, async jobs, Celery/Kafka |
 | @observability-agent | ✅ Active | Logging, metrics, tracing, monitoring |
+| @loop-turn-agent | ✅ Active | Multi-turn work, one reviewed increment per turn |
+| @loop-goal-agent | ✅ Active | Autonomous iteration until a predicate passes |
+| @loop-time-agent | ✅ Active | Scheduled and interval-driven recurring work |
+| @loop-proactive-agent | ✅ Active | Signal-driven watches and early detection |
 | @ml-trainer | ✅ Active | ML model training pipelines |
 | @pytorch-agent | ✅ Active | PyTorch neural networks, optimization |
 | @tensorflow-agent | ✅ Active | TensorFlow/Keras models, training |

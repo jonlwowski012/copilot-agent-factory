@@ -191,6 +191,17 @@ As the orchestrator, you are responsible for ensuring all agents follow the mini
 | **review-agent** | `@review-agent` | Template review, consistency checks, best practices |
 | **refactor-agent** | `@refactor-agent` | Template restructuring, placeholder optimization |
 
+### Loop Engineering Agents
+
+Route work that must run **more than once** on the same objective. Pick by what starts the next iteration (see `LOOP-AGENT-STANDARD.md`).
+
+| Agent | Invoke With | Best For |
+|-------|-------------|----------|
+| **loop-turn-agent** | `@loop-turn-agent` | Multi-turn work needing human judgment each step |
+| **loop-goal-agent** | `@loop-goal-agent` | Autonomous iteration until an executable predicate passes |
+| **loop-time-agent** | `@loop-time-agent` | Scheduled or interval-driven recurring work |
+| **loop-proactive-agent** | `@loop-proactive-agent` | Signal-driven watches and early detection |
+
 ### Active Agents in This Repository
 
 | Agent | Status | Best For |
@@ -230,6 +241,14 @@ Request Analysis:
 │   └── Route to @review-agent
 ├── Contains "refactor template", "optimize placeholders", "restructure"
 │   └── Route to @refactor-agent
+├── Contains "keep going", "step by step", "one at a time", "check with me each step"
+│   └── Route to @loop-turn-agent
+├── Contains "until it passes", "until green", "keep trying until", "/goal"
+│   └── Route to @loop-goal-agent
+├── Contains "every N minutes", "nightly", "on a schedule", "cron", "poll", "/loop"
+│   └── Route to @loop-time-agent
+├── Contains "watch for", "alert me when", "notify when", "monitor for"
+│   └── Route to @loop-proactive-agent
 ├── Contains "start feature", "new feature", "workflow"
 │   └── Initiate Feature Development Workflow
 └── Default

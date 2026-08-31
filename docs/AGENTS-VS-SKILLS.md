@@ -264,11 +264,11 @@ User: @security-agent "audit authentication"
 ## Migration Path
 
 ### Current State (Copilot Agent Factory)
-- ✅ 46 agent templates
+- ✅ 50 agent templates
 - ❌ 0 skill templates
 
 ### Proposed State
-- ✅ 46 agent templates
+- ✅ 50 agent templates
 - ✅ 8 skill templates (initial set)
 
 ### No Breaking Changes

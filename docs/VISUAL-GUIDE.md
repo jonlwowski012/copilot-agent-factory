@@ -286,7 +286,7 @@ User types: "how do I set up testing"
 │  Creates:                                                         │
 │                                                                   │
 │  ┌──────────────────────┐        ┌──────────────────────┐       │
-│  │  46 AGENT TEMPLATES  │        │  7 SKILL TEMPLATES   │       │
+│  │  50 AGENT TEMPLATES  │        │  7 SKILL TEMPLATES   │       │
 │  │  ─────────────────── │        │  ──────────────────  │       │
 │  │  • Planning (6)      │        │  • Testing (3)       │       │
 │  │  • Development (9)   │        │  • Development (3)   │       │

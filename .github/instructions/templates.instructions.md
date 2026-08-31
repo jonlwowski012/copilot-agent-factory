@@ -230,6 +230,9 @@ Place templates in appropriate category:
 10. `10-project-management/` – experiment-tracker, project-shipper, studio-producer
 11. `11-operations/` – analytics-reporter, infrastructure-maintainer
 12. `12-testing-quality/` – api-tester, test-analyzer, tool-evaluator, workflow-optimizer
+13. `13-loop-engineering/` – loop-turn, loop-goal, loop-time, loop-proactive
+
+**Loop agents** (`loop-*.agent.md`) have an additional contract on top of the structure above — objective, iteration unit, executable success criteria, budgets, stop conditions, iteration record, and escalation path. See `LOOP-AGENT-STANDARD.md` before creating or modifying one.
 
 ## Testing Templates
 
